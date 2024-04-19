@@ -8,6 +8,8 @@
   "packageType": "InterfaceHar",
   "dependencies": {
   },
+  "repository": "https://gitee.com/ericple/log4a",
+  "homepage": "https://gitee.com/ericple",
   "keywords": [
     "log",
     "HarmonyOS",
