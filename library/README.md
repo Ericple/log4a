@@ -88,6 +88,8 @@ log4a设计了追踪器，它可以帮你跟踪函数运行参数、函数运行
 
 可用的追踪器：
 
+#### `@TraceEntry`
+
 - `@TraceEntry`：用于跟踪函数运行参数，示例如下：
 
 ```typescript
@@ -111,6 +113,8 @@ t.add(1, 2);
 ```
 
 这意味着，使用@TraceEntry装饰的函数将会被追踪，每当它被调用时，log4a都会打印一条日志，该日志包含该函数名称及本次调用传入的参数。
+
+#### `@TraceExit`
 
 - `@TraceExit`：用于跟踪函数运行结果，示例如下：
 
@@ -136,6 +140,8 @@ t.add(1, 2);
 
 这意味着，使用@TraceExit装饰的函数将会被追踪，每当它被调用时，log4a都会打印一条日志，该日志包含该函数名称及本次调用返回的结果。
 
+#### `TracedStr`
+
 - `TracedStr`：用于跟踪字符串模板的构建过程，示例如下：
 
 ```typescript
@@ -157,6 +163,8 @@ const t = new TestClass;
 ```
 
 注意，TracedStr是标签而不是装饰器，因此不需要`@`前导。
+
+#### `MarkedTracedStr`
 
 - `MarkedTracedStr`：为了方便使用者追踪特定的模板字符串构建，使用此标签并传入一个字符串作为标记
 
@@ -180,6 +188,83 @@ const t = new TestClass;
 
 注意，`MarkedTracedStr`是函数而不是标签，需要传入一个参数。
 
+### Appender
+
+Appender为Logger提供日志输出能力，分为两种类型：`FileAppender`、`ConsoleAppender`。
+新建Logger时，将自动提供一个ConsoleAppender。Appender无法直接被创建，只能通过调用Logger实例下的`addFileAppender`
+或`addConsoleAppender`来创建并绑定到该Logger.
+
+#### ConsoleAppender
+
+`ConsoleAppender`提供向控制台输出日志的能力，每个Logger在创建时，就会带有一个`ConsoleAppender`，无需手动添加。
+一个Logger最多只能拥有一个`ConsoleAppender`，当您向Logger添加`ConsoleAppender`时，若已存在，则该appender不会被添加至Logger。
+
+- 添加一个ConsoleAppender
+
+```typescript
+// this.logger是一个Logger的实例
+this.logger.addConsoleAppender(Level.INFO);
+```
+
+- 移除ConsoleAppender
+
+```typescript
+this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
+```
+
+- 获取当前Session的历史日志
+
+```typescript
+this.logger.getHistoryOfAppender(AppenderTypeEnum.CONSOLE);
+```
+
+#### FileAppender
+
+`FileAppender`提供向文件输出日志的能力。
+一个Logger可以有多个FileAppender，如果有多个FileAppender指向同一个文件，则这些FileAppender将会共用一个文件对象。
+
+- 添加一个FileAppender
+
+```typescript
+this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO);
+```
+
+- 删除一个FileAppender
+
+```typescript
+this.logger.removeNamedAppender('mainAppender');
+```
+
+- 获取当前Session的历史日志(从本次开启应用开始)
+
+```typescript
+const history = this.logger.getHistoryOfAppender('mainAppender');
+```
+
+- 获取所有历史日志(从首次安装并启动应用开始，每次退出时都会更新，下次继续累计)
+
+```typescript
+const history = this.logger.getAllHistoryOfAppender('mainAppender');
+```
+
+### 日志级别
+
+为了帮助使用者更容易地从日志中提取有用的信息，log4a引入了日志级别的概念。
+Logger和Appender都可以附带日志级别，log4a对Logger的日志等级的处理优先于对appender的日志等级的处理，举例如下：
+
+```typescript
+this.logger.setLevel(Level.ERROR);
+this.logger.addFileAppender("/path/to/log.log", "mainFileAppender", Level.INFO);
+```
+
+在这个例子中，由于添加的FileAppender日志级别为`INFO`，高于Logger的日志级别`ERROR`，此时`WARN`级别的日志无法送达Appender。
+
+(日志等级排序为：OFF>FATAL>ERROR>WARN>INFO>DEBUG>TRACE>ALL)
+
+### 退出应用时的处理
+
+在退出应用时，使用者应当在Ability的onDestroy生命周期中调用`LogManager.terminate()`来销毁Logger及Appender实例。
+
 ### 约束与限制
 
 在下述版本验证通过：DevEco Studio NEXT Developer Preview 2 (4.1.3.700), SDK: API11 (4.1.0(11))
@@ -192,4 +277,4 @@ const t = new TestClass;
 
 ### 开源协议
 
-本项目使用[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)。
+本项目使用[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)。

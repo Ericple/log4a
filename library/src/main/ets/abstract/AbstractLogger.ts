@@ -2,16 +2,52 @@ import { AbstractAppender } from './AbstractAppender';
 import { Level } from '../Level';
 import { Marker } from '../MarkerManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
+import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
+import { ConsoleAppender } from '../appender/ConsoleAppender';
+import { FileAppender } from '../appender/FileAppender';
 
 export abstract class AbstractLogger {
   protected context: any;
   protected count: number = 0;
-  protected appender: Array<AbstractAppender>;
+  protected appenderArray: Array<AbstractAppender> = [];
   protected temporaryContext: TemporaryLoggerContext = new TemporaryLoggerContext;
-  protected level: Level = Level.OFF;
+  protected level: Level = Level.ALL;
+  protected history: string = '';
 
   constructor(context: any) {
     this.context = context;
+    this.addAppender(new ConsoleAppender());
+  }
+
+  getHistoryOfAppender(predicates: string): string;
+
+  getHistoryOfAppender(predicates: AppenderTypeEnum): string;
+
+  getHistoryOfAppender(predicates: string | AppenderTypeEnum): string {
+    const appender = this.appenderArray.find(appender => {
+      if (typeof predicates === 'string') {
+        return appender.getName() == predicates;
+      } else {
+        return appender.getType() == predicates;
+      }
+    });
+    if (appender) return appender.getCurrentHistory();
+    return '';
+  }
+
+  /**
+   * 获取具名FileAppender的历史日志
+   * @param predicates FileAppender名称
+   * @returns this
+   */
+  getAllHistoryOfAppender(predicates: string): string {
+    let appender = this.appenderArray.find(
+      appender => (appender.getName() == predicates && appender.getType() == AppenderTypeEnum.FILE)
+    );
+    if (appender) {
+      return (appender as FileAppender).getAllHistory();
+    }
+    return '';
   }
 
   setLevel(level: Level): this {
@@ -24,34 +60,96 @@ export abstract class AbstractLogger {
     return this;
   }
 
-  addAppender<T extends AbstractAppender>(appender: T): this {
-    this.appender.push(appender);
+  private addAppender<T extends AbstractAppender>(appender: T): this {
+    if (this.appenderArray.some(v => v === appender)) {
+      return this;
+    }
+    if (this.appenderArray.some(v => v.getType() === AppenderTypeEnum.CONSOLE) && appender.getType() == AppenderTypeEnum.CONSOLE) {
+      return this;
+    }
+    appender.setId(this.appenderArray.length);
+    this.appenderArray.push(appender);
+    return this;
+  }
+
+  /**
+   * 向Logger添加一个新的FileAppender
+   * @param path 输出文件路径
+   * @param name Appender名称，可以用于获取Appender信息
+   * @param level 输出的最低日志等级
+   * @returns this
+   */
+  addFileAppender(path: string, name: string = '', level: Level = Level.OFF): this {
+    return this.addAppender(new FileAppender(path, name, level));
+  }
+
+  /**
+   * 向Logger添加一个新的ConsoleAppender
+   * @param level 输出的最低日志等级
+   * @returns this
+   */
+  addConsoleAppender(level: Level = Level.OFF): this {
+    return this.addAppender(new ConsoleAppender(level));
+  }
+
+  /**
+   * 删除所有Appender
+   * @returns this
+   */
+  clearAppender(): this {
+    this.appenderArray.forEach(appender => {
+      appender.terminate();
+    });
+    this.appenderArray = [];
+    return this;
+  }
+
+  /**
+   * 删除所有对应类型的appender
+   * @param appenderType appender类型
+   * @returns
+   */
+  removeTypedAppender(appenderType: AppenderTypeEnum): this {
+    this.appenderArray = this.appenderArray.filter(appender => appender.getType() !== appenderType);
+    return this;
+  }
+
+  /**
+   * 删除所有具名appender
+   * @param name appender名称
+   * @returns
+   */
+  removeNamedAppender(name: string): this {
+    this.appenderArray = this.appenderArray.filter(appender => appender.getName() !== name);
     return this;
   }
 
   debug(format: string, ...args: any[]) {
-    this.print(console.debug, Level.DEBUG, format, args);
+    this.print(Level.DEBUG, format, args);
   }
 
   error(format: string, ...args: any[]) {
-    this.print(console.error, Level.ERROR, format, args);
+    this.print(Level.ERROR, format, args);
   }
 
   info(format: string, ...args: any[]) {
-    this.print(console.info, Level.INFO, format, args);
+    this.print(Level.INFO, format, args);
   }
 
   fatal(format: string, ...args: any[]) {
-    this.print(console.error, Level.FATAL, format, args);
+    this.print(Level.FATAL, format, args);
   }
 
   trace(format: string, ...args: any[]) {
-    this.print(console.warn, Level.TRACE, format, args);
+    this.print(Level.TRACE, format, args);
   }
 
-  private print(logger: Function, level: Level, format: string, args: any[]) {
-    if (level.intLevel() >= this.level.intLevel()) {
-      logger(this.makeMessage(level, format, args));
+  private print(level: Level, format: string, args: any[]) {
+    if (level.intLevel() <= this.level.intLevel()) {
+      const message = this.makeMessage(level, format, args);
+      this.appenderArray.forEach(appender => {
+        appender.log(level, message);
+      });
     }
     this.temporaryContext.clear();
   }
@@ -93,5 +191,11 @@ export abstract class AbstractLogger {
       return `[Anonymous:${this.count}]`;
     }
     return `[${this.context.constructor.name}:${this.count}]`;
+  }
+
+  terminate() {
+    this.appenderArray.forEach(appender => {
+      appender.terminate();
+    });
   }
 }
