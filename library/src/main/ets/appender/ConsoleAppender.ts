@@ -9,7 +9,7 @@ export class ConsoleAppender extends AbstractAppender {
     return this;
   }
 
-  constructor(level: Level = Level.OFF) {
+  constructor(level: Level = Level.ALL) {
     super('', level, AppenderTypeEnum.CONSOLE);
   }
 
