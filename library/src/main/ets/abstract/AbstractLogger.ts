@@ -5,7 +5,6 @@ import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { ConsoleAppender } from '../appender/ConsoleAppender';
 import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
-import { TraceExit } from '../Decorators';
 
 export abstract class AbstractLogger {
   protected context: any;
@@ -174,6 +173,11 @@ export abstract class AbstractLogger {
     let result = '[' + level.name().padEnd(5, ' ') + ']\t' + this.time() + '\t' + this.getTag() + '\t' + format;
     if (this.temporaryContext.hasMarker()) {
       result += ' ' + this.temporaryContext.getMarker();
+    }
+    if (level.intLevel() <= Level.ERROR.intLevel()) {
+      let rawStack = new Error().stack ?? '';
+      rawStack = rawStack.split('\n').slice(3).join('\n');
+      return result + '\n' + rawStack;
     }
     return result;
   }

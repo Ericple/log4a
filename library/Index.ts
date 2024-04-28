@@ -5,3 +5,5 @@ export { TraceEntry, TraceExit, TracedStr, MarkedTracedStr } from './src/main/et
 export { Logger } from './src/main/ets/Logger'
 
 export { LogManager } from './src/main/ets/LogManager'
+
+export { Level } from './src/main/ets/Level'

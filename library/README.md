@@ -2,6 +2,21 @@
 
 > 轻量、易集成、易使用，有时甚至可以不需写代码的HarmonyOS log系统，灵感来自log4j。
 
+## 特点
+
+- 提供日志装饰器，无需自己配置log4a，自动跟踪函数调用情况
+- 使用fatal、error输出时，支持打印调用堆栈
+- 支持日志输出到文件，利用多线程特性，提高日志输出到文件的性能
+- 格式化日志输出，借鉴log4j，贴合使用习惯
+- Logger统一管理，降低内存占用
+- 支持格式化打印对象
+- 通过设置日志级别，提供日志过滤服务
+
+>
+由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)
+检查是否存在新版本，若没有，您可以[新建issue](https://gitee.com/ericple/log4a/issues/new)
+，或[向我发送邮件](mailto:dev@peercat.cn)，我将尽快修复。
+
 ## 安装
 
 - 使用 `ohpm` 以安装 `@pie/log4a`
@@ -81,6 +96,14 @@ adder.add(1, 2);
 > ```bash
 > [INFO ] 2024-04-19  23:32:54.746  [Function:1]  Hello from static logger
 > ```
+
+- 带标记的日志
+
+对于一些匿名输出，可以通过添加标记的方式便于在日志中进行搜索，例如：
+
+```typescript
+LogManager.anonymous().withMarker(MarkerManager.getMarker("我是一个Marker")).info('这是带Marker的日志');
+```
 
 ### 追踪器
 
