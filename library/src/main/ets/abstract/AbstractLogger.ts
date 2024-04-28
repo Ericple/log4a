@@ -4,7 +4,8 @@ import { Marker } from '../MarkerManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { ConsoleAppender } from '../appender/ConsoleAppender';
-import { FileAppender } from '../appender/FileAppender';
+import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
+import { TraceExit } from '../Decorators';
 
 export abstract class AbstractLogger {
   protected context: any;
@@ -44,6 +45,7 @@ export abstract class AbstractLogger {
     let appender = this.appenderArray.find(
       appender => (appender.getName() == predicates && appender.getType() == AppenderTypeEnum.FILE)
     );
+    console.log('get with predicate:' + appender)
     if (appender) {
       return (appender as FileAppender).getAllHistory();
     }
@@ -79,8 +81,8 @@ export abstract class AbstractLogger {
    * @param level 输出的最低日志等级
    * @returns this
    */
-  addFileAppender(path: string, name: string = '', level: Level = Level.OFF): this {
-    return this.addAppender(new FileAppender(path, name, level));
+  addFileAppender(path: string, name: string = '', level: Level = Level.ALL, options?: FileAppenderOptions): this {
+    return this.addAppender(new FileAppender(path, name, level, options));
   }
 
   /**
@@ -88,7 +90,7 @@ export abstract class AbstractLogger {
    * @param level 输出的最低日志等级
    * @returns this
    */
-  addConsoleAppender(level: Level = Level.OFF): this {
+  addConsoleAppender(level: Level = Level.ALL): this {
     return this.addAppender(new ConsoleAppender(level));
   }
 

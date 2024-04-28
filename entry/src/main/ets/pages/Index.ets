@@ -7,6 +7,7 @@ import {
   TracedStr,
   MarkedTracedStr,
 } from '@log/log4a';
+import { Level } from '@log/log4a/src/main/ets/Level';
 
 class TestClass {
   logger: Logger = LogManager.getLogger(this);
@@ -39,7 +40,7 @@ class TestClass {
 struct Index {
   @State message: string = 'Hello World';
   logger: Logger = LogManager.getLogger(this)
-    .addFileAppender(getContext().filesDir + 'log.txt', 'main');
+    .addFileAppender(getContext().filesDir + '/log.txt', 'main', Level.ALL, { useWorker: true });
   test: TestClass = new TestClass();
 
   aboutToAppear(): void {

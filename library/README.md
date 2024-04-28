@@ -241,10 +241,18 @@ this.logger.removeNamedAppender('mainAppender');
 const history = this.logger.getHistoryOfAppender('mainAppender');
 ```
 
-- 获取所有历史日志(从首次安装并启动应用开始，每次退出时都会更新，下次继续累计)
+- 获取所有历史日志(从首次安装并启动应用开始，每次应用销毁后更新，下次继续累计)
 
 ```typescript
 const history = this.logger.getAllHistoryOfAppender('mainAppender');
+```
+
+- 对FileAppender开启多线程支持
+
+```typescript
+this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO, {
+  useWorker: true
+});
 ```
 
 ### 日志级别
