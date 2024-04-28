@@ -45,7 +45,6 @@ export abstract class AbstractLogger {
     let appender = this.appenderArray.find(
       appender => (appender.getName() == predicates && appender.getType() == AppenderTypeEnum.FILE)
     );
-    console.log('get with predicate:' + appender)
     if (appender) {
       return (appender as FileAppender).getAllHistory();
     }
@@ -160,7 +159,7 @@ export abstract class AbstractLogger {
     const msgArr = messages.map(v => {
       if (typeof v == 'object') {
         try {
-          const parsed = JSON.stringify(v);
+          const parsed = '\n' + JSON.stringify(v, null, 2).replace(/\n/g, "\n") + '\n';
           return parsed;
         } catch {
           return v.constructor.name;

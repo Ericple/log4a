@@ -53,7 +53,7 @@ struct Index {
         Text(this.message)
         Button('log')
           .onClick(() => {
-            this.logger.info('log into file and console');
+            this.logger.info('log into file and console {}', this.test);
             this.message = this.logger.getAllHistoryOfAppender('main');
           })
       }
