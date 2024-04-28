@@ -1,3 +1,7 @@
+# 1.2.0-rc.1
+
+- 优化了对象输出的支持
+
 # 1.2.0
 
 - 修复了新增的FileAppender和ConsoleAppender默认不输出的问题
