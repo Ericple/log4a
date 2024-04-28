@@ -23,6 +23,8 @@ export abstract class AbstractLogger {
 
   getHistoryOfAppender(predicates: AppenderTypeEnum): string;
 
+  getHistoryOfAppender(predicates: string | AppenderTypeEnum): string;
+
   getHistoryOfAppender(predicates: string | AppenderTypeEnum): string {
     const appender = this.appenderArray.find(appender => {
       if (typeof predicates === 'string') {

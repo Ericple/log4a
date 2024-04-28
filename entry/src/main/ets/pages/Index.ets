@@ -6,6 +6,9 @@ import {
   MarkerManager,
   TracedStr,
   MarkedTracedStr,
+  LogView,
+  LogViewMode,
+  LogViewColorConfig
 } from '@log/log4a';
 import { Level } from '@log/log4a/src/main/ets/Level';
 
@@ -50,10 +53,18 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Text(this.message)
+        LogView({
+          src: this.logger,
+          config: {
+            mode: LogViewMode.ALL,
+            appender: 'main',
+            colorConfig: new LogViewColorConfig()
+          }
+        })
+          .height('50%')
         Button('log')
           .onClick(() => {
-            this.logger.error('log into file and console {}', this.test);
+            this.logger.debug('log into file and console {}', Level.OFF);
             this.message = this.logger.getAllHistoryOfAppender('main');
           })
       }

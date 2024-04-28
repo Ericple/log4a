@@ -2,7 +2,7 @@
   "name": "@pie/log4a",
   "version": "1.2.1",
   "description": "优雅、简洁、易集成的log系统。",
-  "main": "Index.ts",
+  "main": "Index.ets",
   "author": "Tingjin Guo",
   "license": "Apache-2.0",
   "packageType": "InterfaceHar",
