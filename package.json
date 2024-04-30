@@ -1,0 +1,14 @@
+{
+  "name": "log4a",
+  "version": "1.0.0",
+  "description": "> 轻量、易集成、易使用，有时甚至可以不需写代码的HarmonyOS log系统，灵感来自log4j。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
