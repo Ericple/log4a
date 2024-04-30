@@ -5,6 +5,7 @@ export default defineConfig({
   title: "Log4a",
   description: "优雅、易用的HarmonyOS日志库",
   base: '/log4a/',
+  cleanUrls: true,
   head: [
     ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/log4a@1x.svg" }]
   ],
