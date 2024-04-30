@@ -1,5 +1,6 @@
 import { AbstractLogger } from './abstract/AbstractLogger';
 import { Logger } from './Logger';
+import { WorkerManager } from './WorkerManager';
 
 class Anonymous {
 }
@@ -29,6 +30,7 @@ class LogManagerClass {
     for (let logger of this._loggerMap.values()) {
       logger.terminate();
     }
+    WorkerManager.terminate();
   }
 }
 

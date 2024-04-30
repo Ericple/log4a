@@ -11,6 +11,9 @@
 - Logger统一管理，降低内存占用
 - 支持格式化打印对象
 - 通过设置日志级别，提供日志过滤服务
+- 支持日志加密写出到文件
+- 支持配置日志文件最大容量，溢出后新建日志文件
+- 支持配置日志文件备份数量，溢出后滚动删除
 
 >
 由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)
@@ -246,35 +249,51 @@ this.logger.getHistoryOfAppender(AppenderTypeEnum.CONSOLE);
 `FileAppender`提供向文件输出日志的能力。
 一个Logger可以有多个FileAppender，如果有多个FileAppender指向同一个文件，则这些FileAppender将会共用一个文件对象。
 
-- 添加一个FileAppender
+##### 添加一个FileAppender
 
 ```typescript
 this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO);
 ```
 
-- 删除一个FileAppender
+##### 删除一个FileAppender
 
 ```typescript
 this.logger.removeNamedAppender('mainAppender');
 ```
 
-- 获取当前Session的历史日志(从本次开启应用开始)
+##### 获取当前Session的历史日志(从本次开启应用开始)
 
 ```typescript
 const history = this.logger.getHistoryOfAppender('mainAppender');
 ```
 
-- 获取所有历史日志(从首次安装并启动应用开始，每次应用销毁后更新，下次继续累计)
+##### 获取所有历史日志(从首次安装并启动应用开始，每次应用销毁后更新，下次继续累计)
 
 ```typescript
 const history = this.logger.getAllHistoryOfAppender('mainAppender');
 ```
 
-- 对FileAppender开启多线程支持
+##### 开启多线程支持
 
 ```typescript
 this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO, {
   useWorker: true
+});
+```
+
+##### 配置最大日志备份文件数量
+
+```typescript
+this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO, {
+  maxCacheCount: 10
+});
+```
+
+##### 配置最大日志容量
+
+```typescript
+this.logger.addFileAppender('/file/log.log', 'mainAppender', Level.INFO, {
+  maxFileSize: 10 // 最大10KB
 });
 ```
 

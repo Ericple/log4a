@@ -42,19 +42,29 @@ class TestClass {
 @Component
 struct Index {
   @State message: string = 'Hello World';
-  logger: Logger = LogManager.getLogger(this)
-    .addFileAppender(getContext().filesDir + '/log.txt', 'main', Level.ALL, { useWorker: true });
+  @State logger: Logger = LogManager.getLogger(this)
+    .addFileAppender(getContext().filesDir + '/log.txt', 'main', Level.ALL, {
+      useWorker: true,
+      maxFileSize: 1,
+      maxCacheCount: 2,
+      // encryptor: () => '1'
+    });
   test: TestClass = new TestClass();
 
   aboutToAppear(): void {
     this.message = this.logger.getAllHistoryOfAppender('main');
+    this.test.logger.addFileAppender(getContext().filesDir + '/log.txt', 'main', Level.ALL, {
+      maxFileSize: 1,
+      maxCacheCount: 1
+    });
+    this.logger.info('Hello {}!', 'world');
   }
 
   build() {
     Row() {
       Column() {
         LogView({
-          src: this.logger,
+          src: $logger,
           config: {
             mode: LogViewMode.ALL,
             appender: 'main',
@@ -64,7 +74,8 @@ struct Index {
           .height('50%')
         Button('log')
           .onClick(() => {
-            this.logger.debug('log into file and console {}', Level.OFF);
+            this.logger.debug('log into file and console, {}', Level.ALL);
+            this.test.logger.info('test logger into file and console, {}', Level.ALL);
             this.message = this.logger.getAllHistoryOfAppender('main');
           })
       }

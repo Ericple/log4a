@@ -5,6 +5,7 @@ import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { ConsoleAppender } from '../appender/ConsoleAppender';
 import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
+import { FileAppenderManager } from '../FileAppenderManager';
 
 export abstract class AbstractLogger {
   protected context: any;
@@ -13,10 +14,18 @@ export abstract class AbstractLogger {
   protected temporaryContext: TemporaryLoggerContext = new TemporaryLoggerContext;
   protected level: Level = Level.ALL;
   protected history: string = '';
+  protected logListeners: ((level: Level, content: string) => void)[] = [];
 
   constructor(context: any) {
     this.context = context;
     this.addAppender(new ConsoleAppender());
+  }
+
+  registerLogListener(listener: (level: Level, content: string) => void): this {
+    if (this.logListeners.indexOf(listener) < 0) {
+      this.logListeners.push(listener);
+    }
+    return this;
   }
 
   getHistoryOfAppender(predicates: string): string;
@@ -82,7 +91,7 @@ export abstract class AbstractLogger {
    * @returns this
    */
   addFileAppender(path: string, name: string = '', level: Level = Level.ALL, options?: FileAppenderOptions): this {
-    return this.addAppender(new FileAppender(path, name, level, options));
+    return this.addAppender(FileAppenderManager.getFileAppender(path, name, level, options));
   }
 
   /**
@@ -151,6 +160,9 @@ export abstract class AbstractLogger {
       const message = this.makeMessage(level, format, args);
       this.appenderArray.forEach(appender => {
         appender.log(level, message);
+      });
+      this.logListeners.forEach(listener => {
+        listener(level, message);
       });
     }
     this.temporaryContext.clear();

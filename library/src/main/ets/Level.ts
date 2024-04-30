@@ -50,9 +50,7 @@ export class Level {
     this._name = name;
     this._intLevel = intLevel;
     this._standardLevel = StandardLevel.getStandardLevel(intLevel);
-    if (Level.LEVELS.has(name.trim().toUpperCase())) {
-      throw new Error("Level " + name + " has already been defined.");
-    } else {
+    if (!Level.LEVELS.has(name.trim().toUpperCase())) {
       Level.LEVELS.set(name.trim().toUpperCase(), this);
     }
   }
@@ -82,17 +80,16 @@ export class Level {
   }
 
   /**
-   * Return the Level associated with the name or null if the Level cannot be found.
+   * Return the Level associated with the name or create one if the Level cannot be found.
    *
    * @param name The name of the Level.
-   * @return The Level or null.
-   * @throws Error if the name is null.
+   * @return The Level.
    */
-  static getLevel(name: string): Level | undefined {
-    if (name.length == 0) {
-      throw new Error("Illegal null or empty Level name.");
+  static getLevel(name: string, intLevel: number = Level.INFO.intLevel()): Level | undefined {
+    if (this.LEVELS.has(name)) {
+      return this.LEVELS.get(name);
     }
-    return Level.LEVELS.get(name.trim().toUpperCase());
+    return new Level(name, intLevel);
   }
 
   static toLevel(level: string): Level;
@@ -204,10 +201,5 @@ export class Level {
    */
   isInRange(minLevel: Level, maxLevel: Level): boolean {
     return this._intLevel >= minLevel._intLevel && this._intLevel <= maxLevel._intLevel;
-  }
-
-  // for deserialization
-  private readResolve(): Level {
-    return Level.valueOf(this._name);
   }
 }

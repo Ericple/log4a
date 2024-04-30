@@ -4,48 +4,72 @@ import { FileManager } from '../FileManager';
 import { Level } from '../Level';
 import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
-import { MarkerManager } from '../MarkerManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { WorkerManager } from '../WorkerManager';
+import { worker } from '@kit.ArkTS';
 
 export interface FileAppenderOptions {
-  useWorker: boolean;
+  useWorker?: boolean;
+
+  /**
+   * File size in KB
+   */
+  maxFileSize?: number;
+  maxCacheCount?: number;
+  encryptor?: (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer;
 }
 
 export class FileAppender extends AbstractAppender {
   private path: string;
   private logger: Logger = LogManager.getLogger(this);
-  private offset: number = 0;
-  private useWorker: boolean = false;
+  private options?: FileAppenderOptions;
+  private worker: worker.ThreadWorker;
 
   constructor(path: string, name: string, level: Level, options?: FileAppenderOptions) {
     super(name, level, AppenderTypeEnum.FILE);
     this.path = path;
-    this.logger.withMarker(MarkerManager.getMarker("INITIALIZE")).info("Creating file appender with path: {}", path);
-    if (fs.accessSync(path)) {
-      this.offset = fs.readTextSync(path).length;
-    }
     if (options) {
-      this.useWorker = options.useWorker;
+      this.options = options;
     }
+    this.worker = WorkerManager.getFileAppendWorker();
+    WorkerManager.registerMessageListener((e) => {
+      if (e.data.type == 'overflow' && e.data.path == this.path) {
+        FileManager.backup(e.data.path, e.data.limitCount, FileManager.getManaged(e.data.path).cachedFiles);
+        this.logger.info('Log backup file created due to oversize of maximum size: {} KB', this.options.maxFileSize);
+      }
+    });
   }
 
-  log(level: Level, message: string): this {
+  matchOptions(options?: FileAppenderOptions) {
+    if (options)
+      return options.useWorker == this.options.useWorker && options.maxFileSize == this.options.maxFileSize
+        && options.maxCacheCount == this.options.maxCacheCount && options.encryptor == this.options.encryptor;
+    return this.options == undefined;
+  }
+
+  log(level: Level, message: string | ArrayBuffer): this {
     if (level.intLevel() > this.level.intLevel()) return this;
     if (!this._terminated) {
-      if (this.useWorker) {
-        let fd = FileManager.getFile(this.path).fd;
-        let offset = this.offset;
-        WorkerManager.getFileAppendWorker().postMessage({
+      if (this.options && this.options.encryptor) {
+        message = this.options.encryptor(level, message);
+      }
+      if (this.options.useWorker) {
+        const f = FileManager.getManaged(this.path);
+        this.worker.postMessage({
           level,
           message,
-          fd,
-          offset
+          fd: f.file.fd,
+          maxSize: this.options.maxFileSize,
+          maxCache: this.options.maxCacheCount,
+          path: this.path
         });
       } else {
-        fs.write(FileManager.getFile(this.path).fd, message, { offset: this.offset });
+        fs.writeSync(FileManager.getFile(this.path).fd, message);
+        if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
+          FileManager.backup(this.path, this.options.maxCacheCount, FileManager.getManaged(this.path).cachedFiles);
+          this.logger.info('Log backup file created due to oversize of maximum size: {} KB', this.options.maxFileSize);
+        }
       }
-      this.offset += message.length;
       this._history += message + '\n';
     }
     return this;
@@ -61,15 +85,25 @@ export class FileAppender extends AbstractAppender {
   }
 
   private getAllHistoryPath() {
-    return this.path + '.all';
+    const p = this.path + '.all';
+    if (fs.accessSync(p)) {
+      if (fs.lstatSync(p).size > 10485760) {
+        fs.unlinkSync(p);
+      }
+    }
+    return p;
   }
 
   getAllHistory(): string {
-    let tPath = this.path + '.all';
-    if (fs.accessSync(tPath)) {
-      return fs.readTextSync(this.path + '.all');
+    let tmp = '';
+    let caches = FileManager.getCachedFiles(this.path);
+    while (caches.length > 0) {
+      let cache = caches.shift()!;
+      if (fs.accessSync(cache)) {
+        tmp += fs.readTextSync(cache);
+      }
     }
-    return '';
+    return tmp + this._history;
   }
 
   clearAllHistory(): this {
