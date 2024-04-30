@@ -2,6 +2,11 @@
 
 > 轻量、易集成、易使用，有时甚至可以不需写代码的HarmonyOS log系统，灵感来自log4j。
 
+### Log4a文档已部署
+
+- [Github镜像](https://ericple.github.io/log4a/)
+- 国内镜像 - 待上线
+
 ## 特点
 
 - 提供日志装饰器，无需自己配置log4a，自动跟踪函数调用情况
