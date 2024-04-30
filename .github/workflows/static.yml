@@ -40,6 +40,7 @@ jobs:
           cache: yarn # 或 pnpm / yarn
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        working-directory: ./docs
       - name: Install dependencies
         run: yarn install # 或 pnpm install / yarn install / bun install
         working-directory: ./docs
