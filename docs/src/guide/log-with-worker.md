@@ -7,6 +7,6 @@ Log4a允许开发者使用多线程来输出日志到文件，以获得最佳的
 
 ## Worker带来的性能提升
 
-在Log4a的Benchmark测试中，使用多线程的日志输出效率要比使用单线程约3.5～3.6倍
+在Log4a的Benchmark测试中，使用多线程的日志输出效率要比使用单线程高约2~7倍
 
 ![](/multiThread-logging-compare.svg)

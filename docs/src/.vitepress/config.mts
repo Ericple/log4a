@@ -7,7 +7,7 @@ export default defineConfig({
   base: '/log4a/',
   cleanUrls: true,
   head: [
-    ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/log4a@1x.svg" }]
+    ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "log4a@1x.svg" }]
   ],
   locales: {
     root: {
