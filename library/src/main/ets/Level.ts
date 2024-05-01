@@ -1,5 +1,4 @@
 import { HashCode } from './spi/HashCode';
-import { requireNonNull } from './spi/requireNonNull';
 import { StandardLevel } from './spi/StandardLevel';
 
 export class Level {
@@ -110,16 +109,6 @@ export class Level {
       tmp.push(lvl);
     }
     return tmp;
-  }
-
-  static valueOf(name: string): Level {
-    requireNonNull(name, "No level name given");
-    const levelName: string = name.trim().toUpperCase();
-    const level: Level | undefined = Level.LEVELS.get(levelName);
-    if (level) {
-      return level;
-    }
-    throw new Error("Unknown level constant [" + levelName + "].");
   }
 
   name(): string {
