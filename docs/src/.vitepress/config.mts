@@ -181,7 +181,8 @@ export default defineConfig({
           items: [
             { text: 'LogManager', link: '/reference/log-manager' },
             { text: 'Logger', link: '/reference/logger' },
-            { text: 'MarkerManager', link: '/reference/marker-manager' }
+            { text: 'MarkerManager', link: '/reference/marker-manager' },
+            { text: 'Level', link: '/reference/level' }
           ],
           collapsed: false
         },
