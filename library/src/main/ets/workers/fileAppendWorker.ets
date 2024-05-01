@@ -1,7 +1,9 @@
 import { ErrorEvent, MessageEvents, ThreadWorkerGlobalScope, worker } from '@kit.ArkTS';
-import fs from '@ohos.file.fs';
+import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
+import { Level } from '../Level';
 
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
+const appenderArray: Map<string, FileAppender> = new Map();
 /**
  * Defines the event handler to be called when the worker thread receives a message sent by the host thread.
  * The event handler is executed in the worker thread.
@@ -9,20 +11,34 @@ const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
  * @param e message data
  */
 workerPort.onmessage = (e: MessageEvents) => {
-  fs.write(e.data.fd, e.data.message);
-  if (fs.accessSync(e.data.path)) {
-    const size = fs.statSync(e.data.path).size
-    if (e.data.maxSize != undefined && e.data.maxCache != undefined) {
-      if (size > e.data.maxSize * 1000) {
-        workerPort.postMessage({
-          type: 'overflow',
-          path: e.data.path,
-          limitCount: e.data.maxCache,
-          msgLen: e.data.message.length
-        });
-      }
-    }
+  const path: string = e.data.path;
+  let appender: FileAppender;
+  if (appenderArray.has(path)) {
+    appender = appenderArray.get(path)!;
+  } else {
+    const name: string = e.data.name;
+    const level: Level = e.data.level ?? Level.ALL;
+    const options: FileAppenderOptions = e.data.options;
+    appender = new FileAppender(path, name, level, options);
   }
+  if (e.data.message) {
+    console.log(e.data.level)
+    appender.log(e.data.level, e.data.message);
+  }
+  // fs.write(e.data.fd, e.data.message);
+  // if (fs.accessSync(e.data.path)) {
+  //   const size = fs.statSync(e.data.path).size
+  //   if (e.data.maxSize != undefined && e.data.maxCache != undefined) {
+  //     if (size > e.data.maxSize * 1000) {
+  //       workerPort.postMessage({
+  //         type: 'overflow',
+  //         path: e.data.path,
+  //         limitCount: e.data.maxCache,
+  //         msgLen: e.data.message.length
+  //       });
+  //     }
+  //   }
+  // }
 }
 
 /**

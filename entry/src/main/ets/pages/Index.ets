@@ -8,7 +8,9 @@ import {
   MarkedTracedStr,
   LogView,
   LogViewMode,
-  LogViewColorConfig
+  LogViewColorConfig,
+  BenchmarkWithWorker,
+  BenchmarkWithoutWorker
 } from '@log/log4a';
 import { Level } from '@log/log4a/src/main/ets/Level';
 
@@ -50,6 +52,9 @@ struct Index {
       // encryptor: () => '1'
     });
   test: TestClass = new TestClass();
+  p = getContext().filesDir;
+  b = new BenchmarkWithWorker(this.p + '/log.log');
+  c = new BenchmarkWithoutWorker(this.p + '/log2.log');
 
   aboutToAppear(): void {
     this.message = this.logger.getAllHistoryOfAppender('main');
@@ -77,6 +82,14 @@ struct Index {
             this.logger.debug('log into file and console, {}', Level.ALL);
             this.test.logger.info('test logger into file and console, {}', Level.ALL);
             this.message = this.logger.getAllHistoryOfAppender('main');
+          })
+        Button('benchmark')
+          .onClick(() => {
+            this.c.benchmark();
+          })
+        Button('benchmark worker')
+          .onClick(() => {
+            this.b.benchmark();
           })
       }
       .width('100%')

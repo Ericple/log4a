@@ -2,8 +2,6 @@ import fs from '@ohos.file.fs';
 import { AbstractAppender } from '../abstract/AbstractAppender';
 import { FileManager } from '../FileManager';
 import { Level } from '../Level';
-import { Logger } from '../Logger';
-import { LogManager } from '../LogManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { WorkerManager } from '../WorkerManager';
 import { worker } from '@kit.ArkTS';
@@ -17,13 +15,13 @@ export interface FileAppenderOptions {
   maxFileSize?: number;
   maxCacheCount?: number;
   encryptor?: (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer;
+  filter?: (level: Level, content: string | ArrayBuffer) => boolean;
 }
 
 export class FileAppender extends AbstractAppender {
   private path: string;
-  private logger: Logger = LogManager.getLogger(this);
   private options?: FileAppenderOptions;
-  private worker: worker.ThreadWorker;
+  private worker?: worker.ThreadWorker;
 
   constructor(path: string, name: string, level: Level, options?: FileAppenderOptions) {
     super(name, level, AppenderTypeEnum.FILE);
@@ -31,11 +29,15 @@ export class FileAppender extends AbstractAppender {
     if (options) {
       this.options = options;
     }
-    this.worker = WorkerManager.getFileAppendWorker();
+    if (options?.useWorker) {
+      this.worker = WorkerManager.getFileAppendWorker();
+      this.worker.postMessage({
+        path, name, level, options
+      });
+    }
     WorkerManager.registerMessageListener((e) => {
       if (e.data.type == 'overflow' && e.data.path == this.path) {
         FileManager.backup(e.data.path, e.data.limitCount, FileManager.getManaged(e.data.path).cachedFiles);
-        this.logger.info('Log backup file created due to oversize of maximum size: {} KB', this.options.maxFileSize);
       }
     });
   }
@@ -48,26 +50,27 @@ export class FileAppender extends AbstractAppender {
   }
 
   log(level: Level, message: string | ArrayBuffer): this {
-    if (level.intLevel() > this.level.intLevel()) return this;
+    if (this.options && this.options.useWorker) {
+      this.worker.postMessage({
+        level,
+        message,
+        path: this.path
+      });
+      return this;
+    }
     if (!this._terminated) {
+      if (level._intLevel > this.level._intLevel) return this;
+      if (this.options && this.options.filter) {
+        if (!this.options.filter(level, message)) return;
+      }
       if (this.options && this.options.encryptor) {
         message = this.options.encryptor(level, message);
       }
-      if (this.options.useWorker) {
-        const f = FileManager.getManaged(this.path);
-        this.worker.postMessage({
-          level,
-          message,
-          fd: f.file.fd,
-          maxSize: this.options.maxFileSize,
-          maxCache: this.options.maxCacheCount,
-          path: this.path
-        });
-      } else {
-        fs.writeSync(FileManager.getFile(this.path).fd, message);
+      const f = FileManager.getManaged(this.path);
+      fs.writeSync(f.file.fd, message);
+      if (this.options && this.options.maxFileSize) {
         if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
           FileManager.backup(this.path, this.options.maxCacheCount, FileManager.getManaged(this.path).cachedFiles);
-          this.logger.info('Log backup file created due to oversize of maximum size: {} KB', this.options.maxFileSize);
         }
       }
       this._history += message + '\n';

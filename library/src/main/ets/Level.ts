@@ -37,7 +37,7 @@ export class Level {
    */
   static readonly ALL: Level = new Level("ALL", StandardLevel.ALL.intLevel());
   private _name: string;
-  private _intLevel: number;
+  _intLevel: number;
   private _standardLevel: StandardLevel;
 
   private constructor(name: string, intLevel: number) {

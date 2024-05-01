@@ -158,6 +158,19 @@ export default defineConfig({
           collapsed: false
         },
         {
+          text: '输出日志',
+          items: [
+            {
+              text: '参数作用优先级',
+              link: '/guide/parameter-priority'
+            },
+            {
+              text: '使用多线程输出',
+              link: '/guide/log-with-worker'
+            }
+          ]
+        },
+        {
           text: 'API参考',
           link: '/reference/log-manager'
         }
