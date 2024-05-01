@@ -25,20 +25,6 @@ workerPort.onmessage = (e: MessageEvents) => {
     console.log(e.data.level)
     appender.log(e.data.level, e.data.message);
   }
-  // fs.write(e.data.fd, e.data.message);
-  // if (fs.accessSync(e.data.path)) {
-  //   const size = fs.statSync(e.data.path).size
-  //   if (e.data.maxSize != undefined && e.data.maxCache != undefined) {
-  //     if (size > e.data.maxSize * 1000) {
-  //       workerPort.postMessage({
-  //         type: 'overflow',
-  //         path: e.data.path,
-  //         limitCount: e.data.maxCache,
-  //         msgLen: e.data.message.length
-  //       });
-  //     }
-  //   }
-  // }
 }
 
 /**
