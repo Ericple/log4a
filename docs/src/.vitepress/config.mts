@@ -136,7 +136,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: '参考', link: '/reference/log-manager' },
       {
-        text: '1.3.0-rc.1',
+        text: '1.3.0',
         items: [
           {
             text: '更新日志',
@@ -167,9 +167,22 @@ export default defineConfig({
             {
               text: '使用多线程输出',
               link: '/guide/log-with-worker'
-            }
+            },
+            // {
+            //   text: '日志消息构建',
+            //   link: '/guide/format'
+            // }
           ]
         },
+        // {
+        //   text: '进阶使用',
+        //   items: [
+        //     {
+        //       text: '自定义追加器',
+        //       link: '/guide/custom-appender'
+        //     }
+        //   ]
+        // },
         {
           text: 'API参考',
           link: '/reference/log-manager'
