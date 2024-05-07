@@ -37,6 +37,12 @@
 
 为下一条要写出的日志添加一个标签，该标签将随附在日志内容尾部，支持链式调用
 
+## `addAppender(appender)`
+
+- `appender` T extends AbstractAppender - 追加器
+
+将appender绑定至该Logger。appender可以是log4a内置的任何追加器，也可以由开发者自行实现。
+
 ## `addFileAppender(path, name, level?, options?)`
 
 - `path` string - 要写出的文件路径
