@@ -23,7 +23,7 @@ workerPort.onmessage = (e: MessageEvents) => {
   }
   if (e.data.message) {
     console.log(e.data.level)
-    appender.log(e.data.level, e.data.message);
+    appender.onLog(e.data.level, e.data.message);
   }
 }
 

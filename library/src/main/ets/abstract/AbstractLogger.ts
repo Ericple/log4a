@@ -71,7 +71,7 @@ export abstract class AbstractLogger {
     return this;
   }
 
-  private addAppender<T extends AbstractAppender>(appender: T): this {
+  addAppender<T extends AbstractAppender>(appender: T): this {
     if (this.appenderArray.some(v => v === appender)) {
       return this;
     }
@@ -109,7 +109,7 @@ export abstract class AbstractLogger {
    */
   clearAppender(): this {
     this.appenderArray.forEach(appender => {
-      appender.terminate();
+      appender.onTerminate();
     });
     this.appenderArray = [];
     return this;
@@ -160,7 +160,7 @@ export abstract class AbstractLogger {
       if (level.intLevel() <= this.level.intLevel()) {
         const message = this.makeMessage(level, format, args);
         this.appenderArray.forEach(appender => {
-          appender.log(level, message);
+          appender.onLog(level, message);
         });
         this.logListeners.forEach(listener => {
           listener(level, message);
@@ -182,8 +182,11 @@ export abstract class AbstractLogger {
       }
       return v;
     });
-    for (let i = 0; i < messages.length; i++) {
-      format = format.replace('{}', msgArr[i]);
+    while (format.lastIndexOf('{}') != -1) {
+      format = format.replace('{}', msgArr.shift());
+    }
+    if (msgArr.length > 0) {
+      this.fatal('Argument count is more than "{}" in message format, you may not getting what you want to log.')
     }
     this.count++;
     let result = '[' + level.name().padEnd(5, ' ') + ']\t' + this.time() + '\t' + this.getTag() + '\t' + format;
@@ -216,7 +219,7 @@ export abstract class AbstractLogger {
 
   terminate() {
     this.appenderArray.forEach(appender => {
-      appender.terminate();
+      appender.onTerminate();
     });
   }
 }

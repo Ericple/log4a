@@ -1,4 +1,5 @@
 import fs from '@ohos.file.fs';
+import { LogManager } from './LogManager';
 
 class ManagedFile {
   file: fs.File;
@@ -48,6 +49,13 @@ class FileManagerClass {
     return files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName) && file != path)).sort((a, b) =>
     Number(a.replace(path + '.', '')) - Number(b.replace(path + '.', ''))
     );
+  }
+
+  getDailyCachedFiles(): string[] {
+    const cachePath = LogManager.getLogFilePath();
+    const files = fs.listFileSync(cachePath);
+    const reg = new RegExp("\\d{4,5}-\\d{1,2}-\\d{1,2}.daily.log", 'g');
+    return files.filter(fileName => reg.test(fileName)).sort((a, b) => (new Date(a.split('.')[0])).getTime() - (new Date(b.split('.')[0])).getTime());
   }
 
   getManaged(path: string): ManagedFile {

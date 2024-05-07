@@ -24,7 +24,7 @@ export abstract class AbstractAppender {
     return this._history;
   }
 
-  log(_: Level, __: string): this {
+  onLog(_: Level, __: string): this {
     throw new NotImplementedError();
   }
 
@@ -41,11 +41,11 @@ export abstract class AbstractAppender {
     return this;
   }
 
-  protected stop(): this {
+  protected onStop(): this {
     return this;
   }
 
-  terminate(): void {
+  onTerminate(): void {
     return;
   }
 }

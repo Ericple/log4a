@@ -5,6 +5,7 @@ import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { WorkerManager } from '../WorkerManager';
 import { worker } from '@kit.ArkTS';
+import { LogManager } from '../LogManager';
 
 export interface FileAppenderOptions {
   useWorker?: boolean;
@@ -25,7 +26,12 @@ export class FileAppender extends AbstractAppender {
 
   constructor(path: string, name: string, level: Level, options?: FileAppenderOptions) {
     super(name, level, AppenderTypeEnum.FILE);
-    this.path = path;
+    const lp = LogManager.getLogFilePath();
+    if (lp == '') {
+      this.path = path;
+    } else {
+      this.path = lp + '/' + path;
+    }
     if (options) {
       this.options = options;
     }
@@ -49,7 +55,7 @@ export class FileAppender extends AbstractAppender {
     return this.options == undefined;
   }
 
-  log(level: Level, message: string | ArrayBuffer): this {
+  onLog(level: Level, message: string | ArrayBuffer): this {
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
@@ -78,23 +84,9 @@ export class FileAppender extends AbstractAppender {
     return this;
   }
 
-  terminate(): void {
+  onTerminate(): void {
     FileManager.close(this.path);
     this._terminated = true;
-    const historyFile = FileManager.getFile(this.getAllHistoryPath());
-    const historyLength = fs.readTextSync(historyFile.path).length;
-    fs.writeSync(historyFile.fd, this._history, { offset: historyLength });
-    FileManager.close(this.getAllHistoryPath());
-  }
-
-  private getAllHistoryPath() {
-    const p = this.path + '.all';
-    if (fs.accessSync(p)) {
-      if (fs.lstatSync(p).size > 10485760) {
-        fs.unlinkSync(p);
-      }
-    }
-    return p;
   }
 
   getAllHistory(): string {

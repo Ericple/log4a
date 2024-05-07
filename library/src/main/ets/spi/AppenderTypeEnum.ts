@@ -1,4 +1,6 @@
 export enum AppenderTypeEnum {
   FILE,
-  CONSOLE
+  CONSOLE,
+  SOCKET,
+  CUSTOM
 }

@@ -34,7 +34,7 @@ this.logger.addConsoleAppender();
 
 FileAppender提供输出日志到文件的能力，需要开发者手动绑定至Logger。创建FileAppender时开发者可以设置日志缓存最大数量、日志文件占用上限、是否使用多线程、加密函数。
 
-> [!INFO]
+> [!TIP]
 > 对于同一个文件，FileAppender在全局下是唯一的，多个Logger可以配置相同的FileAppender，这意味着一个FileAppender可以被绑定至多个Logger实例。这是log4a内部的实现，实际开发时，开发者无需操心这一点。
 
 添加一个FileAppender需要提供两个必选参数：
@@ -44,6 +44,8 @@ FileAppender提供输出日志到文件的能力，需要开发者手动绑定�
 
 > [!TIP]
 > 名称用于作为索引来删除某已绑定到Logger的FileAppender
+> 
+> 从1.3.1版本开始，可以通过LogManager.setLogFilePath来指定所有日志文件的存储路径，而不是在每新建一个文件追加器时都从上下文中获取一次文件路径。但必须确保新建追加器时只提供文件名。
 
 ## 添加一个FileAppender
 

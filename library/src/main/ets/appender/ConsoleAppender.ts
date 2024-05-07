@@ -3,7 +3,7 @@ import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 
 export class ConsoleAppender extends AbstractAppender {
-  log(lvl: Level, message: string): this {
+  onLog(lvl: Level, message: string): this {
     if (lvl.intLevel() > this.level.intLevel()) return this;
     this.getLogFunction(lvl)(message);
     return this;
