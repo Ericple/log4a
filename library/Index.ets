@@ -1,3 +1,5 @@
+export { TCPSocketAppender } from './src/main/ets/appender/TCPSocketAppender'
+
 export { DailyRollingFileAppender } from './src/main/ets/appender/DailyRollingFileAppender'
 
 export { RollingFileAppender } from './src/main/ets/appender/RollingFileAppender'

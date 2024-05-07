@@ -10,12 +10,22 @@ import {
   LogViewMode,
   LogViewColorConfig,
   BenchmarkWithWorker,
-  BenchmarkWithoutWorker
+  BenchmarkWithoutWorker,
+  TCPSocketAppender
 } from '@log/log4a';
 import { Level } from '@log/log4a/src/main/ets/Level';
 
+const sappender = new TCPSocketAppender({
+  remoteAddress: {
+    address: '114.115.170.226',
+    port: 4721
+  },
+  name: 'socket',
+  level: Level.ALL
+});
+
 class TestClass {
-  logger: Logger = LogManager.getLogger(this);
+  logger: Logger = LogManager.getLogger(this).addAppender(sappender);
   static logger: Logger = LogManager.getLogger(TestClass);
   param1: string = 'param1';
   param2: string = 'param2';
@@ -48,9 +58,8 @@ struct Index {
     .addFileAppender(getContext().filesDir + '/log.txt', 'main', Level.ALL, {
       useWorker: true,
       maxFileSize: 1,
-      maxCacheCount: 2,
-      // encryptor: () => '1'
-    });
+      maxCacheCount: 2
+    }).addAppender(sappender);
   test: TestClass = new TestClass();
   p = getContext().filesDir;
   b = new BenchmarkWithWorker(this.p + '/log.log');
