@@ -1,4 +1,4 @@
-# 输出到服务器
+# 输出到服务器 <Badge type="tip" text="1.3.1 +" />
 
 log4a实现了`TCPSocketAppender`，开发者可以通过此追加器，与服务器建立TCP连接，并将日志实时传输到服务端。
 
@@ -17,12 +17,10 @@ log4a实现了`TCPSocketAppender`，开发者可以通过此追加器，与服�
 import { TCPSocketAppender } from '@pie/log4a';
 
 export const serverAppender = new TCPSocketAppender({
-  remoteAddress: {
     address: '114.xxx.xxx.xxx', //换成你的服务器ip
-    port: 1234 //换成你的服务器对应端口
-  },
-  name: 'socket',
-  level: Level.ALL
+    port: 1234, //换成你的服务器对应端口
+    name: 'socket',
+    level: Level.ALL
 });
 ```
 

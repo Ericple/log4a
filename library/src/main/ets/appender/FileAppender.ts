@@ -41,11 +41,6 @@ export class FileAppender extends AbstractAppender {
         path, name, level, options
       });
     }
-    WorkerManager.registerMessageListener((e) => {
-      if (e.data.type == 'overflow' && e.data.path == this.path) {
-        FileManager.backup(e.data.path, e.data.limitCount, FileManager.getManaged(e.data.path).cachedFiles);
-      }
-    });
   }
 
   matchOptions(options?: FileAppenderOptions) {
@@ -72,11 +67,16 @@ export class FileAppender extends AbstractAppender {
       if (this.options && this.options.encryptor) {
         message = this.options.encryptor(level, message);
       }
+      const lp = LogManager.getLogFilePath();
+      if (!this.path.includes(lp)) {
+        this.path = lp + '/' + this.path;
+      }
       const f = FileManager.getManaged(this.path);
+      if (!f) return this;
       fs.writeSync(f.file.fd, message);
       if (this.options && this.options.maxFileSize) {
         if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
-          FileManager.backup(this.path, this.options.maxCacheCount, FileManager.getManaged(this.path).cachedFiles);
+          FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles);
         }
       }
       this._history += message + '\n';

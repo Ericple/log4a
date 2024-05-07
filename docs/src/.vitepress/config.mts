@@ -180,6 +180,14 @@ export default defineConfig({
             {
               text: '自定义追加器',
               link: '/guide/custom-appender'
+            },
+            {
+              text: '输出到服务器',
+              link: '/guide/log-to-socket'
+            },
+            {
+              text: '最佳实践',
+              link: '/guide/best-practice'
             }
           ]
         },

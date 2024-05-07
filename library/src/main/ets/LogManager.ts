@@ -36,7 +36,7 @@ class LogManagerClass {
   }
 
   setLogFilePath(path: string): void {
-    if (fs.accessSync(path)) {
+    if (!fs.accessSync(path)) {
       fs.mkdirSync(path);
     }
     this._logPath = path;

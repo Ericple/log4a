@@ -7,7 +7,8 @@ import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
 
 export interface TCPSocketAppenderOptions extends SocketAppenderOptions {
-  remoteAddress: socket.NetAddress;
+  address: string;
+  port: number;
   encoding?: 'utf-8' | 'utf-16' | 'utf-16be' | 'utf-16le' | 'us-aecii' | 'iso-8859-1';
 }
 
@@ -24,10 +25,13 @@ export class TCPSocketAppender extends CSocketAppender {
     this._socket.bind({ address: '0.0.0.0' })
       .then(() => {
         this._socket.connect({
-          address: this._config.remoteAddress,
+          address: {
+            address: this._config.address,
+            port: this._config.port
+          },
           timeout: 5000
         }).then(() => {
-          this.logger.info('TCPSocketAppender connected.')
+          this.logger.info('TCPSocketAppender connected.');
           this.handleMessageQueue();
         }).catch((err) => {
           this.logger.error('error connecting to remote address: {}', err);
