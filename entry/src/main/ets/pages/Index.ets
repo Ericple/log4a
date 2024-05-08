@@ -47,6 +47,7 @@ struct Index {
     .addAppender(fileAppender_a)
     .addAppender(socketAppender);
   test: TestClass = new TestClass();
+  intercepted: boolean = false;
 
   aboutToAppear(): void {
     this.logger.info('Hello {}!', 'world');
@@ -64,10 +65,15 @@ struct Index {
           }
         })
           .height('50%')
+        Button('toggle intercept')
+          .onClick(() => {
+            LogManager.interceptConsole();
+          })
         Button('log')
           .onClick(() => {
-            this.logger.debug('log into file and console, {}', Level.ALL);
-            this.test.logger.info('test logger into file and console, {}', Level.ALL);
+            // this.logger.debug('log into file and console, {}', Level.ALL);
+            // this.test.logger.info('test logger into file and console, {}', Level.ALL);
+            console.log('Hello world', Level.ALL);
           })
       }
       .width('100%')

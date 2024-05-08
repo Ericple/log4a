@@ -170,7 +170,7 @@ export abstract class AbstractLogger {
     });
   }
 
-  protected makeMessage(level: Level, format: string, messages: Object[]): string {
+  makeMessage(level: Level, format: string, messages: Object[]): string {
     const msgArr = messages.map(v => {
       if (typeof v == 'object') {
         try {
