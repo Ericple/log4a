@@ -17,10 +17,11 @@ import { Level } from '../Level';
 import { FileAppender } from './FileAppender';
 
 export class RollingFileAppender extends FileAppender {
-  constructor(path: string, name: string, level: Level, maxFileSize: number, maxCacheCount: number) {
+  constructor(path: string, name: string, level: Level, maxFileSize: number, maxCacheCount: number, useWorker: boolean = false) {
     super(path, name, level, {
       maxFileSize,
-      maxCacheCount
+      maxCacheCount,
+      useWorker
     });
   }
 }

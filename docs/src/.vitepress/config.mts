@@ -203,7 +203,14 @@ export default defineConfig({
             { text: 'LogManager', link: '/reference/log-manager' },
             { text: 'Logger', link: '/reference/logger' },
             { text: 'MarkerManager', link: '/reference/marker-manager' },
-            { text: 'Level', link: '/reference/level' }
+            { text: 'Level', link: '/reference/level' },
+            {
+              text: '追加器',
+              items: [
+                { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
+                { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' }
+              ]
+            }
           ],
           collapsed: false
         },

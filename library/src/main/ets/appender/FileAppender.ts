@@ -62,7 +62,7 @@ export class FileAppender extends AbstractAppender {
     if (options)
       return options.useWorker == this.options.useWorker && options.maxFileSize == this.options.maxFileSize
         && options.maxCacheCount == this.options.maxCacheCount && options.encryptor == this.options.encryptor;
-    return this.options == undefined;
+    return false;
   }
 
   onLog(level: Level, message: string | ArrayBuffer): this {

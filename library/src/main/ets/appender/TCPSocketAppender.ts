@@ -56,7 +56,7 @@ export class TCPSocketAppender extends CSocketAppender {
     })
   }
 
-  handleMessageQueue() {
+  private handleMessageQueue() {
     while (this._messageQueue.length > 0) {
       this.send(this._messageQueue.pop());
     }
