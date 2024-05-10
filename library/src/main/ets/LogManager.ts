@@ -15,7 +15,7 @@ const anonymousContext = new Anonymous();
 const consoleContext = new Console()
 
 class LogManagerClass {
-  private _loggerMap: WeakMap<Object, AbstractLogger> = new WeakMap();
+  private _loggerMap: Map<string, AbstractLogger> = new Map();
   private _logPath: string = '';
   private consoleBundle = {
     log: console.log
@@ -27,16 +27,20 @@ class LogManagerClass {
    * @returns Logger
    * @since 1.0.0
    */
-  getLogger<T extends Object>(context: T): Logger {
+  getLogger<T extends Object>(context: T | string): Logger {
     let key = 'Anonymous';
-    if (context && context.constructor) {
-      key = context.constructor.name ?? 'Anonymous';
+    if (typeof context == 'string') {
+      key = context;
+    } else {
+      if (context && context.constructor) {
+        key = context.constructor.name ?? 'Anonymous';
+      }
     }
     if (this._loggerMap.has(key)) {
       return this._loggerMap.get(key);
     }
-    this._loggerMap.set(context, new Logger(context));
-    return this._loggerMap.get(context);
+    this._loggerMap.set(key, new Logger(context));
+    return this._loggerMap.get(key);
   }
 
   /**
@@ -45,23 +49,26 @@ class LogManagerClass {
    * @since 1.0.0
    */
   anonymous(): Logger {
-    if (this._loggerMap.has(anonymousContext)) {
-      return this._loggerMap.get(anonymousContext);
+    if (this._loggerMap.has(anonymousContext.constructor.name)) {
+      return this._loggerMap.get(anonymousContext.constructor.name);
     }
-    this._loggerMap.set(anonymousContext, new Logger(anonymousContext));
-    return this._loggerMap.get(anonymousContext);
+    this._loggerMap.set(anonymousContext.constructor.name, new Logger(anonymousContext));
+    return this._loggerMap.get(anonymousContext.constructor.name);
   }
 
   terminate() {
+    for (let l of this._loggerMap.values()) {
+      l.terminate();
+    }
     WorkerManager.terminate();
   }
 
   private console(): Logger {
-    if (this._loggerMap.has(consoleContext)) {
-      return this._loggerMap.get(consoleContext);
+    if (this._loggerMap.has(consoleContext.constructor.name)) {
+      return this._loggerMap.get(consoleContext.constructor.name);
     }
-    this._loggerMap.set(consoleContext, new Logger(consoleContext));
-    return this._loggerMap.get(consoleContext);
+    this._loggerMap.set(consoleContext.constructor.name, new Logger(consoleContext));
+    return this._loggerMap.get(consoleContext.constructor.name);
   }
 
   /**

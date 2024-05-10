@@ -1,6 +1,6 @@
 {
   "name": "@pie/log4a",
-  "version": "1.3.2",
+  "version": "1.3.4",
   "description": "优雅、简洁、易集成的log系统。",
   "main": "Index.ts",
   "author": "Tingjin Guo",
