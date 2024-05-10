@@ -11,6 +11,7 @@
 import { LogManager, Level, TCPSocketAppender } from '@pie/log4a';
 
 export function InitializeAllLoggers(logFilePath: string) {
+  // 必须在创建Appender实例前先调用LogManager.setLogFilePath，否则添加Appender时不可以直接指定文件名。
   LogManager.setLogFilePath(logFilePath);
   const socketAppender = new TCPSocketAppender({
     address: '114.xxx.xxx.xxx',
@@ -18,7 +19,7 @@ export function InitializeAllLoggers(logFilePath: string) {
     name: 'socket',
     level: Level.ALL
   });
-  LogManager.getLogger('Index')
+  LogManager.getLogger('Index')//传入的名称必须与类名一致
     .addFileAppender('logFile.log', 'mainLoggerOfIndex', Level.ALL, {
       useWorker: true
     })
@@ -30,7 +31,7 @@ export function InitializeAllLoggers(logFilePath: string) {
 }
 ```
 
-```ts:line-numbers{10}
+```ts:line-numbers{11}
 // EntryAbility.ets
 import { InitializeAllLoggers } from '../xxx/LoggerConfig';
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
@@ -53,6 +54,50 @@ export default class EntryAbility extends UIAbility {
 ```
 
 ```typescript:line-numbers
+// Index.ets
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello World';
+  @State logger: Logger = LogManager.getLogger(this);// 此处直接获取Logger即可
+  test: TestClass = new TestClass();
+  intercepted: boolean = false;
+
+  aboutToAppear(): void {
+    this.logger.info('Hello {}!', 'world');
+  }
+
+  build() {
+    Row() {
+      Column() {
+        LogView({
+          src: $logger,
+          config: {
+            mode: LogViewMode.ALL,
+            appender: 'main',
+            colorConfig: new LogViewColorConfig()
+          }
+        })
+          .height('50%')
+        Button('toggle intercept')
+          .onClick(() => {
+            LogManager.interceptConsole();
+          })
+        Button('log')
+          .onClick(() => {
+            this.logger.error('log into file and console, {}', Level.ALL);
+          })
+        Button('change page')
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/SecondPage' })
+          })
+      }
+      .width('100%')
+    }
+    .height('100%')
+  }
+}
+```
 
 ## 统一定义追加器
 
