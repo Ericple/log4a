@@ -16,3 +16,28 @@
 `onTerminate()`
 
 当追加器被终止时，onTerminate方法会被Logger调用，开发者应当在此处回收不再被使用的内存，或取消不必要的事件订阅。
+
+## 实例
+
+这个例子实现了一个最简单的追加器，用于将日志输出到控制台上
+
+```ts
+class SimpleAppenderClass extends AbstractAppender {
+    onLog(level: Level, message: string): void {
+        console.log(message);
+    }
+    onTerminate(): void {
+        return;
+    }
+}
+export const SimpleAppender = new SimpleAppenderClass;
+```
+
+```ts
+import { SimpleAppender } from './file.ets';
+import { Logger, LogManager } from '@pie/log4a';
+
+class SomeClass {
+    logger: Logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+}
+```

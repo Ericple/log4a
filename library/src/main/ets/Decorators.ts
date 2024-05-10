@@ -77,13 +77,13 @@ export const TraceTime = (target: any, methodName: string, propertyDescriptor: P
 }
 
 export const TracedStr = (strings: TemplateStringsArray, ...args: any[]) => {
-  const logger = LogManager.getLogger(null);
+  const logger = LogManager.anonymous();
   logger.withMarker(MarkerManager.getMarker("Anonymous")).info("built with format: {} and args: {}", strings, args);
   return strings[0] + args.map((e, i) => `${e}${strings[i+1]}`).join('');
 }
 
 export const MarkedTracedStr = (marker: string = "Anonymous") => {
-  const logger = LogManager.getLogger(null);
+  const logger = LogManager.anonymous();
   return (strings: TemplateStringsArray, ...args: any[]) => {
     logger.withMarker(MarkerManager.getMarker(marker)).info("built with format: {} and args: {}", strings, args);
     return strings[0] + args.map((e, i) => `${e}${strings[i+1]}`).join('');

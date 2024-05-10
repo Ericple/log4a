@@ -6,12 +6,12 @@ import {
   MarkerManager,
   TracedStr,
   MarkedTracedStr,
-  Level
+  LogView,
+  LogViewMode,
+  LogViewColorConfig
 } from '@log/log4a';
-
-import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
+import { Level } from '@log/log4a/src/main/ets/Level';
 import { fileAppender_a, socketAppender } from './socketAppenderConstants';
-import { router } from '@kit.ArkUI';
 
 class TestClass {
   logger: Logger = LogManager.getLogger(this).addAppender(socketAppender);
@@ -41,7 +41,7 @@ class TestClass {
 
 @Entry
 @Component
-struct Index {
+export struct Index {
   @State message: string = 'Hello World';
   @State logger: Logger = LogManager.getLogger(this)
     .addAppender(fileAppender_a)
@@ -72,10 +72,8 @@ struct Index {
         Button('log')
           .onClick(() => {
             this.logger.error('log into file and console, {}', Level.ALL);
-          })
-        Button('change page')
-          .onClick(() => {
-            router.pushUrl({ url: 'pages/SecondPage' })
+            // this.test.logger.info('test logger into file and console, {}', Level.ALL);
+
           })
       }
       .width('100%')

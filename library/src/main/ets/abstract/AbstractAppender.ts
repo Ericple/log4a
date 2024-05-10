@@ -9,6 +9,7 @@ export abstract class AbstractAppender {
   protected _history: string = '';
   protected _name: string = '';
   protected level: Level;
+  protected layout: string = '%tag\t%time\t%src\t%msg'
 
   constructor(name: string, level: Level, type: AppenderTypeEnum) {
     this._type = type;

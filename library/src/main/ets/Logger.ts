@@ -6,6 +6,6 @@ export class Logger extends AbstractLogger {
   }
 }
 
-Logger.prototype.valueOf = function() {
+Logger.prototype.valueOf = function () {
   return this
 }

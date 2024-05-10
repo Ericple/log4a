@@ -14,13 +14,6 @@ export { LogManager } from './src/main/ets/LogManager'
 
 export { Level } from './src/main/ets/Level'
 
-export { LogView,
-  LogViewMode,
-  LogViewConfigSession,
-  LogViewConfigAll,
-  LogViewColorConfig,
-  LogViewConfig } from './src/main/ets/components/LogView'
-
 export { BenchmarkWithWorker, BenchmarkWithoutWorker } from './src/main/ets/benchmark/WorkerBenchmark'
 
 export { ConsoleAppender } from './src/main/ets/appender/ConsoleAppender';

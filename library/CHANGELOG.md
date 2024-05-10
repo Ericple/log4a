@@ -1,3 +1,11 @@
+# 1.3.3 （2024-05-10）
+
+- 修复：ts工程导入报错的问题
+
+# 1.3.2 (2024-05-08)
+
+- 新增：支持使用`LogManager.interceptConsole`以拦截`console.log`并使用Console上下文的Logger打印
+
 # 1.3.1 (2024-05-07)
 
 - 新增：`DailyRollingFileAppender` - 提供每日滚动日志记录能力

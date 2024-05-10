@@ -195,7 +195,6 @@ export abstract class AbstractLogger {
     }
     if (level.intLevel() <= Level.ERROR.intLevel()) {
       let rawStack = new Error().stack ?? '';
-      rawStack = rawStack.split('\n').slice(3).join('\n');
       return result + '\n' + rawStack;
     }
     return result;

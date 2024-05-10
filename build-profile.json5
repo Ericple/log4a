@@ -1,13 +1,45 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/guotingjin/.ohos/config/default_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.cer",
+          "storePassword": "0000001B3BFD0C6682830D10D75EBF40D2F611693D6D3F42F5BAE192BA59FE769F4F00122D8D63521A13CF",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B1519149EE819A8835D36100994098E8E29C5CA60DC668705518E8B784B047CE2CDF4A3CE8537D7",
+          "profile": "/Users/guotingjin/.ohos/config/default_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/guotingjin/.ohos/config/default_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.p12"
+        }
+      },
+      {
+        "name": "openHarmony",
+        "material": {
+          "certpath": "/Users/guotingjin/.ohos/config/openharmony/openHarmony_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.cer",
+          "storePassword": "0000001BB1A29436635EFAAAFC444C5C95C7602E6D852097D5F66718865210955C1A33CDF083296E3A37FF",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BDEDFFECD34B4B4E0E8519D1375891937E281997433AF699C263100C0F9C2192F048D0AF399CEA1",
+          "profile": "/Users/guotingjin/.ohos/config/openharmony/openHarmony_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/guotingjin/.ohos/config/openharmony/openHarmony_log4a_TokpQFlluezrqp9ApqgYsjwVKiEbvWXv_ymkKE_wXf4=.p12"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
         "compileSdkVersion": "4.1.0(11)",
         "compatibleSdkVersion": "4.0.0(10)",
         "runtimeOS": "HarmonyOS",
+      },
+      {
+        "name": "oh",
+        "signingConfig": "openHarmony",
+        "compileSdkVersion": 11,
+        "compatibleSdkVersion": 11,
+        "runtimeOS": "OpenHarmony"
       }
     ],
     "buildModeSet": [
@@ -27,7 +59,8 @@
         {
           "name": "default",
           "applyToProducts": [
-            "default"
+            "default",
+            "oh"
           ]
         }
       ]
@@ -39,7 +72,8 @@
         {
           "name": "default",
           "applyToProducts": [
-            "default"
+            "default",
+            "oh"
           ]
         }
       ]
