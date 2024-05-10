@@ -207,6 +207,9 @@ export default defineConfig({
             {
               text: '追加器',
               items: [
+                { text: 'FileAppender', link: '/reference/file-appender' },
+                { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
+                { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
                 { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
                 { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' }
               ]

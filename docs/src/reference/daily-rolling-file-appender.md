@@ -1,20 +1,15 @@
-# FileAppender
+# DailyRollingFileAppender
 
 > 提供
 
-## `constructor(path, name, level, options)`
+## `constructor(path, name, level, useWorker)`
 
 - `path` string - 日志文件路径或名称
 - `name` string - 此文件追加器名称
 - `level` Level - 此追加器对应日志等级
-- `options` FileAppenderOptions - 追加器配置
-  - `useWorker` boolean? - 是否开启多线程
-  - `maxFileSize` number? - 最大日志文件大小
-  - `maxCacheCount` number? - 最大日志文件数量
-  - `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - 加密函数
-  - `filter` (level: Level, content: string | ArrayBuffer) => boolean - 额外的日志过滤函数
+- `useWorker` boolean? - 是否开启多线程
 
-新建一个`FileAppender`
+新建一个`DailyRollingFileAppender`
 
 ## `matchOptions(options)`
 

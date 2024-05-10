@@ -116,6 +116,11 @@ export class FileAppender extends AbstractAppender {
     return tmp + this._history;
   }
 
+  /**
+   * 删除日志箱
+   * @deprecated
+   * @returns
+   */
   clearAllHistory(): this {
     const allHistoryPath = this.path + '.all';
     if (fs.accessSync(allHistoryPath))
