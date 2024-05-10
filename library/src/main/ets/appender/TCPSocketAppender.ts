@@ -48,11 +48,10 @@ export class TCPSocketAppender extends CSocketAppender {
   }
 
   onLog(level: Level, message: string): this {
-    if (this._terminated) return;
+    if (this._terminated) return this;
     if (this._config.filter) {
-      if (!this._config.filter(level, message)) return;
+      if (!this._config.filter(level, message)) return this;
     }
-    console.log('tcp on log')
     this._socket.getState().then(state => {
       if (state.isConnected) {
         this.send(message);
@@ -69,9 +68,9 @@ export class TCPSocketAppender extends CSocketAppender {
       data,
       encoding: this._config.encoding
     }).then(() => {
-      console.log('tcp message sent')
+      this.logger.info('Message sent to server.')
     }).catch((err) => {
-      console.log('tcp send fail', err)
+      this.logger.trace('Failed to send message to server via tcp: {}', err);
     });
   }
 

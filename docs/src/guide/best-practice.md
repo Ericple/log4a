@@ -1,5 +1,59 @@
 # 最佳实践
 
+## 在UI代码之外的地方定义Logger <Badge type="tip" text="1.3.4 +" />
+
+在UI代码中定义一个Logger是一个糟糕的做法，尤其是当这些日志需要被发送到许多不同的地方时，这会让代码显得非常混乱，因此我推荐您在一个单独的文件中配置将要用到的所有Logger。
+
+这个功能基于1.3.4版本之后，您可以通过向LogManager.getLogger传入相同的类名来获取与传入类相同的Logger来完成，以下的例子展示了如何利用这一点特性使您的代码看起来更加优雅。
+
+```ts:line-numbers
+// LoggerConfig.ets
+import { LogManager, Level, TCPSocketAppender } from '@pie/log4a';
+
+export function InitializeAllLoggers(logFilePath: string) {
+  LogManager.setLogFilePath(logFilePath);
+  const socketAppender = new TCPSocketAppender({
+    address: '114.xxx.xxx.xxx',
+    port: 1234,
+    name: 'socket',
+    level: Level.ALL
+  });
+  LogManager.getLogger('Index')
+    .addFileAppender('logFile.log', 'mainLoggerOfIndex', Level.ALL, {
+      useWorker: true
+    })
+    .addAppender(socketAppender);
+  LogManager.getLogger('LoginPage')
+    .addFileAppender('logFile.log', 'mainLoggerOfLoginPage', Level.ALL, {
+      useWorker: true
+    });
+}
+```
+
+```ts:line-numbers{10}
+// EntryAbility.ets
+import { InitializeAllLoggers } from '../xxx/LoggerConfig';
+import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { window } from '@kit.ArkUI';
+import { LogManager } from '@log/log4a';
+
+export default class EntryAbility extends UIAbility {
+  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    InitializeAllLoggers(this.context.filesDir);
+  }
+
+  onDestroy(): void {
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    LogManager.terminate();
+  }
+  //...其他代码
+}
+```
+
+```typescript:line-numbers
+
 ## 统一定义追加器
 
 在一个文件里统一定义追加器，并导出供其他模块使用，可以提高代码的可维护性。您可以参考以下代码：

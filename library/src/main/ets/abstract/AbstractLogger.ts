@@ -213,6 +213,9 @@ export abstract class AbstractLogger {
     if (!this.context || !this.context.constructor) {
       return `[Anonymous:${this.count}]`;
     }
+    if (typeof this.context == 'string') {
+      return `[${this.context}:${this.count}]`;
+    }
     return `[${this.context.constructor.name}:${this.count}]`;
   }
 

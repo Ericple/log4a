@@ -1,14 +1,19 @@
-import { FileAppender, Level, TCPSocketAppender } from '@log/log4a';
+import { FileAppender, Level, LogManager, TCPSocketAppender } from '@log/log4a';
 
-export const socketAppender = new TCPSocketAppender({
-  address: '114.115.170.226',
-  port: 4721,
-  name: 'socket',
-  level: Level.ALL
-});
-
-export const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
-  useWorker: true,
-  maxFileSize: 1,
-  maxCacheCount: 2
-});
+export function InitializeAllLoggers(logFilePath: string) {
+  LogManager.setLogFilePath(logFilePath);
+  const socketAppender = new TCPSocketAppender({
+    address: '114.xxx.xxx.xxx',
+    port: 1234,
+    name: 'socket',
+    level: Level.ALL
+  });
+  const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
+    useWorker: true,
+    maxFileSize: 1,
+    maxCacheCount: 2
+  });
+  LogManager.getLogger('Index')
+    .addAppender(fileAppender_a)
+    .addAppender(socketAppender);
+}
