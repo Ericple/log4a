@@ -53,7 +53,7 @@ export abstract class AbstractAppender {
   }
 
   makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer) {
-    return this.layout.makeMessage(level, tag, time, count, message);
+    return this.layout.makeMessage(level, tag, time, count, message, new Error().stack ?? '');
   }
 
   onLog(level: Level, tag: string, time: number, count: number, message: string): this {

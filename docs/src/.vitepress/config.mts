@@ -197,7 +197,7 @@ export default defineConfig({
               text: '最佳实践',
               link: '/guide/best-practice'
             },
-            
+
           ]
         },
         {
@@ -216,6 +216,7 @@ export default defineConfig({
             {
               text: '追加器',
               items: [
+                { text: 'AbstractAppender', link: '/reference/abstract-appender' },
                 { text: 'FileAppender', link: '/reference/file-appender' },
                 { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
                 { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },

@@ -197,18 +197,16 @@ export abstract class AbstractLogger {
   }
 
   private print(level: Level, format: string, args: any[]) {
-    setTimeout(() => {
-      if (level.intLevel() <= this.level.intLevel()) {
-        const message = this.makeMessage(level, format, args);
-        this.appenderMap.forEach(appender => {
-          appender.onLog(level, this.getTag(), Date.now(), this.count, message);
-        })
-        this.logListeners.forEach(listener => {
-          listener(level, message);
-        });
-      }
-      this.temporaryContext.clear();
-    });
+    if (level.intLevel() <= this.level.intLevel()) {
+      const message = this.makeMessage(level, format, args);
+      this.appenderMap.forEach(appender => {
+        appender.onLog(level, this.getTag(), Date.now(), this.count, message);
+      })
+      this.logListeners.forEach(listener => {
+        listener(level, message);
+      });
+    }
+    this.temporaryContext.clear();
   }
 
   makeMessage(_: Level, format: string, messages: Object[]): string {

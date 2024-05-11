@@ -31,14 +31,14 @@ export class PatternLayout implements AbstractLayout {
     return this;
   }
 
-  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string): string {
+  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string): string {
     return PatternParser.parse(this.pattern, {
       logLevel: level.name,
       logMessage: message,
       timestamp,
       logCount,
       className: tag,
-      stackInfo: new Error().stack ?? ''
+      stackInfo
     });
   }
 }

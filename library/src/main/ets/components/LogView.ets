@@ -107,7 +107,6 @@ export struct LogView {
   aboutToAppear(): void {
     this.refresh();
     this.src.registerLogListener((_, log) => {
-      console.log('log listener')
       this.logs._data.push(log);
       this.logs.notifyDataAdd(this.logs.totalCount())
     });

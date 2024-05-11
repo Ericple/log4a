@@ -31,10 +31,8 @@ export function InitializeAllLoggers(logFilePath: string) {
     maxCacheCount: 2
   });
   const consoleAppender = new ConsoleAppender(Level.ALL)
-    .setLayout(new CSVLayout())
+    .setLayout(new PatternLayout('%L %C %m'))
   LogManager.getLogger('Index')
-    .addAppender(fileAppender_a)
-    .addAppender(socketAppender)
     .removeAppenderByType(AppenderTypeEnum.CONSOLE)
     .addAppender(consoleAppender)
 

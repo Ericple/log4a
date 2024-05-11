@@ -16,5 +16,5 @@
 import { Level } from '../Level';
 
 export interface AbstractLayout {
-  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): string;
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, stackInfo: string): string;
 }

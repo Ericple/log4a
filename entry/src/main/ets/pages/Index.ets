@@ -63,6 +63,11 @@ struct Index {
   intercepted: boolean = false;
 
   aboutToAppear(): void {
+    this.logTest()
+  }
+
+  logTest() {
+    this.logger.info('test')
   }
 
   build() {
@@ -83,8 +88,7 @@ struct Index {
           })
         Button('log')
           .onClick(() => {
-            this.logger.error('log into file and console, {}', Level.ALL);
-            this.logger.info('test')
+            this.logTest();
           })
         Button('change page')
           .onClick(() => {

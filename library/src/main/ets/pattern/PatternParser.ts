@@ -36,7 +36,6 @@ class PatternParserClass {
         result += this.handlePatternUnit(v, context);
       } else {
         result += v;
-
       }
     }
     return result;
@@ -56,7 +55,7 @@ class PatternParserClass {
     } else if (this.priorityReg.test(pattern)) {
       return this.getPriority(pattern, context.logLevel)
     } else if (this.lineNumReg.test(pattern)) {
-      return this.getLineCount(pattern);
+      return this.getLineCount(pattern, context.stackInfo);
     } else if (this.countReg.test(pattern)) {
       return this.getCount(pattern, context.logCount);
     }
@@ -177,12 +176,11 @@ class PatternParserClass {
     return val;
   }
 
-  getLineCount(pattern: string): string {
-    const stackInfo = new Error().stack;
+  getLineCount(pattern: string, stackInfo: string): string {
     if (!stackInfo) return 'null';
     const a = stackInfo.split(':');
-    let val = a[1] ?? 'null';
-    const fi = this.getFormatInfo(pattern, 'C');
+    let val = a.length >= 2 ? a[a.length - 2] : 'null';
+    const fi = this.getFormatInfo(pattern, 'L');
     if (val.length > fi.maxLength) {
       val = val.substring(0, fi.maxLength);
     }
