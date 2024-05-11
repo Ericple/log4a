@@ -25,11 +25,12 @@ import { FileAppenderManager } from '../FileAppenderManager';
 export abstract class AbstractLogger {
   protected context: any;
   protected count: number = 0;
-  protected appenderArray: Array<AbstractAppender> = [];
+  protected appenderMap: Map<string, AbstractAppender> = new Map();
   protected temporaryContext: TemporaryLoggerContext = new TemporaryLoggerContext;
   protected level: Level = Level.ALL;
   protected history: string = '';
   protected logListeners: ((level: Level, content: string) => void)[] = [];
+  protected hasConsoleAppender: boolean = false;
 
   constructor(context: any) {
     this.context = context;
@@ -50,14 +51,17 @@ export abstract class AbstractLogger {
   getHistoryOfAppender(predicates: string | AppenderTypeEnum): string;
 
   getHistoryOfAppender(predicates: string | AppenderTypeEnum): string {
-    const appender = this.appenderArray.find(appender => {
-      if (typeof predicates === 'string') {
-        return appender.getName() == predicates;
+    for (let [name, appender] of this.appenderMap) {
+      if (typeof predicates == 'string') {
+        if (name == predicates) {
+          return appender.getCurrentHistory();
+        }
       } else {
-        return appender.getType() == predicates;
+        if (appender.getType() == predicates) {
+          return appender.getCurrentHistory();
+        }
       }
-    });
-    if (appender) return appender.getCurrentHistory();
+    }
     return '';
   }
 
@@ -67,9 +71,8 @@ export abstract class AbstractLogger {
    * @returns this
    */
   getAllHistoryOfAppender(predicates: string): string {
-    let appender = this.appenderArray.find(
-      appender => (appender.getName() == predicates && appender.getType() == AppenderTypeEnum.FILE)
-    );
+
+    let appender = this.appenderMap.get(predicates);
     if (appender) {
       return (appender as FileAppender).getAllHistory();
     }
@@ -87,14 +90,11 @@ export abstract class AbstractLogger {
   }
 
   addAppender<T extends AbstractAppender>(appender: T): this {
-    if (this.appenderArray.some(v => v === appender)) {
+    if (appender == this.appenderMap.get(appender.getName())) {
       return this;
     }
-    if (this.appenderArray.some(v => v.getType() === AppenderTypeEnum.CONSOLE) && appender.getType() == AppenderTypeEnum.CONSOLE) {
-      return this;
-    }
-    appender.setId(this.appenderArray.length);
-    this.appenderArray.push(appender);
+    appender.setId(this.appenderMap.size);
+    this.appenderMap.set(appender.getName(), appender);
     return this;
   }
 
@@ -115,6 +115,7 @@ export abstract class AbstractLogger {
    * @returns this
    */
   addConsoleAppender(level: Level = Level.ALL): this {
+    this.hasConsoleAppender = true;
     return this.addAppender(new ConsoleAppender(level));
   }
 
@@ -123,30 +124,54 @@ export abstract class AbstractLogger {
    * @returns this
    */
   clearAppender(): this {
-    this.appenderArray.forEach(appender => {
+    this.appenderMap.forEach(appender => {
       appender.onTerminate();
     });
-    this.appenderArray = [];
+    this.appenderMap.clear();
     return this;
   }
 
   /**
    * 删除所有对应类型的appender
    * @param appenderType appender类型
-   * @returns
+   * @deprecated 请使用removeAppenderByType
+   * @returns this
    */
   removeTypedAppender(appenderType: AppenderTypeEnum): this {
-    this.appenderArray = this.appenderArray.filter(appender => appender.getType() !== appenderType);
+    return this.removeAppenderByType(appenderType);
+  }
+  /**
+   * 删除所有对应类型的appender
+   * @param appenderType appender类型
+   * @returns this
+   */
+  removeAppenderByType(appenderType: AppenderTypeEnum): this {
+    for (let [key, appender] of this.appenderMap) {
+      if (appender.getType() == appenderType) {
+        this.appenderMap.delete(key);
+        if (appenderType == AppenderTypeEnum.CONSOLE) this.hasConsoleAppender = false;
+      }
+    }
     return this;
   }
 
   /**
-   * 删除所有具名appender
+   * 删除指定名称的appender
    * @param name appender名称
+   * @deprecated 推荐使用removeAppenderByName
    * @returns
    */
   removeNamedAppender(name: string): this {
-    this.appenderArray = this.appenderArray.filter(appender => appender.getName() !== name);
+    return this.removeAppenderByName(name);
+  }
+
+  /**
+   * 删除指定名称的appender
+   * @param name appender名称
+   * @returns
+   */
+  removeAppenderByName(name: string): this {
+    this.appenderMap.delete(name);
     return this;
   }
 
@@ -174,9 +199,9 @@ export abstract class AbstractLogger {
     setTimeout(() => {
       if (level.intLevel() <= this.level.intLevel()) {
         const message = this.makeMessage(level, format, args);
-        this.appenderArray.forEach(appender => {
+        this.appenderMap.forEach(appender => {
           appender.onLog(level, message);
-        });
+        })
         this.logListeners.forEach(listener => {
           listener(level, message);
         });
@@ -225,7 +250,7 @@ export abstract class AbstractLogger {
   }
 
   private getTag() {
-    if (!this.context || !this.context.constructor) {
+    if (!this.context) {
       return `[Anonymous:${this.count}]`;
     }
     if (typeof this.context == 'string') {
@@ -235,8 +260,9 @@ export abstract class AbstractLogger {
   }
 
   terminate() {
-    this.appenderArray.forEach(appender => {
+    this.appenderMap.forEach(appender => {
       appender.onTerminate();
     });
+    this.appenderMap.clear();
   }
 }
