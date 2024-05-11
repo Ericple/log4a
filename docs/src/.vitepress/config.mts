@@ -186,9 +186,18 @@ export default defineConfig({
               link: '/guide/log-to-socket'
             },
             {
+              text: '自定义布局',
+              link: '/guide/layout'
+            },
+            {
+              text: 'console拦截',
+              link: '/guide/intercept-console'
+            },
+            {
               text: '最佳实践',
               link: '/guide/best-practice'
-            }
+            },
+            
           ]
         },
         {
