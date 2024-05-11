@@ -49,7 +49,7 @@ class PatternParserClass {
     } else if (this.classReg.test(pattern)) {
       return this.getClassName(pattern, context.className);
     } else if (this.locationReg.test(pattern)) {
-      return context.stackInfo;
+      return this.getStackInfo(context.stackInfo);
     } else if (this.messageReg.test(pattern)) {
       return context.logMessage;
     } else if (this.priorityReg.test(pattern)) {
@@ -62,24 +62,15 @@ class PatternParserClass {
     return pattern;
   }
 
+  getStackInfo(stackInfo: string) {
+    let stackArr = stackInfo.split('\n');
+    return '\n' + stackArr.slice(5).join('\n')
+  }
+
   getCount(pattern: string, count: number) {
     const fi = this.getFormatInfo(pattern, 'p');
     let val = count.toString();
-    if (val.length > fi.maxLength) {
-      val = val.substring(0, fi.maxLength);
-    }
-    if (val.length < fi.minLength) {
-      if (fi.justifyLeft) {
-        while (val.length < fi.minLength) {
-          val += ' ';
-        }
-      } else {
-        while (val.length < fi.minLength) {
-          val = ' ' + val;
-        }
-      }
-    }
-    return val;
+    return this.padStr(val, fi);
   }
 
   getFormatInfo(pattern: string, key: string): FormattingInfo {
@@ -108,40 +99,12 @@ class PatternParserClass {
 
   getPriority(pattern: string, val: string) {
     const fi = this.getFormatInfo(pattern, 'p');
-    if (val.length > fi.maxLength) {
-      val = val.substring(0, fi.maxLength);
-    }
-    if (val.length < fi.minLength) {
-      if (fi.justifyLeft) {
-        while (val.length < fi.minLength) {
-          val += ' ';
-        }
-      } else {
-        while (val.length < fi.minLength) {
-          val = ' ' + val;
-        }
-      }
-    }
-    return val;
+    return this.padStr(val, fi);
   }
 
   getClassName(pattern: string, val: string) {
     const fi = this.getFormatInfo(pattern, 'C');
-    if (val.length > fi.maxLength) {
-      val = val.substring(0, fi.maxLength);
-    }
-    if (val.length < fi.minLength) {
-      if (fi.justifyLeft) {
-        while (val.length < fi.minLength) {
-          val += ' ';
-        }
-      } else {
-        while (val.length < fi.minLength) {
-          val = ' ' + val;
-        }
-      }
-    }
-    return val;
+    return this.padStr(val, fi);
   }
 
   getDate(pattern: string, timestamp: number) {
@@ -159,21 +122,7 @@ class PatternParserClass {
     } else {
       val = DateUtils.toString(d, fi.extraFormat);
     }
-    if (val.length > fi.maxLength) {
-      val = val.substring(0, fi.maxLength);
-    }
-    if (val.length < fi.minLength) {
-      if (fi.justifyLeft) {
-        while (val.length < fi.minLength) {
-          val += ' ';
-        }
-      } else {
-        while (val.length < fi.minLength) {
-          val = ' ' + val;
-        }
-      }
-    }
-    return val;
+    return this.padStr(val, fi);
   }
 
   getLineCount(pattern: string, stackInfo: string): string {
@@ -181,6 +130,10 @@ class PatternParserClass {
     const a = stackInfo.split(':');
     let val = a.length >= 2 ? a[a.length - 2] : 'null';
     const fi = this.getFormatInfo(pattern, 'L');
+    return this.padStr(val, fi);
+  }
+
+  padStr(val: string, fi: FormattingInfo) {
     if (val.length > fi.maxLength) {
       val = val.substring(0, fi.maxLength);
     }
