@@ -136,7 +136,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: '参考', link: '/reference/log-manager' },
       {
-        text: '1.3.3',
+        text: '1.3.4',
         items: [
           {
             text: '更新日志',

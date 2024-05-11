@@ -1,6 +1,6 @@
 # DailyRollingFileAppender
 
-> 提供
+> 提供每日滚动生成日志文件的能力
 
 ## `constructor(path, name, level, useWorker)`
 

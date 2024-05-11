@@ -1,6 +1,6 @@
 # RollingFileAppender
 
-> 提供
+> 提供滚动日志输出文件的能力
 
 ## `constructor(path, name, level, maxFileSize, maxCacheCount, useWorker)`
 

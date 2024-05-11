@@ -1,6 +1,6 @@
 # FileAppender
 
-> 提供
+> 提供日志输出到文件的能力
 
 ## `constructor(path, name, level, options)`
 
