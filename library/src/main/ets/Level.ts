@@ -50,7 +50,7 @@ export class Level {
    * All events should be logged.
    */
   static readonly ALL: Level = new Level("ALL", StandardLevel.ALL.intLevel());
-  private _name: string;
+  readonly name: string;
   _intLevel: number;
   private _standardLevel: StandardLevel;
 
@@ -61,7 +61,7 @@ export class Level {
     if (intLevel < 0) {
       throw new Error("Illegal Level int less than zero.");
     }
-    this._name = name;
+    this.name = name;
     this._intLevel = intLevel;
     this._standardLevel = StandardLevel.getStandardLevel(intLevel);
     if (!Level.LEVELS.has(name.trim().toUpperCase())) {
@@ -126,12 +126,8 @@ export class Level {
     return tmp;
   }
 
-  name(): string {
-    return this._name;
-  }
-
   toString(): string {
-    return this._name;
+    return this.name;
   }
 
   /**
@@ -144,7 +140,7 @@ export class Level {
   }
 
   equals(other: Level): boolean {
-    return (other._name == this._name) && (other._intLevel == this._intLevel);
+    return (other.name == this.name) && (other._intLevel == this._intLevel);
   }
 
   equalsStrict(other: Level): boolean {
@@ -182,7 +178,7 @@ export class Level {
   }
 
   hashCode() {
-    HashCode.fromString(this._name);
+    HashCode.fromString(this.name);
   }
 
   /**

@@ -140,6 +140,7 @@ export abstract class AbstractLogger {
   removeTypedAppender(appenderType: AppenderTypeEnum): this {
     return this.removeAppenderByType(appenderType);
   }
+
   /**
    * 删除所有对应类型的appender
    * @param appenderType appender类型
@@ -200,7 +201,7 @@ export abstract class AbstractLogger {
       if (level.intLevel() <= this.level.intLevel()) {
         const message = this.makeMessage(level, format, args);
         this.appenderMap.forEach(appender => {
-          appender.onLog(level, message);
+          appender.onLog(level, this.getTag(), Date.now(), this.count, message);
         })
         this.logListeners.forEach(listener => {
           listener(level, message);
@@ -210,7 +211,7 @@ export abstract class AbstractLogger {
     });
   }
 
-  makeMessage(level: Level, format: string, messages: Object[]): string {
+  makeMessage(_: Level, format: string, messages: Object[]): string {
     const msgArr = messages.map(v => {
       if (typeof v == 'object') {
         try {
@@ -229,15 +230,7 @@ export abstract class AbstractLogger {
       this.fatal('Argument count is more than "{}" in message format, you may not getting what you want to log.')
     }
     this.count++;
-    let result = '[' + level.name().padEnd(5, ' ') + ']\t' + this.time() + '\t' + this.getTag() + '\t' + format;
-    if (this.temporaryContext.hasMarker()) {
-      result += ' ' + this.temporaryContext.getMarker();
-    }
-    if (level.intLevel() <= Level.ERROR.intLevel()) {
-      let rawStack = new Error().stack ?? '';
-      return result + '\n' + rawStack;
-    }
-    return result;
+    return format;
   }
 
   protected time() {
@@ -251,12 +244,12 @@ export abstract class AbstractLogger {
 
   private getTag() {
     if (!this.context) {
-      return `[Anonymous:${this.count}]`;
+      return `Anonymous`;
     }
     if (typeof this.context == 'string') {
-      return `[${this.context}:${this.count}]`;
+      return `${this.context}`;
     }
-    return `[${this.context.constructor.name}:${this.count}]`;
+    return `${this.context.constructor.name}`;
   }
 
   terminate() {

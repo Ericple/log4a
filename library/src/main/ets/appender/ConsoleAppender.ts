@@ -18,9 +18,9 @@ import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 
 export class ConsoleAppender extends AbstractAppender {
-  onLog(lvl: Level, message: string): this {
+  onLog(lvl: Level, tag: string, time: number, count: number, message: string): this {
     if (lvl.intLevel() > this.level.intLevel()) return this;
-    this.getLogFunction(lvl)(message);
+    this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message));
     return this;
   }
 

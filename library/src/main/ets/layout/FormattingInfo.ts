@@ -16,6 +16,7 @@
 export class FormattingInfo {
   maxLength: number = Number.MAX_SAFE_INTEGER;
   minLength: number = 0;
-  justifyLeft: boolean = true;
+  justifyLeft: boolean = false;
   data: string = '';
+  extraFormat: string = '';
 }

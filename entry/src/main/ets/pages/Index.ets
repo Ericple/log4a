@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 Tingjin Guo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import {
   LogManager,
   Logger,
@@ -17,8 +32,9 @@ class TestClass {
   static logger: Logger = LogManager.getLogger(TestClass);
   param1: string = 'param1';
   param2: string = 'param2';
-  str: string = TracedStr`build with ${this.param1} and ${this.param2}`;
-  str1: string = MarkedTracedStr("StrBuilder")`build with ${this.param1} and ${this.param2}`;
+
+  // str: string = TracedStr`build with ${this.param1} and ${this.param2}`;
+  // str1: string = MarkedTracedStr("StrBuilder")`build with ${this.param1} and ${this.param2}`;
 
   @TraceEntry
   enter(...args: number[]) {
@@ -47,7 +63,6 @@ struct Index {
   intercepted: boolean = false;
 
   aboutToAppear(): void {
-    this.logger.info('Hello {}!', 'world');
   }
 
   build() {
@@ -69,6 +84,7 @@ struct Index {
         Button('log')
           .onClick(() => {
             this.logger.error('log into file and console, {}', Level.ALL);
+            this.logger.info('test')
           })
         Button('change page')
           .onClick(() => {

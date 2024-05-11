@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { PatternLayout } from '../layout/PatternLayout';
 import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { NotImplementedError } from '../spi/NotImplementError';
+import { AbstractLayout } from './AbstractLayout';
 
 export abstract class AbstractAppender {
   protected _type: AppenderTypeEnum;
@@ -24,7 +26,7 @@ export abstract class AbstractAppender {
   protected _history: string = '';
   protected _name: string = '';
   protected level: Level;
-  protected layout: string = '%tag\t%time\t%src\t%msg'
+  protected layout: AbstractLayout = new PatternLayout();
 
   constructor(name: string, level: Level, type: AppenderTypeEnum) {
     this._type = type;
@@ -40,7 +42,21 @@ export abstract class AbstractAppender {
     return this._history;
   }
 
-  onLog(_: Level, __: string): this {
+  /**
+   * 设置追加器日志布局
+   * @param layout 日志布局
+   * @returns this
+   */
+  setLayout<T extends AbstractLayout>(layout: T): this {
+    this.layout = layout;
+    return this;
+  }
+
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer) {
+    return this.layout.makeMessage(level, tag, time, count, message);
+  }
+
+  onLog(level: Level, tag: string, time: number, count: number, message: string): this {
     throw new NotImplementedError();
   }
 

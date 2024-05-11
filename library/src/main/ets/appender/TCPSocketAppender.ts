@@ -62,11 +62,12 @@ export class TCPSocketAppender extends CSocketAppender {
     }
   }
 
-  onLog(level: Level, message: string): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string): this {
     if (this._terminated) return this;
     if (this._config.filter) {
       if (!this._config.filter(level, message)) return this;
     }
+    message = this.makeMessage(level, tag, time, count, message);
     this._socket.getState().then(state => {
       if (state.isConnected) {
         this.send(message);

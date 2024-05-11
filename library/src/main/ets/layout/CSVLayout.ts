@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum ParserState {
-  CONVERTER_STATE,
-  LITERAL_STATE
+import { AbstractLayout } from '../abstract/AbstractLayout';
+import { Level } from '../Level';
+
+export class CSVLayout implements AbstractLayout {
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): string {
+    return `${level.name}, ${tag}, ${time}, ${count}, ${message}` + '\n';
+  }
 }

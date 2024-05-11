@@ -65,11 +65,14 @@ export class FileAppender extends AbstractAppender {
     return false;
   }
 
-  onLog(level: Level, message: string | ArrayBuffer): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): this {
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
         message,
+        tag,
+        time,
+        count,
         path: this.path
       });
       return this;
@@ -79,6 +82,7 @@ export class FileAppender extends AbstractAppender {
       if (this.options && this.options.filter) {
         if (!this.options.filter(level, message)) return;
       }
+      message = this.makeMessage(level, tag, time, count, message);
       if (this.options && this.options.encryptor) {
         message = this.options.encryptor(level, message);
       }

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Level } from 'ets/Level';
+import { Level } from '../Level';
 import { AbstractLayout } from '../abstract/AbstractLayout';
+import { PatternParser } from '../pattern/PatternParser';
 
 export class PatternLayout implements AbstractLayout {
-  private pattern: string = '[%-5p]\t%d{YYYY-MM-DD HH:mm:ss.SSS}\t[%c:%r]\t%m';
+  private pattern: string = '[%-5p]\t%d\t[%C:%r]\t%m';
 
   constructor(pattern?: string) {
     if (pattern) {
@@ -25,7 +26,19 @@ export class PatternLayout implements AbstractLayout {
     }
   }
 
-  makeMessage(level: Level, tag: string, time: string, count: number, format: string, args: Object[]): string {
-    throw new Error('Method not implemented.');
+  setPattern(newPattern: string): this {
+    this.pattern = newPattern;
+    return this;
+  }
+
+  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string): string {
+    return PatternParser.parse(this.pattern, {
+      logLevel: level.name,
+      logMessage: message,
+      timestamp,
+      logCount,
+      className: tag,
+      stackInfo: new Error().stack ?? ''
+    });
   }
 }

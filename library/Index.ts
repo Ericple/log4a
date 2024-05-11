@@ -1,3 +1,15 @@
+export { UDPSocketAppender } from './src/main/ets/appender/UDPSocketAppender'
+
+export { AbstractAppender } from './src/main/ets/abstract/AbstractAppender'
+
+export { AbstractLogger } from './src/main/ets/abstract/AbstractLogger'
+
+export { CSVLayout } from './src/main/ets/layout/CSVLayout'
+
+export { PatternLayout } from './src/main/ets/layout/PatternLayout'
+
+export { AppenderTypeEnum } from './src/main/ets/spi/AppenderTypeEnum'
+
 export { TCPSocketAppender } from './src/main/ets/appender/TCPSocketAppender'
 
 export { DailyRollingFileAppender } from './src/main/ets/appender/DailyRollingFileAppender'
@@ -19,3 +31,4 @@ export { BenchmarkWithWorker, BenchmarkWithoutWorker } from './src/main/ets/benc
 export { ConsoleAppender } from './src/main/ets/appender/ConsoleAppender';
 
 export { FileAppender, FileAppenderOptions } from './src/main/ets/appender/FileAppender';
+

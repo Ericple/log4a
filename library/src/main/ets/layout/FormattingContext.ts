@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export function requireNonNull(obj: Object, message: string) {
-  if (obj == null) {
-    throw new SyntaxError(message);
-  }
+export interface FormattingContext {
+  logLevel: string;
+  logMessage: string;
+  timestamp: number;
+  className: string;
+  stackInfo: string;
+  logCount: number;
 }

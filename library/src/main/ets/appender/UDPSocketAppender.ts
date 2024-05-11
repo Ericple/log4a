@@ -39,11 +39,12 @@ export class UDPSocketAppender extends CSocketAppender {
     this._socket.bind({ address: '0.0.0.0' });
   }
 
-  onLog(level: Level, message: string): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string): this {
     if (this._terminated) return this;
     if (this._config.filter) {
       if (!this._config.filter(level, message)) return this;
     }
+    message = this.makeMessage(level, tag, time, count, message);
     this._socket.getState().then(state => {
       if (state.isBound) {
         this.send(message);
