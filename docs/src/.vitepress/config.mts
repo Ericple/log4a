@@ -187,7 +187,7 @@ export default defineConfig({
             },
             {
               text: '自定义布局',
-              link: '/guide/layout'
+              link: '/guide/custom-layout'
             },
             {
               text: 'console拦截',
