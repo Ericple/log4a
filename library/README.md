@@ -2,10 +2,10 @@
 
 > 轻量、易集成、易使用，有时甚至可以不需写代码的HarmonyOS log系统，灵感来自log4j。
 
-### Log4a文档已部署
+### Log4a文档
 
-- [Github镜像](https://ericple.github.io/log4a/)
-- 国内镜像 - 待上线
+- [Github站](https://ericple.github.io/log4a/)
+- [AtomGit站(国内推荐)](https://ericple.atomgit.net/log4a-docs/)
 
 ## 特点
 
@@ -315,7 +315,7 @@ this.logger.addFileAppender("/path/to/log.log", "mainFileAppender", Level.INFO);
 
 在这个例子中，由于添加的FileAppender日志级别为`INFO`，高于Logger的日志级别`ERROR`，此时`WARN`级别的日志无法送达Appender。
 
-(日志等级排序为：OFF>FATAL>ERROR>WARN>INFO>DEBUG>TRACE>ALL)
+(日志等级排序为：OFF<FATAL<ERROR<WARN<INFO<DEBUG<TRACE<ALL)
 
 ### 退出应用时的处理
 
