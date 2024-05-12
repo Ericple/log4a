@@ -15,6 +15,7 @@
  */
 import { FormattingContext } from '../layout/FormattingContext';
 import { FormattingInfo } from '../layout/FormattingInfo';
+import { Level } from '../Level';
 import { DateUtils } from '../utils/DateUtils';
 
 class PatternParserClass {
@@ -38,6 +39,9 @@ class PatternParserClass {
         result += v;
       }
     }
+    if (context.logLevel._intLevel <= Level.TRACE._intLevel && !pattern.match(this.locationReg)) {
+      result += this.getStackInfo(context.stackInfo);
+    }
     return result;
   }
 
@@ -53,7 +57,7 @@ class PatternParserClass {
     } else if (this.messageReg.test(pattern)) {
       return context.logMessage;
     } else if (this.priorityReg.test(pattern)) {
-      return this.getPriority(pattern, context.logLevel)
+      return this.getPriority(pattern, context.logLevel.name)
     } else if (this.lineNumReg.test(pattern)) {
       return this.getLineCount(pattern, context.stackInfo);
     } else if (this.countReg.test(pattern)) {

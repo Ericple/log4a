@@ -33,7 +33,7 @@ export class PatternLayout implements AbstractLayout {
 
   makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string): string {
     return PatternParser.parse(this.pattern, {
-      logLevel: level.name,
+      logLevel: level,
       logMessage: message,
       timestamp,
       logCount,
