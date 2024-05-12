@@ -4,8 +4,8 @@
 
 ### Log4a文档
 
-- [Github站](https://ericple.github.io/log4a/)
-- [AtomGit站(国内推荐)](https://ericple.atomgit.net/log4a-docs/)
+- [Github站(推荐)](https://ericple.github.io/log4a/)
+- [AtomGit站](https://ericple.atomgit.net/log4a-docs/)
 
 ## 特点
 
