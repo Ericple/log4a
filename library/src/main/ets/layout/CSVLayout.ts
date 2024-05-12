@@ -18,6 +18,10 @@ import { Level } from '../Level';
 
 export class CSVLayout implements AbstractLayout {
   makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): string {
+    message = message.toString();
+    while (message.lastIndexOf('\n') != -1) {
+      message = message.replace('\n', '');
+    }
     return `${level.name}, ${tag}, ${time}, ${count}, ${message}` + '\n';
   }
 }
