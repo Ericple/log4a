@@ -298,10 +298,10 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
-"@peercat/log4a@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@peercat/log4a/-/log4a-1.4.3.tgz#86c49b0c0172476c74022e51c276a1babf06c877"
-  integrity sha512-Hl8gv0DP8d2WBIKHaULb6M0qom7yh12HDhauMuoK2jWi/D702lHSogM+dZwvqCwCvQXPu2TcY8gfniR+1ib27g==
+"@peercat/log4a@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@peercat/log4a/-/log4a-1.4.4.tgz#57d0d55f5fc841d32aaec402eee6b221cc8c9e6b"
+  integrity sha512-Qggvlfbr67xDO9nIFz0Sc1EEkVS4LMXeI+GK8o6dqiIHexvjkYbWZj9b8OVx2fFM1XSy5vlAGfN0RK+XuSlo1A==
 
 "@rollup/rollup-android-arm-eabi@4.17.2":
   version "4.17.2"
