@@ -135,6 +135,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/getting-started' },
       { text: '参考', link: '/reference/log-manager' },
+      { text: 'Playground', link: '/playground/index' },
       {
         text: '1.4.0',
         items: [
@@ -261,5 +262,6 @@ export default defineConfig({
     logo: {
       src: '/log4a@1x.svg'
     }
-  }
+  },
+
 })

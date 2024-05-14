@@ -1,3 +1,6 @@
+<script setup>
+import DemoEditor from '../components/DemoEditor.vue'
+</script>
 # 日志布局 <Badge type="tip" text="1.4.0 +" />
 
 Log4a自1.4.0版本开始，支持开发者自行设置追加器日志布局，1.4.0版本更新了两种布局，分别为：
@@ -17,16 +20,16 @@ const myFileAppender = new FileAppender('log.txt','mainFileAppender', Level.ALL)
 
 要自定义一个`PatternLayout`，可以通过在初始化PatternLayout时传入自定义Pattern达成，开发者可以使用以下占位符：
 
-| 占位符 | 描述                                                                                                                                                                  | 用例                        |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| %C     | 打印Logger所属类名                                                                                                                                                    | %.30c                       |
+| 占位符 | 描述                                                                                                                                                                  | 用例                          |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| %C     | 打印Logger所属类名                                                                                                                                                    | %.30c                         |
 | %d     | 打印当前日志时间，可通过跟随如`{yyyy-MM-dd}`等参数自定义日期打印格式，默认为`ISO8601`，Log4a还预置了`ABSOLUTE`、`DATE`等格式，可通过例如`%d{ISO8601}`来使用预置格式。 | `%d{yyyy-MM-dd HH:mm:ss,SSS}` |
-| %l     | 打印日志打印堆栈                                                                                                                                                      | %-10l                       |
-| %L     | 打印日志输出行号                                                                                                                                                      |                             |
-| %m     | 打印日志内容                                                                                                                                                          |                             |
-| %p     | 打印日志等级                                                                                                                                                          |                             |
-| %r     | 打印自Logger创建以来，打印的日志数量                                                                                                                                  |                             |
-| %%     | 打印一个百分号                                                                                                                                                        |                             |
+| %l     | 打印日志打印堆栈                                                                                                                                                      | %-10l                         |
+| %L     | 打印日志输出行号                                                                                                                                                      |                               |
+| %m     | 打印日志内容                                                                                                                                                          |                               |
+| %p     | 打印日志等级                                                                                                                                                          |                               |
+| %r     | 打印自Logger创建以来，打印的日志数量                                                                                                                                  |                               |
+| %%     | 打印一个百分号                                                                                                                                                        |                               |
 
 ## 日期打印
 
@@ -58,3 +61,13 @@ const myFileAppender = new FileAppender('log.txt','mainFileAppender', Level.ALL)
 
 > [!TIP]
 > 当前只有对%d传入其他参数有效，对于其他占位符，传入的参数将被忽略
+
+## 尝试一下
+
+<DemoEditor code='const layout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss,SSS}\t%m");
+const appender = new ConsoleAppender().setLayout(layout);
+const logger = LogManager
+                  .getLogger("Log4a")
+                  .removeAppenderByType(AppenderTypeEnum.CONSOLE);
+logger.addAppender(appender);
+logger.info("Hello World!");' />

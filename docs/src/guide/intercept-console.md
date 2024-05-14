@@ -29,3 +29,13 @@ export default class EntryAbility extends UIAbility {
   //...其他代码
 }
 ```
+
+## 尝试一下
+
+<script setup>
+import DemoEditor from '../components/DemoEditor.vue';
+</script>
+
+<DemoEditor code="
+LogManager.interceptConsole();
+console.log('Hello World!');" />

@@ -6,5 +6,9 @@
     "docs:dev": "vitepress dev src",
     "docs:build": "vitepress build src",
     "docs:preview": "vitepress preview src"
+  },
+  "dependencies": {
+    "@peercat/log4a": "^1.4.3",
+    "monaco-editor": "^0.48.0"
   }
 }

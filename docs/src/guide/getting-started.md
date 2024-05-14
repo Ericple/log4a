@@ -1,3 +1,6 @@
+<script setup>
+import DemoEditor from '../components/DemoEditor.vue'
+</script>
 # 快速开始
 
 ## 安装
@@ -45,8 +48,12 @@ struct MainPage {
 [INFO ]	2024-04-30 15:27:29.809	[MainPage:1]	Hello world!
 ```
 
+## 尝试一下
+
+<DemoEditor code='LogManager.getLogger("Index").info("Hello World!")' />
+
 > [!TIP]
-> 我们把输出的信息简化成以下内容，并对各个内容分别进行解释：
+> 我们把默认输出的信息简化成以下内容，并对各个内容分别进行解释：
 >
 > ```
 > [a] b [c:d] e

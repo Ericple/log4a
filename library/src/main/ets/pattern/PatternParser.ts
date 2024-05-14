@@ -39,7 +39,7 @@ class PatternParserClass {
         result += v;
       }
     }
-    if (context.logLevel._intLevel <= Level.TRACE._intLevel && !pattern.match(this.locationReg)) {
+    if (context.logLevel._intLevel < Level.INFO._intLevel && !pattern.match(this.locationReg)) {
       result += this.getStackInfo(context.stackInfo);
     }
     return result;

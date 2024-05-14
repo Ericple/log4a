@@ -23,7 +23,7 @@
 
 ```ts
 class SimpleAppenderClass extends AbstractAppender {
-    onLog(level: Level, message: string): void {
+    onLog(level: Level, tag: string, time: number, count: number, message: string): void {
         console.log(message);
     }
     onTerminate(): void {
@@ -41,3 +41,27 @@ class SomeClass {
     logger: Logger = LogManager.getLogger(this).addAppender(SimpleAppender);
 }
 ```
+
+## 尝试一下
+
+<script setup>
+    import DemoEditor from '../components/DemoEditor.vue'
+</script>
+
+<DemoEditor code="class SimpleAppenderClass extends AbstractAppender {
+    onLog(level, tag, time, count, message) {
+        console.log(message);
+    }
+    onTerminate() {
+        return;
+    }
+}
+const SimpleAppender = new SimpleAppenderClass;
+class SomeClass {
+    logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+    hello(){
+        this.logger.info('Hello, World!')
+    }
+}
+const someClassInstance = new SomeClass;
+someClassInstance.hello();" />
