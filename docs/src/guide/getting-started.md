@@ -1,5 +1,8 @@
 <script setup>
-import DemoEditor from '../components/DemoEditor.vue'
+import {defineAsyncComponent} from 'vue';
+import {inBrowser} from 'vitepress';
+
+const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
 </script>
 # 快速开始
 
@@ -50,7 +53,8 @@ struct MainPage {
 
 ## 尝试一下
 
-<DemoEditor code='LogManager.getLogger("Index").info("Hello World!")' />
+<DemoEditor code='const logger = LogManager.getLogger("Index");
+logger.info("Hello World!");' />
 
 > [!TIP]
 > 我们把默认输出的信息简化成以下内容，并对各个内容分别进行解释：

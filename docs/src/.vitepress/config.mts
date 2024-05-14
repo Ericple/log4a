@@ -263,5 +263,6 @@ export default defineConfig({
       src: '/log4a@1x.svg'
     }
   },
-
+  vite:{
+  }
 })

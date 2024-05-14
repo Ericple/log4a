@@ -1,5 +1,8 @@
 <script setup>
-import DemoEditor from '../components/DemoEditor.vue'
+import {defineAsyncComponent} from 'vue';
+import {inBrowser} from 'vitepress';
+
+const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
 </script>
 # 日志布局 <Badge type="tip" text="1.4.0 +" />
 

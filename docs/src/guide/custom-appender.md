@@ -45,7 +45,10 @@ class SomeClass {
 ## 尝试一下
 
 <script setup>
-    import DemoEditor from '../components/DemoEditor.vue'
+import {defineAsyncComponent} from 'vue';
+import {inBrowser} from 'vitepress';
+
+const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
 </script>
 
 <DemoEditor code="class SimpleAppenderClass extends AbstractAppender {

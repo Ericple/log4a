@@ -47,3 +47,15 @@ value of a =
     value_b: 'This is json class'
 }
 ```
+
+<script setup>
+import {defineAsyncComponent} from 'vue';
+import {inBrowser} from 'vitepress';
+
+const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
+</script>
+
+## 尝试一下
+
+<DemoEditor code='const logger = LogManager.getLogger(this);
+logger.info("Hello, {}!", "world");' />

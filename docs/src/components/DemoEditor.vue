@@ -23,6 +23,9 @@
 import { defineComponent, ref } from 'vue';
 import { runLog4aCode } from '@peercat/log4a';
 import * as monaco from 'monaco-editor';
+import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
+
 let keywords = [
     'const',
     'struct',
@@ -44,9 +47,17 @@ let keywords = [
     'static',
     'for', 'of', 'in', 'continue', 'typeof', 'if', 'else', 'while', 'LogManager', 'extends'
 ];
+self.MonacoEnvironment = {
+    getWorker(_, __) {
+        if (__ == 'typescript' || __ == 'javascript') {
+            return new tsWorker();
+        }
+        return new editorWorker()
+    }
+}
 export default defineComponent({
     data() {
-        const cp = this.$attrs.code??'';
+        const cp = this.$attrs.code ?? '';
         const code = ref(cp);
         const h = this.$attrs.height ?? '500px'
         return {
@@ -59,188 +70,10 @@ export default defineComponent({
         }
     },
     mounted() {
-        monaco.languages.register({ id: 'arkts' })
-        monaco.languages.setLanguageConfiguration('arkts', {
-            wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
-            brackets: [
-                ['{', '}'],
-                ['[', ']'],
-                ['(', ')']
-            ],
-            comments: {
-                lineComment: '//',
-                blockComment: ['/*', '*/']
-            },
-            autoClosingPairs: [
-                { open: '{', close: '}' },
-                { open: '[', close: ']' },
-                { open: '(', close: ')' },
-                { open: '"', close: '"', notIn: ['string'] },
-                { open: "'", close: "'", notIn: ['string', 'comment'] },
-                { open: '`', close: '`', notIn: ['string', 'comment'] },
-                { open: '/**', close: ' */', notIn: ['string'] }
-            ],
-            folding: {
-                markers: {
-                    start: new RegExp('^\\s*//\\s*#?region\\b'),
-                    end: new RegExp('^\\s*//\\s*#?endregion\\b')
-                }
-            },
-            onEnterRules: [
-                {
-                    // e.g. /** | */
-                    beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
-                    afterText: /^\s*\*\/$/,
-                    action: {
-                        indentAction: monaco.languages.IndentAction.IndentOutdent,
-                        appendText: ' * '
-                    }
-                },
-                {
-                    // e.g. /** ...|
-                    beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
-                    action: {
-                        indentAction: monaco.languages.IndentAction.None,
-                        appendText: ' * '
-                    }
-                },
-                {
-                    // e.g.  * ...|
-                    beforeText: /^(\t|(\ \ ))*\ \*(\ ([^\*]|\*(?!\/))*)?$/,
-                    action: {
-                        indentAction: monaco.languages.IndentAction.None,
-                        appendText: '* '
-                    }
-                },
-                {
-                    // e.g.  */|
-                    beforeText: /^(\t|(\ \ ))*\ \*\/\s*$/,
-                    action: {
-                        indentAction: monaco.languages.IndentAction.None,
-                        removeText: 1
-                    }
-                }
-            ],
-        })
-        monaco.languages.setMonarchTokensProvider('arkts', {
-            tokenizer: {
-                root: [
-                    [/\"[^"]*"/, 'arkts-string'],
-                    [/\'[^']*'/, 'arkts-string'],
-                    [/\`[^`]*`/, 'arkts-string'],
-                    [/@?[a-zA-Z][\w$]*/, {
-                        cases: {
-                            '@keywords': {
-                                token: 'keyword.$0',
-                                next: '@qualified'
-                            },
-                            '@default': 'variable'
-                        }
-                    }],
-                    [/\\s[^\.].*\(\)/, 'function'],
-                    [/\/\/.*/, 'comment']
-                ],
-                qualified: [
-                    [
-                        /[a-zA-Z_][\w]*/,
-                        {
-                            cases: {
-                                '@keywords': { token: 'keyword.$0' },
-                                '@default': 'identifier'
-                            }
-                        }
-                    ],
-                    [/\./, 'delimiter'],
-                    ['', '', '@pop']
-                ],
-            },
-            keywords,
-            tokenPostfix: '.ets',
-            defaultToken: ''
-        });
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(`
-        declare namespace Namespace {
-            interface LM {
-                text: string;
-            }
-        }
-        `)
-        monaco.editor.defineTheme('arktsTheme', {
-            base: 'vs-dark',
-            inherit: false,
-            rules: [
-                { token: 'arkts-string', foreground: 'AA7DFC' },
-                { token: 'keyword', foreground: 'BBB529', fontStyle: 'bold' },
-                { token: 'function', foreground: '65CCE1' },
-                { token: 'comment', foreground: '808080' },
-                { token: 'identifier', foreground: '507874' }
-            ],
-            colors: {
-                "editor.foreground": "#FFFFFF",
-                "editor.background": "#2B2B2B"
-            }
-        })
-        monaco.languages.registerCompletionItemProvider('arkts', {
-            provideCompletionItems: (model, position) => {
-                let word = model.getWordUntilPosition(position);
-                let range = {
-                    startLineNumber: position.lineNumber,
-                    endLineNumber: position.lineNumber,
-                    startColumn: word.startColumn,
-                    endColumn: word.endColumn
-                };
-                let suggestions = [
-                    {
-                        label: 'LogManager',
-                        kind: monaco.languages.CompletionItemKind.Constant,
-                        insertText: 'LogManager',
-                        range,
-                        documentation: ''
-                    },
-                    {
-                        label: 'Logger',
-                        kind: monaco.languages.CompletionItemKind.Class,
-                        insertText: 'Logger',
-                        range
-                    },
-                    {
-                        label: 'AbstractLogger',
-                        kind: monaco.languages.CompletionItemKind.Class,
-                        insertText: 'AbstractLogger',
-                        range
-                    },
-                    {
-                        label: 'AbstractAppender',
-                        kind: monaco.languages.CompletionItemKind.Class,
-                        insertText: 'AbstractAppender',
-                        range
-                    },
-                    {
-                        label: 'CSVLayout',
-                        kind: monaco.languages.CompletionItemKind.Class,
-                        insertText: 'CSVLayout',
-                        range
-                    },
-                    {
-                        label: 'PatternLayout',
-                        kind: monaco.languages.CompletionItemKind.Class,
-                        insertText: 'PatternLayout',
-                        range
-                    }
-                ].concat(keywords.map(k => {
-                    return {
-                        label: k,
-                        kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: k
-                    }
-                }))
-                return { suggestions }
-            }
-        })
         const editor = monaco.editor.create(this.$refs.code, {
-            theme: "arktsTheme",
+            theme: "vs-dark",
             value: this.code,
-            language: 'arkts',
+            language: 'javascript',
             lineNumbers: 'on',
             folding: true,
             scrollBeyondLastLine: true,
