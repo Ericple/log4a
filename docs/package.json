@@ -8,7 +8,7 @@
     "docs:preview": "vitepress preview src"
   },
   "dependencies": {
-    "@peercat/log4a": "^1.4.4",
+    "@peercat/log4a": "^1.4.5",
     "monaco-editor": "^0.48.0"
   }
 }
