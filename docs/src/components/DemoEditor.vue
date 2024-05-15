@@ -22,6 +22,7 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { runLog4aCode } from '@peercat/log4a';
+import { useData } from 'vitepress';
 import * as monaco from 'monaco-editor';
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
@@ -70,23 +71,29 @@ export default defineComponent({
         }
     },
     mounted() {
-        const editor = monaco.editor.create(this.$refs.code, {
-            theme: "vs-dark",
-            value: this.code,
-            language: 'javascript',
-            lineNumbers: 'on',
-            folding: true,
-            scrollBeyondLastLine: true,
-            automaticLayout: true,
-            codeLens: false,
-            minimap: {
-                enabled: false
-            }
-        });
-        editor.onDidChangeModelContent(() => {
-            const v = editor.getValue();
-            this.code = v;
-        })
+        this.initEditor();
+    },
+    methods: {
+        initEditor() {
+            const { isDark } = useData();
+            const editor = monaco.editor.create(this.$refs.code, {
+                theme: isDark ? 'vs-dark' : 'vs',
+                value: this.code,
+                language: 'javascript',
+                lineNumbers: 'on',
+                folding: true,
+                scrollBeyondLastLine: true,
+                automaticLayout: true,
+                codeLens: false,
+                minimap: {
+                    enabled: false
+                }
+            });
+            editor.onDidChangeModelContent(() => {
+                const v = editor.getValue();
+                this.code = v;
+            })
+        }
     }
 })
 </script>

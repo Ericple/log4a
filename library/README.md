@@ -4,6 +4,8 @@
 
 ### Log4a文档
 
+> 文档网站支持在线体验并运行Log4a(仅限Github站)
+
 - [Github站(推荐)](https://ericple.github.io/log4a/)
 - [AtomGit站](https://ericple.atomgit.net/log4a-docs/)
 
