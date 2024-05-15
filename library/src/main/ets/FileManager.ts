@@ -61,7 +61,7 @@ class FileManagerClass {
     const cachePath = path.substring(0, path.lastIndexOf('/'));
     const files = fs.listFileSync(cachePath);
     const fileName = path.substring(path.lastIndexOf('/') + 1);
-    const result = files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName))).sort((a, b) =>
+    const result = files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName) && file != path)).sort((a, b) =>
     Number(a.replace(path + '.', '')) - Number(b.replace(path + '.', ''))
     );
     return result;

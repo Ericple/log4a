@@ -32,7 +32,7 @@ struct Index {
   }
 
   logTest() {
-    let i = 10;
+    let i = 20;
     while (i--) {
       this.logger.info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
     }
