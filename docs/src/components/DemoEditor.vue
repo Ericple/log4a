@@ -69,7 +69,7 @@ const initializeEditor = (el) => {
         }
     }
     const editor = monaco.editor.create(el, {
-        theme: isDark ? 'vs-dark' : 'vs',
+        theme: isDark.value ? 'vs-dark' : 'vs',
         value: code.value,
         language: 'javascript',
         lineNumbers: 'on',

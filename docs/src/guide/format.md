@@ -57,5 +57,9 @@ const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/De
 
 ## 尝试一下
 
-<DemoEditor code='const logger = LogManager.getLogger(this);
-logger.info("Hello, {}!", "world");' />
+<DemoEditor code='class jobj {
+    value_a = 0;
+    value_b = "This is json class";
+}
+const a = new jobj;
+LogManager.anonymous().info("value of a = {}", a);' />

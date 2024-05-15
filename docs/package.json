@@ -10,5 +10,6 @@
   "dependencies": {
     "@peercat/log4a": "^1.4.7",
     "monaco-editor": "^0.48.0"
-  }
+  },
+  "license": "Apache-2.0"
 }
