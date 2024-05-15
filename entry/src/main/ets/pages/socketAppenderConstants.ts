@@ -33,7 +33,8 @@ export function InitializeAllLoggers(logFilePath: string) {
   const consoleAppender = new ConsoleAppender(Level.ALL)
     .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
   LogManager.getLogger('Index')
-    .removeAppenderByType(AppenderTypeEnum.CONSOLE)
-    .addAppender(consoleAppender)
-
+    .addFileAppender('Xlog.log', 'mainAppender', Level.INFO, {
+      maxCacheCount: 10,
+      maxFileSize: 10
+    })
 }

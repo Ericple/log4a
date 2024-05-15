@@ -13,61 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
-  LogManager,
-  Logger,
-  TraceEntry,
-  TraceExit,
-  MarkerManager,
-  TracedStr,
-  MarkedTracedStr,
-  Level
-} from '@log/log4a';
+import { LogManager, Logger } from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
-import { router } from '@kit.ArkUI';
-
-class TestClass {
-  logger: Logger = LogManager.getLogger(this);
-  static logger: Logger = LogManager.getLogger(TestClass);
-  param1: string = 'param1';
-  param2: string = 'param2';
-
-  // str: string = TracedStr`build with ${this.param1} and ${this.param2}`;
-  // str1: string = MarkedTracedStr("StrBuilder")`build with ${this.param1} and ${this.param2}`;
-
-  @TraceEntry
-  enter(...args: number[]) {
-    this.logger.withMarker(MarkerManager.getMarker('IMPORTANT')).info("args are {}", args);
-    this.logger.info("without marker")
-    return args;
-  }
-
-  @TraceExit
-  exit() {
-    return "Exit result";
-  }
-
-  @TraceEntry
-  static entry() {
-    TestClass.logger.info("static entry called");
-  }
-}
+import fs from '@ohos.file.fs';
+import { FileManager } from '@log/log4a/src/main/ets/FileManager';
 
 @Entry
 @Component
 struct Index {
   @State message: string = 'Hello World';
   @State logger: Logger = LogManager.getLogger(this);
-  test: TestClass = new TestClass();
   intercepted: boolean = false;
+  @State caches: string[] = [];
 
   aboutToAppear(): void {
     this.logTest()
   }
 
   logTest() {
-    this.logger.info('test')
+    let i = 10;
+    while (i--) {
+      this.logger.info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
+    }
+  }
+
+  getFileSize() {
+    this.logTest();
+    let url = LogManager.getLogFilePath() + '/' + 'Xlog.log';
+    this.logger.info('log file path = {}', url);
+    this.caches = FileManager.getCachedFiles(url)
+    fs.stat(url).then(stat => {
+      this.logger.info('file stat: {}', stat.size / 1000,);
+    })
   }
 
   build() {
@@ -82,6 +60,17 @@ struct Index {
           }
         })
           .height('50%')
+        List() {
+          ForEach(this.caches, (cache: string) => {
+            ListItem() {
+              Text(cache)
+                .fontSize(10)
+            }
+          })
+        }
+        .width('100%')
+        .height('30%')
+
         Button('toggle intercept')
           .onClick(() => {
             LogManager.interceptConsole();
@@ -90,9 +79,10 @@ struct Index {
           .onClick(() => {
             this.logTest();
           })
-        Button('change page')
+        Button('file state')
           .onClick(() => {
-            router.pushUrl({ url: 'pages/SecondPage' })
+            this.getFileSize();
+            // router.pushUrl({ url: 'pages/SecondPage' })
           })
       }
       .width('100%')
