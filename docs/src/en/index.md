@@ -7,7 +7,7 @@ hero:
   text: "Elegant, easy-to-use HarmonyOS log library"
   tagline: "Designed for HarmonyOS"
   image:
-    src: log4a_banner@1x.svg
+    src: ../log4a_banner@1x.svg
     alt: Log4a
   actions:
     - theme: brand
