@@ -23,7 +23,7 @@ class Example2 {
 ```
 ## Priority of the log level
 
-If you've read through [Quick Start](/guide/geting-started), you've noticed that we can set a log output level in both 'Logger' and Appender, so we need to cover this in particular.
+If you've read through [Quick Start](./getting-started), you've noticed that we can set a log output level in both 'Logger' and Appender, so we need to cover this in particular.
 
 ## Why is there a priority
 
