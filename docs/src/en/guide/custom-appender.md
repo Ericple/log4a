@@ -51,7 +51,7 @@ class SomeClass {
 import {defineAsyncComponent} from 'vue';
 import {inBrowser} from 'vitepress';
 
-const DemoEditor = inBrowser ?  defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
+const DemoEditor = inBrowser ?  defineAsyncComponent(()=>import('../../components/DemoEditor.vue')):()=>null;
 </script>
 
 <DemoEditor code="class SimpleAppenderClass extends AbstractAppender {

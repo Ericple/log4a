@@ -19,21 +19,22 @@ export default defineConfig({
       lang: 'en',
       themeConfig: {
         nav: [
-          { text: 'Guide', link: '/guide/getting-started' },
-          { text: 'Reference', link: '/reference' }
+          { text: 'Guide', link: '/en/guide/getting-started' },
+          { text: 'Reference', link: '/en/reference/log-manager' },
+          { text: 'Playground', link: '/en/playground/index' }
         ],
         footer: {
           message: 'Released under Apache License 2.0.',
           copyright: 'Copyright ©️ 2024-present Ericple Garrison'
         },
         sidebar: {
-          '/guide/': [
+          '/en/guide/': [
             {
               text: 'Intro',
               items: [
-                { text: 'What is Log4a?', link: '/guide/what-is-log4a' },
-                { text: 'Getting started', link: '/guide/getting-started' },
-                { text: 'Appender', link: '/guide/appender' }
+                { text: 'What is Log4a?', link: '/en/guide/what-is-log4a' },
+                { text: 'Getting started', link: '/en/guide/getting-started' },
+                { text: 'Appender', link: '/en/guide/appender' }
               ],
               collapsed: false
             },
@@ -42,15 +43,15 @@ export default defineConfig({
               items: [
                 {
                   text: 'The parameter takes precedence',
-                  link: '/guide/parameter-priority'
+                  link: '/en/guide/parameter-priority'
                 },
                 {
                   text: 'Using multithreaded output',
-                  link: '/guide/log-with-worker'
+                  link: '/en/guide/log-with-worker'
                 },
                 {
                   text: 'Log message construction',
-                  link: '/guide/format'
+                  link: '/en/guide/format'
                 }
               ]
             },
@@ -59,49 +60,49 @@ export default defineConfig({
               items: [
                 {
                   text: 'Customize your appender',
-                  link: '/guide/custom-appender'
+                  link: '/en/guide/custom-appender'
                 },
                 {
                   text: 'Log to your server',
-                  link: '/guide/log-to-socket'
+                  link: '/en/guide/log-to-socket'
                 },
                 {
                   text: 'Customize log layout',
-                  link: '/guide/custom-layout'
+                  link: '/en/guide/custom-layout'
                 },
                 {
                   text: 'Console intercept',
-                  link: '/guide/intercept-console'
+                  link: '/en/guide/intercept-console'
                 },
                 {
                   text: 'Best practice',
-                  link: '/guide/best-practice'
+                  link: '/en/guide/best-practice'
                 },
     
               ]
             },
             {
               text: 'API Reference',
-              link: '/reference/log-manager'
+              link: '/en/reference/log-manager'
             }
           ],
-          '/reference/': [
+          '/en/reference/': [
             {
               text: 'API Reference',
               items: [
-                { text: 'LogManager', link: '/reference/log-manager' },
-                { text: 'Logger', link: '/reference/logger' },
-                { text: 'MarkerManager', link: '/reference/marker-manager' },
-                { text: 'Level', link: '/reference/level' },
+                { text: 'LogManager', link: '/en/reference/log-manager' },
+                { text: 'Logger', link: '/en/reference/logger' },
+                { text: 'MarkerManager', link: '/en/reference/marker-manager' },
+                { text: 'Level', link: '/en/reference/level' },
                 {
                   text: 'Appenders',
                   items: [
-                    { text: 'AbstractAppender', link: '/reference/abstract-appender' },
-                    { text: 'FileAppender', link: '/reference/file-appender' },
-                    { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
-                    { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
-                    { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
-                    { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' }
+                    { text: 'AbstractAppender', link: '/en/reference/abstract-appender' },
+                    { text: 'FileAppender', link: '/en/reference/file-appender' },
+                    { text: 'RollingFileAppender', link: '/en/reference/rolling-file-appender' },
+                    { text: 'DailyRollingFileAppender', link: '/en/reference/daily-rolling-file-appender' },
+                    { text: 'TCPSocketAppender', link: '/en/reference/tcp-socket-appender' },
+                    { text: 'UDPSocketAppender', link: '/en/reference/udp-socket-appender' }
                   ]
                 }
               ],
@@ -112,11 +113,11 @@ export default defineConfig({
               items: [
                 {
                   text: 'Decorators',
-                  link: '/reference/decorators'
+                  link: '/en/reference/decorators'
                 },
                 {
                   text: 'Labels',
-                  link: '/reference/tags',
+                  link: '/en/reference/tags',
                   collapsed: false
                 }
               ],

@@ -1,5 +1,5 @@
 <template>
-    <button @click="handleRun" class="runButton" style="margin-bottom: 12px;">在浏览器中运行(请自行打开控制台)</button>
+    <button @click="handleRun" class="runButton" style="margin-bottom: 12px;">{{ btnStr }}</button>
     <div ref="codeEditor" :style="{ width: '100%', height: height }"></div>
 </template>
 
@@ -28,8 +28,10 @@ import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 const props = defineProps({
     code: String,
-    height: Number
+    height: Number,
+    runBtnStr: String
 });
+const btnStr = ref(props.runBtnStr ?? '在浏览器中运行(请自行打开控制台)')
 const { isDark } = useData();
 const code = ref(props.code ?? '');
 const height = ref(props.height ?? '500px');

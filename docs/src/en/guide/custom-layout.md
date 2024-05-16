@@ -2,7 +2,7 @@
 import {defineAsyncComponent} from 'vue';
 import {inBrowser} from 'vitepress';
 
-const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
+const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../../components/DemoEditor.vue')):()=>null;
 </script>
 # Badge type="tip" text="1.4.0 +" />
 
