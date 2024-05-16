@@ -6,9 +6,12 @@
 
 追加器有以下周期
 
-`onLog(level,message)`
+`onLog(level, tag, time, count, message)`
 
 - `level` Level - 日志等级
+- `tag` string - 日志所属类名
+- `time` number - 日志打印时间戳
+- `count` number - 该日志为此`Appender`处理的第`count`条日志
 - `message` string - 日志内容
 
 当有日志被记录时，追加器的onLog方法会被Logger调用，开发者可自行实现日志功能。
