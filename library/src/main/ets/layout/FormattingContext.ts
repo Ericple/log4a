@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { Level } from '../Level';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export interface FormattingContext {
   logLevel: Level;
@@ -22,4 +23,5 @@ export interface FormattingContext {
   className: string;
   stackInfo: string;
   logCount: number;
+  tempContext: TemporaryLoggerContext;
 }

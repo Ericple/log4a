@@ -14,63 +14,118 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh'
     },
-    // en: {
-    //   label: 'English',
-    //   lang: 'en',
-    //   themeConfig: {
-    //     nav: [
-    //       { text: 'Guide', link: '/guide/getting-started' },
-    //       { text: 'Reference', link: '/reference' }
-    //     ],
-    //     footer: {
-    //       message: 'Released under Apache License 2.0.',
-    //       copyright: 'Copyright ©️ 2024-present Ericple Garrison'
-    //     },
-    //     sidebar: {
-    //       '/guide/': [
-    //         {
-    //           text: '简介',
-    //           items: [
-    //             { text: '什么是Log4a?', link: '/guide/what-is-log4a' },
-    //             { text: '快速开始', link: '/guide/getting-started' },
-    //             { text: '追加器', link: '/guide/appender' }
-    //           ],
-    //           collapsed: false
-    //         },
-    //         {
-    //           text: 'API参考',
-    //           link: '/reference/log-manager'
-    //         }
-    //       ],
-    //       '/reference/': [
-    //         {
-    //           text: 'API参考',
-    //           items: [
-    //             { text: 'LogManager', link: '/reference/log-manager' },
-    //             { text: 'Logger', link: '/reference/logger' },
-    //             { text: 'MarkerManager', link: '/reference/marker-manager' }
-    //           ],
-    //           collapsed: false
-    //         },
-    //         {
-    //           text: '装饰器和标签',
-    //           items: [
-    //             {
-    //               text: '装饰器',
-    //               link: '/reference/decorators'
-    //             },
-    //             {
-    //               text: '标签',
-    //               link: '/reference/tags',
-    //               collapsed: false
-    //             }
-    //           ],
-    //           collapsed: false
-    //         }
-    //       ]
-    //     },
-    //   }
-    // },
+    en: {
+      label: 'English',
+      lang: 'en',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/guide/getting-started' },
+          { text: 'Reference', link: '/reference' }
+        ],
+        footer: {
+          message: 'Released under Apache License 2.0.',
+          copyright: 'Copyright ©️ 2024-present Ericple Garrison'
+        },
+        sidebar: {
+          '/guide/': [
+            {
+              text: 'Intro',
+              items: [
+                { text: 'What is Log4a?', link: '/guide/what-is-log4a' },
+                { text: 'Getting started', link: '/guide/getting-started' },
+                { text: 'Appender', link: '/guide/appender' }
+              ],
+              collapsed: false
+            },
+            {
+              text: 'Logging',
+              items: [
+                {
+                  text: 'The parameter takes precedence',
+                  link: '/guide/parameter-priority'
+                },
+                {
+                  text: 'Using multithreaded output',
+                  link: '/guide/log-with-worker'
+                },
+                {
+                  text: 'Log message construction',
+                  link: '/guide/format'
+                }
+              ]
+            },
+            {
+              text: 'Advanced usage',
+              items: [
+                {
+                  text: 'Customize your appender',
+                  link: '/guide/custom-appender'
+                },
+                {
+                  text: 'Log to your server',
+                  link: '/guide/log-to-socket'
+                },
+                {
+                  text: 'Customize log layout',
+                  link: '/guide/custom-layout'
+                },
+                {
+                  text: 'Console intercept',
+                  link: '/guide/intercept-console'
+                },
+                {
+                  text: 'Best practice',
+                  link: '/guide/best-practice'
+                },
+    
+              ]
+            },
+            {
+              text: 'API Reference',
+              link: '/reference/log-manager'
+            }
+          ],
+          '/reference/': [
+            {
+              text: 'API Reference',
+              items: [
+                { text: 'LogManager', link: '/reference/log-manager' },
+                { text: 'Logger', link: '/reference/logger' },
+                { text: 'MarkerManager', link: '/reference/marker-manager' },
+                { text: 'Level', link: '/reference/level' },
+                {
+                  text: 'Appenders',
+                  items: [
+                    { text: 'AbstractAppender', link: '/reference/abstract-appender' },
+                    { text: 'FileAppender', link: '/reference/file-appender' },
+                    { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
+                    { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
+                    { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
+                    { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' }
+                  ]
+                }
+              ],
+              collapsed: false
+            },
+            {
+              text: 'Decorators and labels',
+              items: [
+                {
+                  text: 'Decorators',
+                  link: '/reference/decorators'
+                },
+                {
+                  text: 'Labels',
+                  link: '/reference/tags',
+                  collapsed: false
+                }
+              ],
+              collapsed: false
+            }
+          ]
+        },
+      }
+    },
     // 'zh-tw': {
     //   label: '繁体中文',
     //   lang: 'zh-tw',
@@ -135,9 +190,9 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/getting-started' },
       { text: '参考', link: '/reference/log-manager' },
-      { text: 'Playground', link: '/playground/index' },
+      { text: '演练场', link: '/playground/index' },
       {
-        text: '1.4.2',
+        text: '1.4.3',
         items: [
           {
             text: '更新日志',

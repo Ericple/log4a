@@ -17,6 +17,7 @@ import { PatternLayout } from '../layout/PatternLayout';
 import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { NotImplementedError } from '../spi/NotImplementError';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AbstractLayout } from './AbstractLayout';
 
 export abstract class AbstractAppender {
@@ -52,11 +53,11 @@ export abstract class AbstractAppender {
     return this;
   }
 
-  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer) {
-    return this.layout.makeMessage(level, tag, time, count, message, new Error().stack ?? '');
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, tempContext: TemporaryLoggerContext) {
+    return this.layout.makeMessage(level, tag, time, count, message, new Error().stack ?? '', tempContext);
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     throw new NotImplementedError();
   }
 

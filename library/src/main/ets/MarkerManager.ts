@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 export class Marker {
-  private _name: string;
+  _name: string;
 
   constructor(name: string) {
     this._name = name;

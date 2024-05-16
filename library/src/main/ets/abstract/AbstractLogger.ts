@@ -30,7 +30,6 @@ export abstract class AbstractLogger {
   protected level: Level = Level.ALL;
   protected history: string = '';
   protected logListeners: ((level: Level, content: string) => void)[] = [];
-  protected hasConsoleAppender: boolean = false;
 
   constructor(context: any) {
     this.context = context;
@@ -115,7 +114,6 @@ export abstract class AbstractLogger {
    * @returns this
    */
   addConsoleAppender(level: Level = Level.ALL): this {
-    this.hasConsoleAppender = true;
     return this.addAppender(new ConsoleAppender(level));
   }
 
@@ -150,7 +148,6 @@ export abstract class AbstractLogger {
     for (let [key, appender] of this.appenderMap) {
       if (appender.getType() == appenderType) {
         this.appenderMap.delete(key);
-        if (appenderType == AppenderTypeEnum.CONSOLE) this.hasConsoleAppender = false;
       }
     }
     return this;
@@ -200,7 +197,7 @@ export abstract class AbstractLogger {
     if (level.intLevel() <= this.level.intLevel()) {
       const message = this.makeMessage(level, format, args);
       this.appenderMap.forEach(appender => {
-        appender.onLog(level, this.getTag(), Date.now(), this.count, message);
+        appender.onLog(level, this.getTag(), Date.now(), this.count, message, this.temporaryContext);
       })
       this.logListeners.forEach(listener => {
         listener(level, message);

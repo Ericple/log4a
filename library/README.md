@@ -4,6 +4,7 @@
 
 ### Log4a文档
 
+> 本README受篇幅限制，新特性将不再在此处介绍，有关Log4a功能详情，请查阅文档。
 > 文档网站支持在线体验并运行Log4a(仅限Github站)
 
 - [Github站(推荐)](https://ericple.github.io/log4a/)

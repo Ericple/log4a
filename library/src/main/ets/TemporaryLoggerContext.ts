@@ -16,7 +16,7 @@
 import { Marker } from './MarkerManager'
 
 export class TemporaryLoggerContext {
-  private marker: Marker;
+  marker: Marker;
 
   setMarker(marker: Marker): this {
     this.marker = marker;

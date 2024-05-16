@@ -1,112 +1,118 @@
 # Logger
 
 > [!INFO]
-> 用于输出日志，继承了`AbstractLogger`
+> is used to output logs and inherits` AbstractLogger `
 
-## 方法
+## Method
 
-`Logger`具有以下方法
+`Logger` has the following methods
 
 ## `registerLogListener(listener): this` <Badge type="tip" text="1.3.0-rc.1 +" />
 
 - `listener` (level: Level, content: string) => void
 
-注册一个监听器，当有日志被记录时调用，支持链式调用
+Register a listener, call when a log is recorded, support chain calls
 
-## `getHistoryOfAppender(predicates)` <Badge type="tip" text="1.1.0 +" />
+getHistoryOfAppender(predicates) <Badge type="tip" text="1.1.0 +" />
 
-- `predicates` string | AppenderTypeEnum - 可以是`Appender`名称或类型，返回第一个符合条件的`Appender`
+- `predicates` string | AppenderTypeEnum - Can be the name or type of an Appender. Returns the first Appender that meets the conditions
 
-获取本次应用启动至被调用时期间生成的日志
+Gets the logs generated between the time the application is started and when it is called
 
-## `getAllHistoryOfAppender(predicates)` <Badge type="tip" text="1.1.0 +" />
+getAllHistoryOfAppender(predicates) <Badge type="tip" text="1.1.0 +" />
 
-- `predicates` string - 用于搜索具名`FileAppender`
+- `predicates` string - Searches for a named FileAppender
 
-获取包括缓存在内的所有日志内容
+Get all log contents, including cache
 
 ## `setLevel(level): this`
 
-- `level` Level - 要设置的日志级别
+- `level` Level - Log level to be set
 
-设置新日志级别，该方法会返回实例本身，支持链式调用
+To set the new log level, this method returns the instance itself and supports chain calls
 
 ## `withMarker(marker): this`
 
-- `marker` Marker - 要添加的标签，通过`MarkerManager.getMarker`获取
+- `marker` Marker - The label to be added, obtained by `MarkerManager.getMarker`
 
-为下一条要写出的日志添加一个标签，该标签将随附在日志内容尾部，支持链式调用
+Add a label for the next log to be written, which will be attached to the end of the log content, supporting chain calls
 
-## `addFileAppender(path, name, level?, options?)`
+## `addAppender(appender)`
 
-- `path` string - 要写出的文件路径
-- `name` string - 该`FileAppender`的名称，用于作为删除索引
-- `level` Level - 最高输出日志级别，高于该级别的日志将被忽略
+- `appender` T extends AbstractAppender - Appends
+
+Bind appender to the Logger. appender can be any add-on built into log4a, or it can be implemented by the developer.
+
+## `addFileAppender(path, name, level? , options?) `
+
+- `path` string - File path to write out
+- `name` string - Name of the FileAppender, used as an index to delete
+- `level` Level - Indicates the highest level of output logs. Logs higher than this level are ignored
 - `options`
-  - `useWorker` boolean - 是否启用多线程
-  - `maxFileSize` number - 最大日志文件占用，以KB为单位
-  - `maxCacheCount` number - 最大日志缓存数量
-  - `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - 加密函数
+- `useWorker` boolean - Specifies whether to enable multithreading
+- `maxFileSize` number - The maximum log file usage, in KB
+- `maxCacheCount` number - Maximum number of log caches
+- `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - Encryption function
 
-向`Logger`添加一个新的`FileAppender`，支持链式调用
+Adds a new FileAppender to Logger that supports chain calls
 
-## `addConsoleAppender(level?): this`
+## `addConsoleAppender(level?) : this`
 
-- `level` - 输出的最高日志等级，默认Level.ALL
+- `level` - Indicates the highest log Level. The default value is level.all
 
-设置该`Logger`的日志输出级别，高于此级别的日志将被忽略，过滤优先度高于`Appender`，支持链式调用
+Set the log output level of this Logger. Logs higher than this level are ignored. The filtering priority is higher than that of Appender
 
 ## `clearAppender(): this`
 
-删除该`Logger`所有绑定的`Appender`，支持链式调用
+Delete all the appenders bound to this Logger and support chain calls
 
 ## `removeTypedAppender(type): this`
 
-- `type` AppenderTypeEnum - 要移除的`Appender`类型
+- `type` AppenderTypeEnum - Type of Appender to be removed
 
-删除所有类型为`type`的`Appender`，支持链式调用
+Removes all appenders of type `type` and supports chain calls
 
 ## `removeNamedAppender(name): this`
 
-- `name` string - 要移除的`Appender`名称
+- `name` string - Name of an Appender to be removed
 
-删除名称为`name`的`FileAppender`，支持链式调用
+Delete FileAppender named `name` to support chain calls
 
-## `debug(format, ...args)`
+## `debug(format, ... args)`
 
-- `format` string - 输出格式
-- `args` any - 输出变量
+- `format` string - Indicates the output format
+- `args` any - Output variable
 
-输出一条`Level`为`DEBUG`的日志
+Output a log whose Level is DEBUG
 
-## `error(format, ...args)`
+## `error(format, ... args)`
 
-- `format` string - 输出格式
-- `args` any - 输出变量
+- `format` string - Indicates the output format
+- `args` any - Output variable
 
-输出一条`Level`为`ERROR`的日志
+Output a log whose Level is ERROR
 
-## `info(format, ...args)`
+## `info(format, ... args)`
 
-- `format` string - 输出格式
-- `args` any - 输出变量
+- `format` string - Indicates the output format
+- `args` any - Output variable
 
-输出一条`Level`为`INFO`的日志
+Output a log whose Level is INFO
 
-## `fatal(format, ...args)`
+## `fatal(format, ... args)`
 
-- `format` string - 输出格式
-- `args` any - 输出变量
+- `format` string - Indicates the output format
+- `args` any - Output variable
 
-输出一条`Level`为`FATAL`的日志
+Output a log whose Level is FATAL
 
-## `trace(format, ...args)`
+## `trace(format, ... args)`
 
-- `format` string - 输出格式
-- `args` any - 输出变量
+- `format` string - Indicates the output format
+- `args` any - Output variable
 
-输出一条`Level`为`TRACE`的日志
+Output a log whose Level is TRACE
 
 ## `terminate()`
 
-终止所有`Appender`，并结束该`Logger`的运行
+Terminates all appenders and ends the Logger`s running

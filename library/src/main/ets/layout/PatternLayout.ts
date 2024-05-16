@@ -16,6 +16,7 @@
 import { Level } from '../Level';
 import { AbstractLayout } from '../abstract/AbstractLayout';
 import { PatternParser } from '../pattern/PatternParser';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export class PatternLayout implements AbstractLayout {
   private pattern: string = '[%-5p]\t%d\t[%C:%r]\t%m';
@@ -31,14 +32,15 @@ export class PatternLayout implements AbstractLayout {
     return this;
   }
 
-  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string): string {
+  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string, tempContext: TemporaryLoggerContext): string {
     return PatternParser.parse(this.pattern, {
       logLevel: level,
       logMessage: message,
       timestamp,
       logCount,
       className: tag,
-      stackInfo
+      stackInfo,
+      tempContext
     });
   }
 }

@@ -21,6 +21,7 @@ import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { WorkerManager } from '../WorkerManager';
 import { worker } from '@kit.ArkTS';
 import { LogManager } from '../LogManager';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export interface FileAppenderOptions {
   useWorker?: boolean;
@@ -65,7 +66,7 @@ export class FileAppender extends AbstractAppender {
     return false;
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, tempContext: TemporaryLoggerContext): this {
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
@@ -73,7 +74,8 @@ export class FileAppender extends AbstractAppender {
         tag,
         time,
         count,
-        path: this.path
+        path: this.path,
+        tempContext
       });
       return this;
     }
@@ -82,7 +84,7 @@ export class FileAppender extends AbstractAppender {
       if (this.options && this.options.filter) {
         if (!this.options.filter(level, message)) return;
       }
-      message = this.makeMessage(level, tag, time, count, message);
+      message = this.makeMessage(level, tag, time, count, message, tempContext);
       if (this.options && this.options.encryptor) {
         message = this.options.encryptor(level, message);
       }

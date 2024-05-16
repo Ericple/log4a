@@ -1,22 +1,22 @@
 # LogManager
 
 > [!INFO]
-> 管理全局Logger
+> Manage the Global Logger
 
-## 方法
+## Method
 
-`LogManager`具有以下方法
+`LogManager` has the following methods
 
 ## `getLogger(context)`
 
-- `context` Object 必须传入`this`
+- `context` Object must be passed in `this`
 
-根据上下文获取对应Logger，参数需传入this
+Obtain the corresponding Logger according to the context, and pass this as the parameter
 
 ## `anonymous()`
 
-获取匿名Logger
+Get anonymous Logger
 
 ## `terminate()`
 
-回收所有Logger。调用该方法的同时，Log4a会清除所有Appender，如果Appender存在多线程，则线程会被终止。开发者应在应用退出时调用此方法。
+Reclaim all loggers. When this method is called, Log4a clears all appenders, or if the Appender is multithreaded, the thread is terminated. The developer should call this method when the application exits.

@@ -16,16 +16,17 @@
 import { AbstractAppender } from '../abstract/AbstractAppender';
 import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export class ConsoleAppender extends AbstractAppender {
-  onLog(lvl: Level, tag: string, time: number, count: number, message: string): this {
+  onLog(lvl: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     if (lvl.intLevel() > this.level.intLevel()) return this;
-    this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message));
+    this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message, tempContext));
     return this;
   }
 
   constructor(level: Level = Level.ALL) {
-    super('', level, AppenderTypeEnum.CONSOLE);
+    super('console', level, AppenderTypeEnum.CONSOLE);
   }
 
   private getLogFunction(lvl: Level): Function {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LogManager, Logger } from '@log/log4a';
+import { LogManager, Logger, MarkerManager } from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
@@ -34,7 +34,8 @@ struct Index {
   logTest() {
     let i = 20;
     while (i--) {
-      this.logger.info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
+      this.logger.withMarker(MarkerManager.getMarker('Test Marker'))
+        .info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
     }
   }
 

@@ -1,14 +1,14 @@
 # MarkerManager
 
 > [!INFO]
-> 用于管理全局标签
+> Used to manage global labels
 
-## 方法
+## Method
 
-`MarkerManager`具有以下方法
+`MarkerManager` has the following methods
 
 ## `getMarker(name)`
 
-- `name` string - 标签名称
+- `name` string - Label name
 
-获取名称为`name`的全局标签
+Gets the global tag named `name`

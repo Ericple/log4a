@@ -1,16 +1,16 @@
-# 标签
+# tag
 
-为帮助开发者快速获得有效信息，Log4a提供了两种标签用于追踪属性函数运行情况。
+To help developers get useful information quickly, Log4a provides two tags to track the performance of property functions.
 
 ## `TracedStr`
 
-置于模板字符串前，用于跟踪模板字符串的构建参数
+Placed before a template string, used to track build parameters for the template string
 
 ## `MarkedTracedStr(mark)`
 
-- `mark` string - 标签名
+- `mark` string - Label name
 
-置于模板字符串前，用于跟踪模板字符串的构建参数，输出日志中包含`mark`，利于搜索
+Put in front of the template string, used to track the template string construction parameters, the output log contains` mark `, easy to search
 
 > [!IMPORTANT]
-> 这两者的区别是，`TracedStr`是标签，可以直接使用，而`MarkedTracedStr`是一个函数，需要传入一个标签名。
+The difference between the two is that `TracedStr` is a tag that can be used directly, while `MarkedTracedStr` is a function that needs to be passed a tag name.

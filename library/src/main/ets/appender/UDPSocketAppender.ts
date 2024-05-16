@@ -20,6 +20,7 @@ import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { Level } from '../Level';
 import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export interface UDPSocketAppenderOptions extends SocketAppenderOptions {
   address: string;
@@ -39,12 +40,12 @@ export class UDPSocketAppender extends CSocketAppender {
     this._socket.bind({ address: '0.0.0.0' });
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     if (this._terminated) return this;
     if (this._config.filter) {
       if (!this._config.filter(level, message)) return this;
     }
-    message = this.makeMessage(level, tag, time, count, message);
+    message = this.makeMessage(level, tag, time, count, message, tempContext);
     this._socket.getState().then(state => {
       if (state.isBound) {
         this.send(message);

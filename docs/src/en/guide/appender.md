@@ -1,26 +1,26 @@
-# 追加器
+# Appender
 
-追加器的作用是将日志打印至指定的某处，Log4a实现了两种追加器，分别为
+The function of the append is to print the log to a specified place. Log4a implements many kinds of appends, the most basic of which are
 
 - `ConsoleAppender`
 - `FileAppender`
 
 ## `ConsoleAppender`
 
-将日志输出到命令行就是通过ConsoleAppender实现的，获取Logger时，Log4a会自动分配一个ConsoleAppender至Logger,因此，正常情况下，你无需配置ConsoleAppender，除非你不希望日志在控制台上出现。
+Log4a automatically allocates a ConsoleAppender to the Logger when it is acquired. Therefore, you do not need to configure ConsoleAppender unless you do not want logs to be stored on the console appear
 
-## 禁用控制台输出
+## Disable console output
 
-要禁用控制台输出，请这么做：
+To disable console output, do this:
 
 ```typescript
-// 移除logger绑定的ConsoleAppender
+// Remove the ConsoleAppender attached to the logger
 this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
 ```
 
-## 再次启用控制台输出
+## Enable console output again
 
-如果在某些情况下，你移除了ConsoleAppender，但后续又需要在控制台中打印日志，可以这么做：
+If in some cases you remove ConsoleAppender but then need to print logs in the console, you can do this:
 
 ```typescript
 // 向logger添加一个ConsoleAppender
@@ -28,36 +28,38 @@ this.logger.addConsoleAppender();
 ```
 
 > [!WARNING]
-> 每个logger至多绑定一个ConsoleAppender，如果logger已绑定ConsoleAppender，则调用addConsoleAppender不会发生任何事。
+> Each logger has at most one ConsoleAppender attached to it. If the logger has ConsoleAppender attached to it, calling addConsoleAppender overwrites the existing ConsoleAppender. (Before 1.4.3 Nothing happens when you call this method).
 
 ## `FileAppender`
 
-FileAppender提供输出日志到文件的能力，需要开发者手动绑定至Logger。创建FileAppender时开发者可以设置日志缓存最大数量、日志文件占用上限、是否使用多线程、加密函数。
-
-> [!INFO]
-> 对于同一个文件，FileAppender在全局下是唯一的，多个Logger可以配置相同的FileAppender，这意味着一个FileAppender可以被绑定至多个Logger实例。这是log4a内部的实现，实际开发时，开发者无需操心这一点。
-
-添加一个FileAppender需要提供两个必选参数：
-
-- 文件路径
-- FileAppender名称
+The FileAppender module provides the ability to output logs to files. You need to manually bind it to the Logger. When creating a FileAppender, you can set the maximum number of log caches, the maximum log file usage, whether to use multiple threads, and the encryption function.
 
 > [!TIP]
-> 名称用于作为索引来删除某已绑定到Logger的FileAppender
+> For a file, a FileAppender is globally unique. Multiple loggers can be configured with the same FileAppender, which means that a FileAppender can be bound to multiple Logger instances. This is an internal implementation of log4a, and developers do not need to worry about this when they are actually developing.
 
-## 添加一个FileAppender
+Adding a FileAppender requires two mandatory parameters:
 
-要添加一个FileAppender，可以这么做：
+- File path
+- FileAppender Name
+
+> [!TIP]
+> Name is used as an index to delete a FileAppender that is bound to the Logger
+> 
+> Since 1.3.1 version, can that the LogManager. SetLogFilePath to specify all of the log file storage paths, rather than in every when additional device to create a new file from the context for a file path. However, you must ensure that only the file name is provided when you create the append.
+
+## Add a FileAppender
+
+To add a FileAppender, do this:
 
 ```typescript:line-numbers
 this.logger.addFileAppender(getContext(this).filesDir + '/fileName.log', 'mainLog');
 ```
 
-这段代码向logger添加了一个具名FileAppender，名称为`mainLog`，指定了文件路径为应用文件沙箱路径下的`fileName.log`。
+This code adds a named FileAppender to logger named `mainLog`, specifying the file path to `fileName.log` in the application file sandbox path.
 
-## 添加一个多线程FileAppender <Badge type="tip" text="1.3.0-rc.1 +" />
+## Add a multi thread FileAppender <Badge type="tip" text="1.3.0-rc.1 +" />
 
-要添加具有多线程能力的FileAppender，可以通过以下方式:
+To add a FileAppender with multithreading capabilities, you can do the following:
 
 ```typescript:line-numbers{6}
 this.logger.addFileAppender(
@@ -71,11 +73,11 @@ this.logger.addFileAppender(
 ```
 
 > [!TIP]
-> 为了尽可能不影响应用本身的并发需要，不论开发者设置多少个多线程FileAppender，Log4a都将只占用一个线程。
+> In order to minimize the concurrency needs of the application itself, Log4a will only occupy one thread, no matter how many multithreaded FileAppenders the developer sets up.
 
-## 配置文件缓存 <Badge type="tip" text="1.3.0-rc.1 +" />
+## Configuration file cache <Badge type="tip" text="1.3.0-rc.1 +" />
 
-如果需要配置日志文件最大缓存个数及最大占用，需要在options中传入相关参数
+To configure the maximum number and usage of log files, enter related parameters in options
 
 ```typescript:line-numbers{6,7}
 this.logger.addFileAppender(
@@ -89,23 +91,23 @@ this.logger.addFileAppender(
 );
 ```
 
-- `maxFileSize` 指定了最大日志文件占用，单位为KB。当日志文件大小超过限制时，将会生成一个缓存文件，并新建一个日志文件以继续写入日志。
-- `maxCacheCount` 指定了最大日志文件缓存数量，如果日志缓存数量超过该值，则会删除最早生成的日志缓存。
+- `maxFileSize` Specifies the maximum log file usage in KB. When the log file size exceeds the limit, a cache file is generated and a new log file is created to continue writing logs.
+- `maxCacheCount` Specifies the maximum number of log file caches. If the number of log caches exceeds this value, the earliest generated log caches are deleted.
 
-## 配置日志加密
+## Configuring log encryption
 
-FileAppender允许开发者传入一个加密函数来进行日志加密，该函数接受两个参数，且需要返回加密后的内容：
+FileAppender allows developers to encrypt logs by passing in an encryption function that takes two parameters and returns the encrypted content:
 
-- 日志等级
-- 日志内容
+- Log level
+- Log content
 
-这样的设计允许开发者只对某些或某个日志等级的日志进行加密，实现局部加密或整体加密，也使得开发者可以更加自由地编写加密算法。
+Such a design allows developers to encrypt only some or a certain log level of logs, to achieve partial encryption or overall encryption, but also allows developers to write encryption algorithms more freely.
 
-配置加密：
+Configure encryption:
 
 ```typescript:line-numbers{10-15}
 const encryptFunction = (origin: string | ArrayBuffer): string | ArrayBuffer => {
-    // 对origin利用自定义的加密算法
+    // Take advantage of custom encryption algorithms for origin
     return origin;
 }
 this.logger.addFileAppender(
@@ -117,7 +119,7 @@ this.logger.addFileAppender(
             if(level.name() == 'privateLevel') {
                 return encryptFunction(log);
             }
-            return log; // 如果不需要加密，必须返回原始log
+            return log; // If encryption is not required, the original log must be returned
         }
     }
 );

@@ -1,11 +1,11 @@
-# 装饰器
+# Decorator
 
-为帮助开发者快速获得有效信息，Log4a提供了两种装饰器用于追踪属性函数运行情况。
+To help developers get useful information quickly, Log4a provides two decorators for tracking property functions.
 
 ## `@TraceEntry`
 
-用于追踪函数入参
+Used to trace function entries
 
 ## `@TraceExit`
 
-用于追踪函数运行结果
+Used to track function results

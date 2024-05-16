@@ -42,6 +42,9 @@ class PatternParserClass {
     if (context.logLevel._intLevel < Level.INFO._intLevel && !pattern.match(this.locationReg)) {
       result += this.getStackInfo(context.stackInfo);
     }
+    if (context.tempContext.marker) {
+      result += context.tempContext.marker._name;
+    }
     return result;
   }
 

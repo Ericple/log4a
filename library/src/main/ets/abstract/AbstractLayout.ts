@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { Level } from '../Level';
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export interface AbstractLayout {
-  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, stackInfo: string): string;
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, stackInfo: string, tempContext: TemporaryLoggerContext): string;
 }
