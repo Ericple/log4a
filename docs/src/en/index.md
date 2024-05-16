@@ -12,13 +12,13 @@ hero:
   actions:
     - theme: brand
       text: What is Log4a?
-      link: /guide/what-is-log4a
+      link: /en/guide/what-is-log4a
     - theme: alt
       text: Quick start
-      link: /guide/getting-started
+      link: /en/guide/getting-started
     - theme: alt
-      text: Gitee
-      link: https://gitee.com/ericple/log4a
+      text: Github
+      link: https://github.com/ericple/log4a
 
 features:
   - title: Use decorators and labels
