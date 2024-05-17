@@ -25,7 +25,7 @@ export default defineConfig({
         ],
         footer: {
           message: 'Released under Apache License 2.0.',
-          copyright: 'Copyright ©️ 2024-present Ericple Garrison'
+          copyright: 'Copyright ©️ 2024-present Tingjin Guo | Stands with people of GAZA'
         },
         sidebar: {
           '/en/guide/': [
@@ -308,7 +308,7 @@ export default defineConfig({
 
     footer: {
       message: '以 Apache License 2.0 许可证发布',
-      copyright: 'Copyright ©️ 2024-至今 郭挺劲'
+      copyright: 'Copyright ©️ 2024-至今 郭挺劲 | 与加沙人民同在'
     },
 
     search: {
