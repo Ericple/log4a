@@ -35,6 +35,8 @@ export function InitializeAllLoggers(logFilePath: string) {
   LogManager.getLogger('Index')
     .addFileAppender('Xlog.log', 'mainAppender', Level.INFO, {
       maxCacheCount: 10,
-      maxFileSize: 10
+      maxFileSize: 10,
+      expireTime: 5,
+      useWorker: true
     })
 }

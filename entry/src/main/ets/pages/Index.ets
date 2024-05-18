@@ -46,6 +46,8 @@ struct Index {
     this.caches = FileManager.getCachedFiles(url)
     fs.stat(url).then(stat => {
       this.logger.info('file stat: {}', stat.size / 1000,);
+    }).catch((e: Object) => {
+      this.logger.error('failed to get file stat: {}', e)
     })
   }
 

@@ -37,7 +37,7 @@ class LogManagerClass {
   }
 
   /**
-   * 获取CLass或Struct的Logger
+   * 获取Class或Struct的Logger
    * @param context
    * @returns Logger
    * @since 1.0.0

@@ -33,6 +33,7 @@ export interface FileAppenderOptions {
   maxCacheCount?: number;
   encryptor?: (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer;
   filter?: (level: Level, content: string | ArrayBuffer) => boolean;
+  expireTime?: number;
 }
 
 export class FileAppender extends AbstractAppender {
@@ -54,7 +55,10 @@ export class FileAppender extends AbstractAppender {
     if (options?.useWorker) {
       this.worker = WorkerManager.getFileAppendWorker();
       this.worker.postMessage({
-        path, name, level, options
+        path: this.path,
+        name,
+        level,
+        options
       });
     }
   }
@@ -75,7 +79,8 @@ export class FileAppender extends AbstractAppender {
         time,
         count,
         path: this.path,
-        tempContext
+        tempContext,
+        options: this.options
       });
       return this;
     }
@@ -97,7 +102,7 @@ export class FileAppender extends AbstractAppender {
       fs.writeSync(f.file.fd, message);
       if (this.options && this.options.maxFileSize) {
         if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
-          FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles);
+          FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles, this.options.expireTime);
         }
       }
       this._history += message + '\n';

@@ -173,22 +173,47 @@ export abstract class AbstractLogger {
     return this;
   }
 
+  /**
+   * 打印一条DEBUG级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   */
   debug(format: string, ...args: any[]) {
     this.print(Level.DEBUG, format, args);
   }
 
+  /**
+   * 打印一条ERROR级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   */
   error(format: string, ...args: any[]) {
     this.print(Level.ERROR, format, args);
   }
 
+  /**
+   * 打印一条INFO级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   */
   info(format: string, ...args: any[]) {
     this.print(Level.INFO, format, args);
   }
 
+  /**
+   * 打印一条FATAL级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   */
   fatal(format: string, ...args: any[]) {
     this.print(Level.FATAL, format, args);
   }
 
+  /**
+   * 打印一条TRACE级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   */
   trace(format: string, ...args: any[]) {
     this.print(Level.TRACE, format, args);
   }

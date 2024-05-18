@@ -33,11 +33,12 @@ workerPort.onmessage = (e: MessageEvents) => {
   } else {
     const name: string = e.data.name;
     const level: Level = e.data.level ?? Level.ALL;
-    const options: FileAppenderOptions = e.data.options;
+    let options: FileAppenderOptions = e.data.options;
+    options.useWorker = false;
     appender = new FileAppender(path, name, level, options);
+    appenderArray.set(path, appender);
   }
   if (e.data.message) {
-    console.log(e.data.level)
     appender.onLog(e.data.level, e.data.tag, e.data.time, e.data.count, e.data.message, e.data.tempContext);
   }
 }

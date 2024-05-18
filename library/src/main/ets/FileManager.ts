@@ -83,11 +83,17 @@ class FileManagerClass {
     return this._fileMap.get(path);
   }
 
-  backup(path: string, limitCount: number, cached: string[]): void {
-    const backupName = path + '.' + Date.now()
+  backup(path: string, limitCount: number, cached: string[], expireTime?: number): void {
+    let now = Date.now();
+    const backupName = path + '.' + now;
     if (fs.accessSync(path)) {
       fs.moveFileSync(path, backupName);
       cached.push(backupName);
+      if (expireTime != undefined) {
+        while (cached.length > 0 && ((now / 1000) - fs.statSync(cached[0]).mtime > expireTime)) {
+          fs.unlink(cached.shift());
+        }
+      }
       if (this._fileMap.delete(path)) {
         const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
         this._fileMap.set(path, new ManagedFile(f, cached));
