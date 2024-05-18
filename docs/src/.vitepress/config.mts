@@ -21,7 +21,16 @@ export default defineConfig({
         nav: [
           { text: 'Guide', link: '/en/guide/getting-started' },
           { text: 'Reference', link: '/en/reference/log-manager' },
-          { text: 'Playground', link: '/en/playground/index' }
+          { text: 'Playground', link: '/en/playground/index' },
+          {
+            text: '1.4.4',
+            items: [
+              {
+                text: 'CHANGELOG',
+                link: 'https://gitee.com/ericple/log4a/blob/master/library/CHANGELOG.md'
+              }
+            ]
+          }
         ],
         footer: {
           message: 'Released under Apache License 2.0.',
@@ -193,7 +202,7 @@ export default defineConfig({
       { text: '参考', link: '/reference/log-manager' },
       { text: '演练场', link: '/playground/index' },
       {
-        text: '1.4.3',
+        text: '1.4.4',
         items: [
           {
             text: '更新日志',
