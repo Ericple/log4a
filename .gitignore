@@ -16,3 +16,4 @@
 /docs/dist
 /dist
 **/.DS_Store
+**/BuildProfile.ets

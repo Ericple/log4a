@@ -86,13 +86,15 @@ this.logger.addFileAppender(
     Level.ALL, 
     {
         maxFileSize: 10,
-        maxCacheCount: 10
+        maxCacheCount: 10,
+        expireTime: 3600
     }
 );
 ```
 
 - `maxFileSize` 指定了最大日志文件占用，单位为KB。当日志文件大小超过限制时，将会生成一个缓存文件，并新建一个日志文件以继续写入日志。
 - `maxCacheCount` 指定了最大日志文件缓存数量，如果日志缓存数量超过该值，则会删除最早生成的日志缓存。
+- `expireTime` 指定日志缓存文件的过期时间，过期日志在下次生成新日志缓存文件时将被删除
 
 ## 配置日志加密
 
