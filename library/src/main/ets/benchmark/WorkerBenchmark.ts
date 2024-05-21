@@ -16,34 +16,29 @@
 import { Level } from '../Level';
 import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
+import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { BenchmarkBase, IBenchmark } from './BenchmarkBase';
 
-export class BenchmarkWithWorker extends BenchmarkBase implements IBenchmark {
-  private logger: Logger;
+export class Benchmark extends BenchmarkBase implements IBenchmark {
+  logger: Logger;
+  logger_w: Logger;
 
   constructor(path: string) {
     super();
-    this.logger = LogManager.getLogger(this).addFileAppender(path, 'main', Level.ALL, {
-      useWorker: true
-    });
-  }
-
-  benchmark(): void {
-    this.start(this.logger);
-  }
-}
-
-export class BenchmarkWithoutWorker extends BenchmarkBase implements IBenchmark {
-  private logger: Logger;
-
-  constructor(path: string) {
-    super();
-    this.logger = LogManager.getLogger(this).addFileAppender(path, 'main', Level.ALL, {
+    this.logger.removeAppenderByType(AppenderTypeEnum.CONSOLE).addFileAppender(path, 'main', Level.ALL, {
       useWorker: false
     });
+    this.logger_w.removeAppenderByType(AppenderTypeEnum.CONSOLE)
+      .addFileAppender(path + '.w', 'mw', Level.ALL, {
+        useWorker: true
+      })
   }
 
-  benchmark(): void {
-    this.start(this.logger);
+  withWorker(): void {
+    this.start(this.logger_w)
+  }
+
+  withoutWorker(): void {
+    this.start(this.logger)
   }
 }

@@ -26,7 +26,7 @@ export { LogManager } from './src/main/ets/LogManager'
 
 export { Level } from './src/main/ets/Level'
 
-export { BenchmarkWithWorker, BenchmarkWithoutWorker } from './src/main/ets/benchmark/WorkerBenchmark'
+export { Benchmark } from './src/main/ets/benchmark/WorkerBenchmark'
 
 export { ConsoleAppender } from './src/main/ets/appender/ConsoleAppender';
 

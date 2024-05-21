@@ -79,8 +79,7 @@ export class FileAppender extends AbstractAppender {
         time,
         count,
         path: this.path,
-        tempContext,
-        options: this.options
+        tempContext
       });
       return this;
     }

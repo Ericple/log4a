@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LogManager, Logger, MarkerManager } from '@log/log4a';
+import { LogManager, Logger, MarkerManager, Benchmark } from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
@@ -26,6 +26,7 @@ struct Index {
   @State logger: Logger = LogManager.getLogger(this);
   intercepted: boolean = false;
   @State caches: string[] = [];
+  bench: Benchmark = new Benchmark('benchmark.log')
 
   aboutToAppear(): void {
     this.logTest()
@@ -85,7 +86,14 @@ struct Index {
         Button('file state')
           .onClick(() => {
             this.getFileSize();
-            // router.pushUrl({ url: 'pages/SecondPage' })
+          })
+        Button('worker benchmark')
+          .onClick(() => {
+            this.bench.withWorker()
+          })
+        Button('non worker benchmark')
+          .onClick(() => {
+            this.bench.withoutWorker()
           })
       }
       .width('100%')

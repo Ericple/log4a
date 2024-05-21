@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 import { Logger } from '../Logger';
+import { LogManager } from '../LogManager';
 import { randomString } from '../spi/randomString';
 
 export interface IBenchmark {
-  benchmark(): void;
+  withWorker(): void;
+
+  withoutWorker(): void;
 }
 
 export abstract class BenchmarkBase {
   protected data: any[] = [];
+  protected logger: Logger = LogManager.getLogger('DefaultLogger');
+  protected logger_w: Logger = LogManager.getLogger('WorkerLogger');
 
   constructor() {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10000; i++) {
       this.data.push(randomString(Math.random() * 100));
     }
   }
