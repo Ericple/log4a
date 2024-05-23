@@ -18,6 +18,7 @@ import { Logger } from './Logger';
 import { WorkerManager } from './WorkerManager';
 import fs from '@ohos.file.fs';
 import { Level } from './Level';
+import { ConsoleAppender } from './appender/ConsoleAppender';
 
 class Anonymous {
 }
@@ -32,8 +33,14 @@ const consoleContext = new Console()
 class LogManagerClass {
   private _loggerMap: Map<string, AbstractLogger> = new Map();
   private _logPath: string = '';
+  private _console_intercept: boolean = false;
   private consoleBundle = {
-    log: console.log
+    log: console.log,
+    warn: console.warn,
+    info: console.info,
+    trace: console.trace,
+    error: console.error,
+    debug: console.debug
   }
 
   /**
@@ -112,15 +119,26 @@ class LogManagerClass {
    * @since 1.3.1
    */
   interceptConsole(): void {
-    Object.defineProperty(console, 'log', {
-      value: (...args: any[]) => {
+    if (this._console_intercept) return;
+    this._console_intercept = true;
+    let types = ['log', 'error', 'debug', 'warn', 'trace', 'info'];
+    types.forEach(type => {
+      this.consoleBundle[type] = console[type];
+      console[type] = (...args: any[]) => {
         let format = '';
         for (let i = 0; i < args.length; i++) {
           format += '{} ';
         }
-        this.consoleBundle.log(this.console().makeMessage(Level.INFO, format, args))
+        let Console = this.console();
+        if (type == 'log') type = 'info';
+        if (type == 'warn') type = 'trace';
+        Console[type](format, ...args)
       }
     });
+  }
+
+  getOriginalConsole() {
+    return this.consoleBundle;
   }
 }
 

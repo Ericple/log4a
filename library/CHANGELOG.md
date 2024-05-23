@@ -1,3 +1,8 @@
+# 1.4.6 (2024-05-xx)
+
+- 新增：支持通过调用`LogManager.interceptConsole()`
+  开启Console日志拦截，包括`console.log`/`console.info`/`console.warn`/`console.debug`/`console.trace`/`console.error`
+
 # 1.4.5 (2024-05-21)
 
 - 新增：新增对鸿蒙PC的支持

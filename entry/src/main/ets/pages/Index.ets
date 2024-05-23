@@ -30,10 +30,11 @@ struct Index {
 
   aboutToAppear(): void {
     this.logTest()
+    LogManager.interceptConsole();
   }
 
   logTest() {
-    let i = 20;
+    let i = 0;
     while (i--) {
       this.logger.withMarker(MarkerManager.getMarker('Test Marker'))
         .info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
@@ -77,7 +78,12 @@ struct Index {
 
         Button('toggle intercept')
           .onClick(() => {
-            LogManager.interceptConsole();
+            console.log('Hello log')
+            console.debug('Hello log')
+            console.info('Hello log')
+            console.warn('Hello log')
+            console.error('Hello log')
+            console.trace('Hello log', 'with args')
           })
         Button('log')
           .onClick(() => {

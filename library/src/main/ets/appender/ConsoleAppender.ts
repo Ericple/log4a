@@ -15,6 +15,7 @@
  */
 import { AbstractAppender } from '../abstract/AbstractAppender';
 import { Level } from '../Level';
+import { LogManager } from '../LogManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
@@ -31,12 +32,12 @@ export class ConsoleAppender extends AbstractAppender {
 
   private getLogFunction(lvl: Level): Function {
     if (lvl == Level.FATAL || lvl == Level.ERROR) {
-      return console.error;
+      return LogManager.getOriginalConsole().error;
     } else if (lvl == Level.TRACE) {
-      return console.warn;
+      return LogManager.getOriginalConsole().warn;
     } else if (lvl == Level.DEBUG) {
-      return console.debug;
+      return LogManager.getOriginalConsole().debug;
     }
-    return console.info;
+    return LogManager.getOriginalConsole().info;
   }
 }

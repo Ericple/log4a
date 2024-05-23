@@ -1,4 +1,5 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
+import { LogManager } from '../../Index';
 
 export default function localUnitTest() {
   describe('localUnitTest',() => {
@@ -6,6 +7,7 @@ export default function localUnitTest() {
     beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
+      LogManager.setLogFilePath('')
     });
     beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
