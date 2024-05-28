@@ -21,6 +21,7 @@ import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { ConsoleAppender } from '../appender/ConsoleAppender';
 import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
 import { FileAppenderManager } from '../FileAppenderManager';
+import { SMTPAppender } from '../appender/SMTPAppender';
 
 export abstract class AbstractLogger {
   protected context: any;
@@ -33,15 +34,108 @@ export abstract class AbstractLogger {
 
   constructor(context: any) {
     this.context = context;
-    this.addAppender(new ConsoleAppender());
+    this.bindAppender(new ConsoleAppender());
   }
 
+  /**
+   * 手动触发SMTPAppender邮件发送
+   * @param appenderIdentifiers 要发送邮件的追加器名称
+   * @returns this
+   */
+  triggerMail(...appenderIdentifiers: string[]): this {
+    let now = Date.now();
+    this.appenderMap.forEach(appender => {
+      if (appenderIdentifiers.includes(appender.getName()) && appender instanceof SMTPAppender) {
+        (appender as SMTPAppender).triggerMail(now);
+      }
+    });
+    return this;
+  }
+
+  /**
+   * 添加日志监听器
+   * @param listener 监听回调
+   * @returns this
+   */
   registerLogListener(listener: (level: Level, content: string) => void): this {
     if (this.logListeners.indexOf(listener) < 0) {
       this.logListeners.push(listener);
     }
     return this;
   }
+
+  /**
+   * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
+   * @param predicates 追加器名称
+   * @returns AbstractAppender
+   */
+  getAppender(predicates: string): AbstractAppender | undefined;
+
+  /**
+   * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
+   * @param predicates 追加器类型
+   * @returns AbstractAppender
+   */
+  getAppender(predicates: AppenderTypeEnum): AbstractAppender | undefined;
+
+  /**
+   * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
+   * @param predicates 追加器名称或追加器类型
+   * @returns AbstractAppender
+   */
+  getAppender(predicates: string | AppenderTypeEnum): AbstractAppender | undefined;
+
+  /**
+   * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
+   * @param predicates 追加器名称或追加器类型
+   * @returns AbstractAppender
+   */
+  getAppender(predicates: string | AppenderTypeEnum): AbstractAppender | undefined {
+    if (typeof predicates == 'string') {
+      return this.appenderMap.get(predicates);
+    }
+    for (let appender of this.appenderMap) {
+      if (appender[1].getType() == predicates) {
+        return appender[1];
+      }
+    }
+  }
+
+  /**
+   * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
+   * @param predicates 追加器名称
+   * @param configCallback 配置回调，在回调中重新配置追加器
+   * @returns this
+   */
+  configureAppender(predicates: string, configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
+
+  /**
+   * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
+   * @param predicates 追加器类型
+   * @param configCallback 配置回调，在回调中重新配置追加器
+   * @returns this
+   */
+  configureAppender(predicates: AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
+
+  /**
+   * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
+   * @param predicates 追加器名称或追加器类型
+   * @param configCallback 配置回调，在回调中重新配置追加器
+   * @returns this
+   */
+  configureAppender(predicates: string | AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
+
+  /**
+   * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
+   * @param predicates 追加器名称或追加器类型
+   * @param configCallback 配置回调，在回调中重新配置追加器
+   * @returns this
+   */
+  configureAppender(predicates: string | AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this {
+    let o = configCallback(this.getAppender(predicates));
+    return this.bindAppender(o);
+  }
+
 
   getHistoryOfAppender(predicates: string): string;
 
@@ -70,7 +164,6 @@ export abstract class AbstractLogger {
    * @returns this
    */
   getAllHistoryOfAppender(predicates: string): string {
-
     let appender = this.appenderMap.get(predicates);
     if (appender) {
       return (appender as FileAppender).getAllHistory();
@@ -88,7 +181,27 @@ export abstract class AbstractLogger {
     return this;
   }
 
+  /**
+   * 添加一个追加器
+   * @param appender 要添加的追加器
+   * @returns this
+   * @deprecated 使用 bindAppender 替代此方法
+   */
   addAppender<T extends AbstractAppender>(appender: T): this {
+    if (appender == this.appenderMap.get(appender.getName())) {
+      return this;
+    }
+    appender.setId(this.appenderMap.size);
+    this.appenderMap.set(appender.getName(), appender);
+    return this;
+  }
+
+  /**
+   * 绑定一个追加器
+   * @param appender 要绑定的追加器
+   * @returns this
+   */
+  bindAppender<T extends AbstractAppender>(appender: T): this {
     if (appender == this.appenderMap.get(appender.getName())) {
       return this;
     }
@@ -103,6 +216,7 @@ export abstract class AbstractLogger {
    * @param name Appender名称，可以用于获取Appender信息
    * @param level 输出的最低日志等级
    * @returns this
+   * @deprecated 使用 bindAppender 替代此方法
    */
   addFileAppender(path: string, name: string = '', level: Level = Level.ALL, options?: FileAppenderOptions): this {
     return this.addAppender(FileAppenderManager.getFileAppender(path, name, level, options));
@@ -112,6 +226,7 @@ export abstract class AbstractLogger {
    * 向Logger添加一个新的ConsoleAppender
    * @param level 输出的最低日志等级
    * @returns this
+   * @deprecated 使用 bindAppender 替代此方法
    */
   addConsoleAppender(level: Level = Level.ALL): this {
     return this.addAppender(new ConsoleAppender(level));
@@ -132,7 +247,7 @@ export abstract class AbstractLogger {
   /**
    * 删除所有对应类型的appender
    * @param appenderType appender类型
-   * @deprecated 请使用removeAppenderByType
+   * @deprecated 使用 removeAppenderByType 替代此方法
    * @returns this
    */
   removeTypedAppender(appenderType: AppenderTypeEnum): this {
@@ -156,7 +271,7 @@ export abstract class AbstractLogger {
   /**
    * 删除指定名称的appender
    * @param name appender名称
-   * @deprecated 推荐使用removeAppenderByName
+   * @deprecated 使用 removeAppenderByName 替代此方法
    * @returns
    */
   removeNamedAppender(name: string): this {
@@ -166,7 +281,7 @@ export abstract class AbstractLogger {
   /**
    * 删除指定名称的appender
    * @param name appender名称
-   * @returns
+   * @returns this
    */
   removeAppenderByName(name: string): this {
     this.appenderMap.delete(name);
@@ -216,6 +331,15 @@ export abstract class AbstractLogger {
    */
   trace(format: string, ...args: any[]) {
     this.print(Level.TRACE, format, args);
+  }
+
+  /**
+   * 打印一条日志，INFO级
+   * @param format 日志格式
+   * @param args 日志参数
+   */
+  log(format: string, ...args: any[]) {
+    this.print(Level.INFO, format, args);
   }
 
   private print(level: Level, format: string, args: any[]) {

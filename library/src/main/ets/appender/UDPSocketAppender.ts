@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { CSocketAppender } from '../abstract/CSocketAppender';
-import { socket } from '@kit.NetworkKit';
+import socket from '@ohos.net.socket';
 import { SocketAppenderOptions } from '../spi/AppenderOptions';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { Level } from '../Level';
@@ -37,7 +37,7 @@ export class UDPSocketAppender extends CSocketAppender {
     super(config.name, config.level, AppenderTypeEnum.SOCKET);
     this._socket = socket.constructUDPSocketInstance();
     this._config = config;
-    this._socket.bind({ address: '0.0.0.0' });
+    this._socket.bind({ address: this.getIP() });
   }
 
   onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {

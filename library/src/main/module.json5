@@ -3,6 +3,14 @@
     "name": "libLog4a",
     "type": "har",
     "description": "$string:shared_desc",
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.GET_WIFI_INFO"
+      },
+      {
+        "name": "ohos.permission.INTERNET"
+      }
+    ],
     "deviceTypes": [
       "default",
       "tablet",

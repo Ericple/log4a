@@ -14,6 +14,21 @@
  * limitations under the License.
  */
 import { AbstractAppender } from './AbstractAppender';
+import { wifiManager } from '@kit.ConnectivityKit';
 
 export abstract class CSocketAppender extends AbstractAppender {
+  protected parseInfo2IP(info: number) {
+    let ip: string;
+    let ta: number[] = [];
+    ta[0] = (info >>> 24) >>> 0;
+    ta[1] = ((info << 8) >>> 24) >>> 0;
+    ta[2] = (info << 16) >>> 24;
+    ta[3] = (info << 24) >>> 24;
+    ip = String(ta[0]) + "." + String(ta[1]) + "." + String(ta[2]) + "." + String(ta[3]);
+    return ip;
+  }
+
+  protected getIP() {
+    return this.parseInfo2IP(wifiManager.getIpInfo().ipAddress)
+  }
 }

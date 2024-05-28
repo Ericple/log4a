@@ -1,3 +1,5 @@
+export { SMTPAppender } from './src/main/ets/appender/SMTPAppender'
+
 export { UDPSocketAppender } from './src/main/ets/appender/UDPSocketAppender'
 
 export { AbstractAppender } from './src/main/ets/abstract/AbstractAppender'

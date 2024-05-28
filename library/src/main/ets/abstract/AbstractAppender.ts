@@ -57,6 +57,16 @@ export abstract class AbstractAppender {
     return this.layout.makeMessage(level, tag, time, count, message, new Error().stack ?? '', tempContext);
   }
 
+  /**
+   * 当有日志被记录时，由被绑定至的Logger触发
+   * @param level 日志等级
+   * @param tag 日志标记
+   * @param time 日志触发时间
+   * @param count 此日志为被绑定的Logger打印的第count条日志
+   * @param message 日志消息
+   * @param tempContext 日志临时上下文
+   * @returns
+   */
   onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     throw new NotImplementedError();
   }
@@ -71,6 +81,15 @@ export abstract class AbstractAppender {
 
   setId(id: number): this {
     this._id = id;
+    return this;
+  }
+
+  /**
+   * 设置追加器等级
+   * @param level
+   */
+  setLevel(level: Level): this {
+    this.level = level;
     return this;
   }
 

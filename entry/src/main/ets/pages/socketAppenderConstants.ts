@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ConsoleAppender, CSVLayout, FileAppender, Level, LogManager, TCPSocketAppender } from '@log/log4a';
-import { PatternLayout } from '@log/log4a/src/main/ets/layout/PatternLayout';
-import { AppenderTypeEnum } from '@log/log4a/src/main/ets/spi/AppenderTypeEnum';
+import {
+  ConsoleAppender,
+  CSVLayout,
+  FileAppender,
+  Level,
+  LogManager,
+  PatternLayout,
+  SMTPAppender,
+  TCPSocketAppender
+} from '@log/log4a';
 
 export function InitializeAllLoggers(logFilePath: string) {
   LogManager.setLogFilePath(logFilePath);
@@ -30,6 +37,20 @@ export function InitializeAllLoggers(logFilePath: string) {
     maxFileSize: 1,
     maxCacheCount: 2
   });
+  const smtpAppender = new SMTPAppender({
+    connectOptions: {
+      host: 'smtp.host.com',
+      port: 25,
+      isSsl: false,
+      authorizationCode: 'jjoa93h0f-fch3h8qf',
+      from: 'one_bill_suggestion@peercat.cn',
+    },
+    name: 'main_smtp',
+    level: Level.ALL,
+    recipients: ['example@huawei.com'],
+    debug: true,
+    minimumCount: 10,
+  });
   const consoleAppender = new ConsoleAppender(Level.ALL)
     .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
   LogManager.getLogger('Index')
@@ -39,4 +60,5 @@ export function InitializeAllLoggers(logFilePath: string) {
       expireTime: 5,
       useWorker: true
     })
+    .bindAppender(smtpAppender);
 }

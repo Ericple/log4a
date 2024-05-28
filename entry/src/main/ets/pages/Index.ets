@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LogManager, Logger, MarkerManager, Benchmark } from '@log/log4a';
+import { LogManager, Logger, MarkerManager, Benchmark, AppenderTypeEnum } from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
@@ -34,7 +34,7 @@ struct Index {
   }
 
   logTest() {
-    let i = 0;
+    let i = 1;
     while (i--) {
       this.logger.withMarker(MarkerManager.getMarker('Test Marker'))
         .info('this is a test log, this is a test log, this is a test log, this is a test log, this is a test log, ');
@@ -78,12 +78,8 @@ struct Index {
 
         Button('toggle intercept')
           .onClick(() => {
-            console.log('Hello log')
-            console.debug('Hello log')
-            console.info('Hello log')
-            console.warn('Hello log')
-            console.error('Hello log')
-            console.trace('Hello log', 'with args')
+            // console.log('Hello log')
+            this.logger.getAppender(AppenderTypeEnum.CONSOLE)
           })
         Button('log')
           .onClick(() => {

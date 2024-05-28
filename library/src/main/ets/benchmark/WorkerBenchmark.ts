@@ -15,7 +15,6 @@
  */
 import { Level } from '../Level';
 import { Logger } from '../Logger';
-import { LogManager } from '../LogManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { BenchmarkBase, IBenchmark } from './BenchmarkBase';
 

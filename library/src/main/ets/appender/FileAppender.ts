@@ -19,7 +19,7 @@ import { FileManager } from '../FileManager';
 import { Level } from '../Level';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { WorkerManager } from '../WorkerManager';
-import { worker } from '@kit.ArkTS';
+import worker from '@ohos.worker';
 import { LogManager } from '../LogManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 

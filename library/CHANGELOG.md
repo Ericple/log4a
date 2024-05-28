@@ -1,7 +1,16 @@
-# 1.4.6 (2024-05-xx)
+# 1.5.0 (2024-05-27)
 
 - 新增：支持通过调用`LogManager.interceptConsole()`
   开启Console日志拦截，包括`console.log`/`console.info`/`console.warn`/`console.debug`/`console.trace`/`console.error`
+- 新增：`SMTPAppender`，支持邮件发送日志
+- 新增：`AbstractLogger.getAppender`，用于获取已绑定的追加器
+- 新增：`AbstractLogger.configureAppender`，用于修改已绑定的追加器
+- 新增：`AbstractAppender.setLevel`，用于设置追加器日志等级
+- 新增：`@TraceTime`装饰器，用于打印方法运行时间
+- 修正：现在SocketAppender绑定的本地ip是真实网络环境下的ip
+- 废弃：`AbstractLogger.addAppender`，请使用`AbstractLogger.bindAppender`来替代它
+- 废弃：`AbstractLogger.addConsoleAppender`，请使用`AbstractLogger.bindAppender`来替代它
+- 废弃：`AbstractLogger.addFileAppender`，请使用`AbstractLogger.bindAppender`来替代它
 
 # 1.4.5 (2024-05-21)
 

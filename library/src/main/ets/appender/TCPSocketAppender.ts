@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { CSocketAppender } from '../abstract/CSocketAppender';
-import { socket } from '@kit.NetworkKit';
+import socket from '@ohos.net.socket';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { Level } from '../Level';
 import { SocketAppenderOptions } from '../spi/AppenderOptions';
@@ -38,7 +38,7 @@ export class TCPSocketAppender extends CSocketAppender {
     super(config.name, config.level, AppenderTypeEnum.SOCKET);
     this._socket = socket.constructTCPSocketInstance();
     this._config = config;
-    this._socket.bind({ address: '0.0.0.0' })
+    this._socket.bind({ address: this.getIP() })
       .then(() => {
         this._socket.connect({
           address: {
@@ -63,7 +63,7 @@ export class TCPSocketAppender extends CSocketAppender {
     }
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext:TemporaryLoggerContext): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     if (this._terminated) return this;
     if (this._config.filter) {
       if (!this._config.filter(level, message)) return this;
