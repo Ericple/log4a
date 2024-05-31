@@ -107,11 +107,13 @@ export class SMTPAppender extends CSocketAppender {
     }
   }
 
-  triggerMail(time: number) {
+  triggerMail(time?: number) {
+    time = time ?? Date.now();
     this.sendLog(time);
   }
 
   private sendLog(time: number) {
+    if (this.tmpLogArray.length == 0) return;
     let mimeMsg = new MimeMessage();
     mimeMsg.setFrom(this.config.connectOptions.from);
     mimeMsg.setText(this.mailLayout.bodyPattern.makeMessage(Level.ALL, '', time, 0, this.tmpLogArray.join('\r\n'), '', new TemporaryLoggerContext()));
@@ -138,7 +140,7 @@ export class SMTPAppender extends CSocketAppender {
             this.logger.error('Cannot send mail due to {}', err)
           }
         });
-      } else if(err) {
+      } else if (err) {
         if (this.config.debug) {
           this.logger.error('Cannot connect to server with given properties: {}, error: {}', properties, err);
         }

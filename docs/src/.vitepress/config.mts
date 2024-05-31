@@ -23,7 +23,7 @@ export default defineConfig({
           { text: 'Reference', link: '/en/reference/log-manager' },
           { text: 'Playground', link: '/en/playground/index' },
           {
-            text: '1.4.4',
+            text: '1.5.0',
             items: [
               {
                 text: 'CHANGELOG',
@@ -87,7 +87,7 @@ export default defineConfig({
                   text: 'Best practice',
                   link: '/en/guide/best-practice'
                 },
-    
+
               ]
             },
             {
@@ -287,7 +287,11 @@ export default defineConfig({
                 { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
                 { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
                 { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
-                { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' }
+                { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' },
+                {
+                  text: 'SMTPAppender',
+                  link: '/reference/smtp-appender'
+                }
               ]
             }
           ],
@@ -328,6 +332,6 @@ export default defineConfig({
       src: '/log4a@1x.svg'
     }
   },
-  vite:{
+  vite: {
   }
 })
