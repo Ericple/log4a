@@ -252,6 +252,10 @@ export default defineConfig({
               link: '/guide/log-to-socket'
             },
             {
+              text: '输出到邮箱',
+              link: '/guide/log-to-your-mailbox'
+            },
+            {
               text: '自定义布局',
               link: '/guide/custom-layout'
             },
