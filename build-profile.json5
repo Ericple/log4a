@@ -30,14 +30,12 @@
     "products": [
       {
         "name": "default",
-        "compileSdkVersion": "4.1.0(11)",
         "compatibleSdkVersion": "4.0.0(10)",
         "runtimeOS": "HarmonyOS",
       },
       {
         "name": "oh",
         "signingConfig": "openHarmony",
-        "compileSdkVersion": 11,
         "compatibleSdkVersion": 11,
         "runtimeOS": "OpenHarmony"
       }
