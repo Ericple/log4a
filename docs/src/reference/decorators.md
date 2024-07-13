@@ -9,3 +9,15 @@
 ## `@TraceExit`
 
 用于追踪函数运行结果
+
+## `@TraceTime`
+
+用于追踪函数运行时间
+
+## `TracedStr`
+
+用于跟踪字符串模板构造过程
+
+## `MarkedTracedStr(marker:string = "Anonymous")`
+
+用于跟踪字符串模板构造过程，输出日志带标签

@@ -14,128 +14,128 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh'
     },
-    en: {
-      label: 'English',
-      lang: 'en',
-      themeConfig: {
-        nav: [
-          { text: 'Guide', link: '/en/guide/getting-started' },
-          { text: 'Reference', link: '/en/reference/log-manager' },
-          { text: 'Playground', link: '/en/playground/index' },
-          {
-            text: '1.5.0',
-            items: [
-              {
-                text: 'CHANGELOG',
-                link: 'https://gitee.com/ericple/log4a/blob/master/library/CHANGELOG.md'
-              }
-            ]
-          }
-        ],
-        footer: {
-          message: 'Released under Apache License 2.0.',
-          copyright: 'Copyright ©️ 2024-present Tingjin Guo | Stands with people of Palestine'
-        },
-        sidebar: {
-          '/en/guide/': [
-            {
-              text: 'Intro',
-              items: [
-                { text: 'What is Log4a?', link: '/en/guide/what-is-log4a' },
-                { text: 'Getting started', link: '/en/guide/getting-started' },
-                { text: 'Appender', link: '/en/guide/appender' }
-              ],
-              collapsed: false
-            },
-            {
-              text: 'Logging',
-              items: [
-                {
-                  text: 'The parameter takes precedence',
-                  link: '/en/guide/parameter-priority'
-                },
-                {
-                  text: 'Using multithreaded output',
-                  link: '/en/guide/log-with-worker'
-                },
-                {
-                  text: 'Log message construction',
-                  link: '/en/guide/format'
-                }
-              ]
-            },
-            {
-              text: 'Advanced usage',
-              items: [
-                {
-                  text: 'Customize your appender',
-                  link: '/en/guide/custom-appender'
-                },
-                {
-                  text: 'Log to your server',
-                  link: '/en/guide/log-to-socket'
-                },
-                {
-                  text: 'Customize log layout',
-                  link: '/en/guide/custom-layout'
-                },
-                {
-                  text: 'Console intercept',
-                  link: '/en/guide/intercept-console'
-                },
-                {
-                  text: 'Best practice',
-                  link: '/en/guide/best-practice'
-                },
+    // en: {
+    //   label: 'English',
+    //   lang: 'en',
+    //   themeConfig: {
+    //     nav: [
+    //       { text: 'Guide', link: '/en/guide/getting-started' },
+    //       { text: 'Reference', link: '/en/reference/log-manager' },
+    //       { text: 'Playground', link: '/en/playground/index' },
+    //       {
+    //         text: '1.5.1',
+    //         items: [
+    //           {
+    //             text: 'CHANGELOG',
+    //             link: 'https://gitee.com/ericple/log4a/blob/master/library/CHANGELOG.md'
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     footer: {
+    //       message: 'Released under Apache License 2.0.',
+    //       copyright: 'Copyright ©️ 2024-present Tingjin Guo | Stands with people of Palestine'
+    //     },
+    //     sidebar: {
+    //       '/en/guide/': [
+    //         {
+    //           text: 'Intro',
+    //           items: [
+    //             { text: 'What is Log4a?', link: '/en/guide/what-is-log4a' },
+    //             { text: 'Getting started', link: '/en/guide/getting-started' },
+    //             { text: 'Appender', link: '/en/guide/appender' }
+    //           ],
+    //           collapsed: false
+    //         },
+    //         {
+    //           text: 'Logging',
+    //           items: [
+    //             {
+    //               text: 'The parameter takes precedence',
+    //               link: '/en/guide/parameter-priority'
+    //             },
+    //             {
+    //               text: 'Using multithreaded output',
+    //               link: '/en/guide/log-with-worker'
+    //             },
+    //             {
+    //               text: 'Log message construction',
+    //               link: '/en/guide/format'
+    //             }
+    //           ]
+    //         },
+    //         {
+    //           text: 'Advanced usage',
+    //           items: [
+    //             {
+    //               text: 'Customize your appender',
+    //               link: '/en/guide/custom-appender'
+    //             },
+    //             {
+    //               text: 'Log to your server',
+    //               link: '/en/guide/log-to-socket'
+    //             },
+    //             {
+    //               text: 'Customize log layout',
+    //               link: '/en/guide/custom-layout'
+    //             },
+    //             {
+    //               text: 'Console intercept',
+    //               link: '/en/guide/intercept-console'
+    //             },
+    //             {
+    //               text: 'Best practice',
+    //               link: '/en/guide/best-practice'
+    //             },
 
-              ]
-            },
-            {
-              text: 'API Reference',
-              link: '/en/reference/log-manager'
-            }
-          ],
-          '/en/reference/': [
-            {
-              text: 'API Reference',
-              items: [
-                { text: 'LogManager', link: '/en/reference/log-manager' },
-                { text: 'Logger', link: '/en/reference/logger' },
-                { text: 'MarkerManager', link: '/en/reference/marker-manager' },
-                { text: 'Level', link: '/en/reference/level' },
-                {
-                  text: 'Appenders',
-                  items: [
-                    { text: 'AbstractAppender', link: '/en/reference/abstract-appender' },
-                    { text: 'FileAppender', link: '/en/reference/file-appender' },
-                    { text: 'RollingFileAppender', link: '/en/reference/rolling-file-appender' },
-                    { text: 'DailyRollingFileAppender', link: '/en/reference/daily-rolling-file-appender' },
-                    { text: 'TCPSocketAppender', link: '/en/reference/tcp-socket-appender' },
-                    { text: 'UDPSocketAppender', link: '/en/reference/udp-socket-appender' }
-                  ]
-                }
-              ],
-              collapsed: false
-            },
-            {
-              text: 'Decorators and labels',
-              items: [
-                {
-                  text: 'Decorators',
-                  link: '/en/reference/decorators'
-                },
-                {
-                  text: 'Labels',
-                  link: '/en/reference/tags',
-                  collapsed: false
-                }
-              ],
-              collapsed: false
-            }
-          ]
-        },
-      }
-    },
+    //           ]
+    //         },
+    //         {
+    //           text: 'API Reference',
+    //           link: '/en/reference/log-manager'
+    //         }
+    //       ],
+    //       '/en/reference/': [
+    //         {
+    //           text: 'API Reference',
+    //           items: [
+    //             { text: 'LogManager', link: '/en/reference/log-manager' },
+    //             { text: 'Logger', link: '/en/reference/logger' },
+    //             { text: 'MarkerManager', link: '/en/reference/marker-manager' },
+    //             { text: 'Level', link: '/en/reference/level' },
+    //             {
+    //               text: 'Appenders',
+    //               items: [
+    //                 { text: 'AbstractAppender', link: '/en/reference/abstract-appender' },
+    //                 { text: 'FileAppender', link: '/en/reference/file-appender' },
+    //                 { text: 'RollingFileAppender', link: '/en/reference/rolling-file-appender' },
+    //                 { text: 'DailyRollingFileAppender', link: '/en/reference/daily-rolling-file-appender' },
+    //                 { text: 'TCPSocketAppender', link: '/en/reference/tcp-socket-appender' },
+    //                 { text: 'UDPSocketAppender', link: '/en/reference/udp-socket-appender' }
+    //               ]
+    //             }
+    //           ],
+    //           collapsed: false
+    //         },
+    //         {
+    //           text: 'Decorators and labels',
+    //           items: [
+    //             {
+    //               text: 'Decorators',
+    //               link: '/en/reference/decorators'
+    //             },
+    //             {
+    //               text: 'Labels',
+    //               link: '/en/reference/tags',
+    //               collapsed: false
+    //             }
+    //           ],
+    //           collapsed: false
+    //         }
+    //       ]
+    //     },
+    //   }
+    // },
     // 'zh-tw': {
     //   label: '繁体中文',
     //   lang: 'zh-tw',
@@ -202,7 +202,7 @@ export default defineConfig({
       { text: '参考', link: '/reference/log-manager' },
       { text: '演练场', link: '/playground/index' },
       {
-        text: '1.5.0',
+        text: '1.5.1',
         items: [
           {
             text: '更新日志',
@@ -296,6 +296,13 @@ export default defineConfig({
                   text: 'SMTPAppender',
                   link: '/reference/smtp-appender'
                 }
+              ]
+            },
+            {
+              text: '输出格式',
+              items: [
+                { text: 'PatternLayout', link: '/reference/pattern-layout' },
+                { text: 'CSVLayout', link: '/reference/csv-layout' }
               ]
             }
           ],

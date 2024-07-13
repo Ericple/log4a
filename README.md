@@ -4,8 +4,11 @@
 
 ### Log4a文档
 
-- [Github站(推荐)](https://ericple.github.io/log4a/)
-- [AtomGit站](https://ericple.atomgit.net/log4a-docs/)
+> 本README受篇幅限制，新特性将不再在此处介绍，有关Log4a功能详情，请查阅文档。
+> 文档网站支持在线体验并运行Log4a(仅限Github站)
+
+- [Github站](https://ericple.github.io/log4a/)
+- [国内站](https://peercat.cn/log4a/)
 
 ## 特点
 
@@ -20,6 +23,8 @@
 - 支持日志加密写出到文件
 - 支持配置日志文件最大容量，溢出后新建日志文件
 - 支持配置日志文件备份数量，溢出后滚动删除
+- 支持自定义日志Layout
+- 支持使用过程中重新配置Logger及Appender
 
 >
 由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)

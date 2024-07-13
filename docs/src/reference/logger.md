@@ -1,5 +1,7 @@
 # Logger
 
+> 最后编辑时间：2024-07-13 10:14
+
 > [!INFO]
 > 用于输出日志，继承了`AbstractLogger`
 
@@ -37,13 +39,22 @@
 
 为下一条要写出的日志添加一个标签，该标签将随附在日志内容尾部，支持链式调用
 
-## `addAppender(appender)`
+## `addAppender(appender)` `deprecated`
 
 - `appender` T extends AbstractAppender - 追加器
 
 将appender绑定至该Logger。appender可以是log4a内置的任何追加器，也可以由开发者自行实现。
 
-## `addFileAppender(path, name, level?, options?)`
+> [!WARNING]
+> 此方法已被弃用，请改用Logger.bindAppender替代
+
+## `bindAppender(appender)`
+
+- `appender` T extends AbstractAppender - 要绑定的追加器
+
+将appender绑定至该Logger。appender可以是log4a内置的任何追加器，也可以由开发者自行继承`AbstractAppender`实现。
+
+## `addFileAppender(path, name, level?, options?)` `deprecated`
 
 - `path` string - 要写出的文件路径
 - `name` string - 该`FileAppender`的名称，用于作为删除索引
@@ -56,23 +67,47 @@
 
 向`Logger`添加一个新的`FileAppender`，支持链式调用
 
-## `addConsoleAppender(level?): this`
+> [!WARNING]
+> 此方法已被弃用，请改用Logger.bindAppender替代
+
+## `addConsoleAppender(level?): this` `deprecated`
 
 - `level` - 输出的最高日志等级，默认Level.ALL
 
 设置该`Logger`的日志输出级别，高于此级别的日志将被忽略，过滤优先度高于`Appender`，支持链式调用
 
+> [!WARNING]
+> 此方法已被弃用，请改用Logger.bindAppender替代
+
 ## `clearAppender(): this`
 
 删除该`Logger`所有绑定的`Appender`，支持链式调用
 
-## `removeTypedAppender(type): this`
+## `removeTypedAppender(type): this` `deprecated`
 
 - `type` AppenderTypeEnum - 要移除的`Appender`类型
 
 删除所有类型为`type`的`Appender`，支持链式调用
 
-## `removeNamedAppender(name): this`
+> [!WARNING]
+> 此方法已被弃用，请改用Logger.removeAppenderByType替代
+
+## `removeTypedAppender(appenderType: AppenderTypeEnum): this`
+
+- `type` AppenderTypeEnum - 要移除的`Appender`类型
+
+删除所有类型为`type`的`Appender`，支持链式调用
+
+## `removeNamedAppender(name): this` `deprecated`
+
+- `name` string - 要移除的`Appender`名称
+
+删除名称为`name`的`FileAppender`，支持链式调用
+
+> [!WARNING]
+> 此方法已被弃用，请改用Logger.removeAppenderByName替代
+
+## `removeAppenderByName(name): this` `deprecated`
 
 - `name` string - 要移除的`Appender`名称
 
