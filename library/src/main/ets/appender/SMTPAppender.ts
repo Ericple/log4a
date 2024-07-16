@@ -3,10 +3,10 @@ import { Level } from '../Level';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { PatternLayout } from '../layout/PatternLayout';
-import { TransPort } from '@ohos/mail';
-import { Properties } from '@ohos/mail';
-import { MimeMessage } from '@ohos/mail';
-import { RecipientType } from '@ohos/mail';
+import { TransPort } from '../mail/TransPort';
+import { Properties } from '../mail/Properties';
+import { MimeMessage } from '../mail/MimeMessage';
+import { RecipientType } from '../mail/RecipientType';
 import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
 

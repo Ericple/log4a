@@ -7,7 +7,6 @@
   "license": "Apache-2.0",
   "packageType": "InterfaceHar",
   "dependencies": {
-    "@ohos/mail": "file:./lib/lib_ohos_mail.har"
   },
   "repository": "https://gitee.com/ericple/log4a",
   "homepage": "https://gitee.com/ericple",

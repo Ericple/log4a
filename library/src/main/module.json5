@@ -13,8 +13,7 @@
     ],
     "deviceTypes": [
       "default",
-      "tablet",
-      "2in1"
+      "tablet"
     ]
   }
 }
