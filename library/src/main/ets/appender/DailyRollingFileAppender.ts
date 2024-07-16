@@ -21,7 +21,7 @@ import { FileAppender } from './FileAppender';
 
 export class DailyRollingFileAppender extends FileAppender {
   constructor(name: string, level: Level, useWorker: boolean) {
-    super(LogManager.getLogFilePath() + '/' + DailyRollingFileAppender.getDailyFileName(), name, level, {
+    super(DailyRollingFileAppender.getDailyFileName(), name, level, {
       useWorker
     });
   }
