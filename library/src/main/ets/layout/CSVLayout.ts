@@ -17,8 +17,6 @@ import { AbstractLayout } from '../abstract/AbstractLayout';
 import { Level } from '../Level';
 
 export class CSVLayout implements AbstractLayout {
-  readonly layoutFQCN: string = "CSVLayout"
-
   makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer): string {
     message = message.toString();
     while (message.lastIndexOf('\n') != -1) {

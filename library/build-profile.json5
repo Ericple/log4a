@@ -3,7 +3,7 @@
   "buildOption": {
     "sourceOption": {
       "workers": [
-        './src/main/ets/workers/fileAppendWorker.ets'
+        "./src/main/ets/workers/fileAppendWorker.ts"
       ]
     }
   },

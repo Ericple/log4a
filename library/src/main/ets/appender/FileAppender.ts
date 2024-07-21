@@ -23,6 +23,7 @@ import worker from '@ohos.worker';
 import { LogManager } from '../LogManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 import { AbstractLayout } from '../abstract/AbstractLayout';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 export interface FileAppenderOptions {
   useWorker?: boolean;
@@ -41,6 +42,7 @@ export class FileAppender extends AbstractAppender {
   private path: string;
   private options?: FileAppenderOptions;
   private worker?: worker.ThreadWorker;
+  private _isWorkerAppender: boolean = false;
 
   constructor(path: string, name: string, level: Level, options?: FileAppenderOptions) {
     super(name, level, AppenderTypeEnum.FILE);
@@ -72,23 +74,14 @@ export class FileAppender extends AbstractAppender {
     return false;
   }
 
-  setLayout<T extends AbstractLayout>(layout: T): this {
-    if (this.options?.useWorker && this.worker) {
-      this.worker.postMessage({
-        layout,
-        path: this.path,
-        name: this._name,
-        level: this.level,
-        options: this.options
-      })
-    } else {
-      this.layout = layout;
-    }
-    return this;
-  }
-
   onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer,
     tempContext: TemporaryLoggerContext): this {
+    if (this._terminated) {
+      return this;
+    }
+    if (!this._isWorkerAppender) {
+      message = this.makeMessage(level, tag, time, count, message, tempContext);
+    }
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
@@ -101,35 +94,32 @@ export class FileAppender extends AbstractAppender {
       });
       return this;
     }
-    if (!this._terminated) {
-      if (level._intLevel > this.level._intLevel) {
-        return this;
-      }
-      if (this.options && this.options.filter) {
-        if (!this.options.filter(level, message)) {
-          return;
-        }
-      }
-      message = this.makeMessage(level, tag, time, count, message, tempContext);
-      if (this.options && this.options.encryptor) {
-        message = this.options.encryptor(level, message);
-      }
-      const lp = LogManager.getLogFilePath();
-      if (!this.path.includes(lp)) {
-        this.path = lp + '/' + this.path;
-      }
-      const f = FileManager.getManaged(this.path);
-      if (!f) {
-        return this;
-      }
-      fs.writeSync(f.file.fd, message);
-      if (this.options && this.options.maxFileSize) {
-        if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
-          FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles, this.options.expireTime);
-        }
-      }
-      this._history += message + '\n';
+    if (level._intLevel > this.level._intLevel) {
+      return this;
     }
+    if (this.options && this.options.filter) {
+      if (!this.options.filter(level, message)) {
+        return;
+      }
+    }
+    if (this.options && this.options.encryptor) {
+      message = this.options.encryptor(level, message);
+    }
+    const lp = LogManager.getLogFilePath();
+    if (!this.path.includes(lp)) {
+      this.path = lp + '/' + this.path;
+    }
+    const f = FileManager.getManaged(this.path);
+    if (!f) {
+      return this;
+    }
+    fs.writeSync(f.file.fd, message);
+    if (this.options && this.options.maxFileSize) {
+      if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
+        FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles, this.options.expireTime);
+      }
+    }
+    this._history += message + '\n';
     return this;
   }
 

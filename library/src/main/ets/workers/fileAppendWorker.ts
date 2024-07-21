@@ -39,28 +39,11 @@ workerPort.onmessage = (e: MessageEvents) => {
     let options: FileAppenderOptions = e.data.options;
     options.useWorker = false;
     appender = new FileAppender(path, name, level, options);
+    Object.defineProperty(appender, '_isWorkerAppender', {
+      value: true,
+      enumerable: false
+    });
     appenderArray.set(path, appender);
-  }
-  if (e.data.layout) {
-    let layout: AbstractLayout | undefined = undefined;
-    if (e.data.layout.layoutFQCN) {
-      switch (e.data.layout.layoutFQCN) {
-        case 'CSVLayout':
-          layout = new CSVLayout();
-          break;
-        case 'PatternLayout':
-          layout = new PatternLayout(e.data.layout.pattern);
-          break;
-        default:
-          break;
-      }
-      if (layout) {
-        appender.setLayout(layout);
-      }
-    }
-    if (e.data.layout.pattern) {
-      appender.setLayout(new PatternLayout(e.data.layout.pattern));
-    }
   }
   if (e.data.message) {
     appender.onLog(e.data.level, e.data.tag, e.data.time, e.data.count, e.data.message, e.data.tempContext);

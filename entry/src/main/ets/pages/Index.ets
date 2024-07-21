@@ -39,7 +39,7 @@ struct Index {
 
   aboutToAppear(): void {
     this.logTest()
-    LogManager.interceptConsole();
+    // LogManager.interceptConsole();
     this.logger.bindAppender(new ConsoleAppender(Level.ALL, true,
       0xFF0).setLayout(new PatternLayout('stackInfo test: %l %L')))
   }

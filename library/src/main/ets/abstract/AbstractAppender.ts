@@ -53,7 +53,8 @@ export abstract class AbstractAppender {
     return this;
   }
 
-  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, tempContext: TemporaryLoggerContext) {
+  makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer,
+    tempContext: TemporaryLoggerContext) {
     return this.layout.makeMessage(level, tag, time, count, message, new Error().stack ?? '', tempContext);
   }
 
@@ -67,7 +68,8 @@ export abstract class AbstractAppender {
    * @param tempContext 日志临时上下文
    * @returns
    */
-  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
+  onLog(level: Level, tag: string, time: number, count: number, message: string,
+    tempContext: TemporaryLoggerContext): this {
     throw new NotImplementedError();
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@pie/log4a",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "有独立文档，支持ts引入、多线程输出到文件、console拦截、日志过滤、自定义输出Layout、日志加密、日志滚动等功能的全能日志库。",
   "main": "Index.ts",
   "author": "Tingjin Guo",
