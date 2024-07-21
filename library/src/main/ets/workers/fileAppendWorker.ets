@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 import worker, { ErrorEvent, MessageEvents, ThreadWorkerGlobalScope } from '@ohos.worker';
+import { AbstractLayout } from '../abstract/AbstractLayout';
 import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
+import { CSVLayout } from '../layout/CSVLayout';
+import { PatternLayout } from '../layout/PatternLayout';
 import { Level } from '../Level';
 
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
@@ -37,6 +40,27 @@ workerPort.onmessage = (e: MessageEvents) => {
     options.useWorker = false;
     appender = new FileAppender(path, name, level, options);
     appenderArray.set(path, appender);
+  }
+  if (e.data.layout) {
+    let layout: AbstractLayout | undefined = undefined;
+    if (e.data.layout.layoutFQCN) {
+      switch (e.data.layout.layoutFQCN) {
+        case 'CSVLayout':
+          layout = new CSVLayout();
+          break;
+        case 'PatternLayout':
+          layout = new PatternLayout(e.data.layout.pattern);
+          break;
+        default:
+          break;
+      }
+      if (layout) {
+        appender.setLayout(layout);
+      }
+    }
+    if (e.data.layout.pattern) {
+      appender.setLayout(new PatternLayout(e.data.layout.pattern));
+    }
   }
   if (e.data.message) {
     appender.onLog(e.data.level, e.data.tag, e.data.time, e.data.count, e.data.message, e.data.tempContext);

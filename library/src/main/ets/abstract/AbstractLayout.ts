@@ -17,5 +17,6 @@ import { Level } from '../Level';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export interface AbstractLayout {
+  layoutFQCN:string;
   makeMessage(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, stackInfo: string, tempContext: TemporaryLoggerContext): string;
 }

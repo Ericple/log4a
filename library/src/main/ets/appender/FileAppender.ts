@@ -22,6 +22,7 @@ import { WorkerManager } from '../WorkerManager';
 import worker from '@ohos.worker';
 import { LogManager } from '../LogManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
+import { AbstractLayout } from '../abstract/AbstractLayout';
 
 export interface FileAppenderOptions {
   useWorker?: boolean;
@@ -64,13 +65,30 @@ export class FileAppender extends AbstractAppender {
   }
 
   matchOptions(options?: FileAppenderOptions) {
-    if (options)
+    if (options) {
       return options.useWorker == this.options.useWorker && options.maxFileSize == this.options.maxFileSize
         && options.maxCacheCount == this.options.maxCacheCount && options.encryptor == this.options.encryptor;
+    }
     return false;
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer, tempContext: TemporaryLoggerContext): this {
+  setLayout<T extends AbstractLayout>(layout: T): this {
+    if (this.options?.useWorker && this.worker) {
+      this.worker.postMessage({
+        layout,
+        path: this.path,
+        name: this._name,
+        level: this.level,
+        options: this.options
+      })
+    } else {
+      this.layout = layout;
+    }
+    return this;
+  }
+
+  onLog(level: Level, tag: string, time: number, count: number, message: string | ArrayBuffer,
+    tempContext: TemporaryLoggerContext): this {
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
@@ -84,9 +102,13 @@ export class FileAppender extends AbstractAppender {
       return this;
     }
     if (!this._terminated) {
-      if (level._intLevel > this.level._intLevel) return this;
+      if (level._intLevel > this.level._intLevel) {
+        return this;
+      }
       if (this.options && this.options.filter) {
-        if (!this.options.filter(level, message)) return;
+        if (!this.options.filter(level, message)) {
+          return;
+        }
       }
       message = this.makeMessage(level, tag, time, count, message, tempContext);
       if (this.options && this.options.encryptor) {
@@ -97,7 +119,9 @@ export class FileAppender extends AbstractAppender {
         this.path = lp + '/' + this.path;
       }
       const f = FileManager.getManaged(this.path);
-      if (!f) return this;
+      if (!f) {
+        return this;
+      }
       fs.writeSync(f.file.fd, message);
       if (this.options && this.options.maxFileSize) {
         if (fs.statSync(this.path).size > this.options.maxFileSize * 1000) {
@@ -133,8 +157,9 @@ export class FileAppender extends AbstractAppender {
    */
   clearAllHistory(): this {
     const allHistoryPath = this.path + '.all';
-    if (fs.accessSync(allHistoryPath))
+    if (fs.accessSync(allHistoryPath)) {
       fs.unlink(allHistoryPath);
+    }
     return this;
   }
 

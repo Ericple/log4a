@@ -20,6 +20,7 @@ import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export class PatternLayout implements AbstractLayout {
   private pattern: string = '[%-5p]\t%d\t[%C:%r]\t%m';
+  readonly layoutFQCN: string = "PatternLayout";
 
   constructor(pattern?: string) {
     if (pattern) {
@@ -32,7 +33,8 @@ export class PatternLayout implements AbstractLayout {
     return this;
   }
 
-  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string, tempContext: TemporaryLoggerContext): string {
+  makeMessage(level: Level, tag: string, timestamp: number, logCount: number, message: string, stackInfo: string,
+    tempContext: TemporaryLoggerContext): string {
     return PatternParser.parse(this.pattern, {
       logLevel: level,
       logMessage: message,
