@@ -17,17 +17,6 @@
 
 判断当前追加器配置和给出配置是否完全吻合
 
-## `onLog(level, message)`
-
-- `level` Level - 日志等级
-- `message` string - 日志内容
-
-当被绑定的宿主Logger记录日志时会调用此方法
-
-## `onTerminate()`
-
-终止此Appender的所有日志记录活动
-
 ## `getAllHistory()`
 
 获取包含缓存的所有历史日志

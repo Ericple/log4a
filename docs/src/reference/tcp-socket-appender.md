@@ -5,19 +5,8 @@
 ## `constructor(config)`
 
 - `config` TCPSocketAppenderOptions
-  - `address` string - 服务器地址
-  - `port` number - 服务器端口号
-  - `encoding` string? - 编码方式
+    - `address` string - 服务器地址
+    - `port` number - 服务器端口号
+    - `encoding` string? - 编码方式
 
 新建一个`TCPSocketAppender`
-
-## `onLog(level, message)`
-
-- `level` Level - 日志等级
-- `message` string - 日志内容
-
-当被绑定的宿主Logger记录日志时会调用此方法
-
-## `onTerminate()`
-
-终止此Appender的所有日志记录活动

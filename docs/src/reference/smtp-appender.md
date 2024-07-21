@@ -1,19 +1,20 @@
 # SMTPAppender
 
-> 提供通SMTP协议连接服务器并将日志以邮件形式推送到指定邮箱的追加器，需要开发者自行申请`ohos.permission.INTERNET`及`ohos.permission.GET_WIFI_INFO`权限
+> 提供通SMTP协议连接服务器并将日志以邮件形式推送到指定邮箱的追加器，需要开发者自行申请`ohos.permission.INTERNET`
+> 及`ohos.permission.GET_WIFI_INFO`权限
 
 ## `constructor(config)`
 
 - `config` SMTPAppenderConfig
-  - `name` string - 追加器名称
-  - `level` Level - 日志等级
-  - `connectOptions` ConnectProperties - 服务器连接信息
-  - `minimumCount` number? - 一次发送的最少日志条数
-  - `seendInterval` number? - 最短发送间隔
-  - `debug` boolean? - 是否打印调试信息，默认不打印
-  - `recipients` string[] - 收件人邮箱地址
-  - `ccRecipients` string[]? - 抄送人邮箱地址
-  - `bccRecipients` string[]? - 密送人邮箱地址
+    - `name` string - 追加器名称
+    - `level` Level - 日志等级
+    - `connectOptions` ConnectProperties - 服务器连接信息
+    - `minimumCount` number? - 一次发送的最少日志条数
+    - `seendInterval` number? - 最短发送间隔
+    - `debug` boolean? - 是否打印调试信息，默认不打印
+    - `recipients` string[] - 收件人邮箱地址
+    - `ccRecipients` string[]? - 抄送人邮箱地址
+    - `bccRecipients` string[]? - 密送人邮箱地址
 
 ```ts
 export interface SMTPAppenderConfig {
@@ -43,17 +44,6 @@ export interface SMTPAppenderConfig {
 
 新建一个`SMTPAppender`
 
-## `onLog(level, tag, time, count, message, tempContext)`
-
-- `level` Level - 日志等级
-- `tag` string - 日志归属
-- `time` number - 时间戳
-- `count` number - 日志排序
-- `message` string - 日志内容
-- `tempContext` TemporaryLoggerContext - 一次性上下文
-
-当被绑定的宿主Logger记录日志时会调用此方法
-
 ## `triggerMail(time)`
 
 - `time` number? - 当前时间戳
@@ -81,9 +71,5 @@ export interface SMTPAppenderConfig {
 ## `setMailLayout(newLayout)`
 
 - `newLayout` MailLayout - 邮件格式
-  - `subject` string - 邮件主题
-  - `bodyPattern` string - 邮件正文格式
-
-## `onTerminate()`
-
-终止此Appender的所有日志记录活动
+    - `subject` string - 邮件主题
+    - `bodyPattern` string - 邮件正文格式

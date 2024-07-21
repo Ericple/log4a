@@ -2,8 +2,6 @@
 
 - 修复：修复了一个问题，该问题曾导致当FileAppender开启多线程支持后，自定义布局不生效。
 - 新增：ConsoleAppender现在支持使用hilog输出日志。
-- 不兼容的更新：
-    - AbstractLayout新增layoutFQCN
 
 # 1.5.2 (2024-07-16)
 

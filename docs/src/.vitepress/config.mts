@@ -202,7 +202,7 @@ export default defineConfig({
       { text: '参考', link: '/reference/log-manager' },
       { text: '演练场', link: '/playground/index' },
       {
-        text: '1.5.1',
+        text: '1.5.3',
         items: [
           {
             text: '更新日志',
@@ -281,15 +281,16 @@ export default defineConfig({
           items: [
             { text: 'LogManager', link: '/reference/log-manager' },
             { text: 'Logger', link: '/reference/logger' },
-            { text: 'MarkerManager', link: '/reference/marker-manager' },
             { text: 'Level', link: '/reference/level' },
+            { text: 'MarkerManager', link: '/reference/marker-manager' },
             {
               text: '追加器',
               items: [
                 { text: 'AbstractAppender', link: '/reference/abstract-appender' },
+                { text: 'ConsoleAppender', link: '/reference/console-appender' },
+                { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
                 { text: 'FileAppender', link: '/reference/file-appender' },
                 { text: 'RollingFileAppender', link: '/reference/rolling-file-appender' },
-                { text: 'DailyRollingFileAppender', link: '/reference/daily-rolling-file-appender' },
                 { text: 'TCPSocketAppender', link: '/reference/tcp-socket-appender' },
                 { text: 'UDPSocketAppender', link: '/reference/udp-socket-appender' },
                 {
