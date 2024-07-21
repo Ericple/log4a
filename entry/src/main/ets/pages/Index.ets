@@ -13,8 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LogManager, Logger, MarkerManager, Benchmark, AppenderTypeEnum, ConsoleAppender,
-  PatternLayout } from '@log/log4a';
+import {
+  LogManager,
+  Logger,
+  MarkerManager,
+  Benchmark,
+  AppenderTypeEnum,
+  ConsoleAppender,
+  PatternLayout,
+  Level
+} from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
@@ -32,7 +40,8 @@ struct Index {
   aboutToAppear(): void {
     this.logTest()
     LogManager.interceptConsole();
-    this.logger.bindAppender(new ConsoleAppender().setLayout(new PatternLayout('stackInfo test: %l %L')))
+    this.logger.bindAppender(new ConsoleAppender(Level.ALL, true,
+      0xFF0).setLayout(new PatternLayout('stackInfo test: %l %L')))
   }
 
   logTest() {

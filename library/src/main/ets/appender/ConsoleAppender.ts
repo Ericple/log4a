@@ -18,16 +18,41 @@ import { Level } from '../Level';
 import { LogManager } from '../LogManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 export class ConsoleAppender extends AbstractAppender {
-  onLog(lvl: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
-    if (lvl.intLevel() > this.level.intLevel()) return this;
-    this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message, tempContext));
+  private useHilog: boolean = false;
+  private domain: number = 0x0;
+
+  onLog(lvl: Level, tag: string, time: number, count: number, message: string,
+    tempContext: TemporaryLoggerContext): this {
+    if (lvl.intLevel() > this.level.intLevel()) {
+      return this;
+    }
+    if (!this.useHilog) {
+      this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message, tempContext));
+      return this;
+    }
+    this.getHilogFunction(lvl)(0x0, tag,
+      this.makeMessage(lvl, tag, time, count, message, tempContext))
     return this;
   }
 
-  constructor(level: Level = Level.ALL) {
+  constructor(level: Level = Level.ALL, useHilog: boolean = false, domain: number = 0x0) {
     super('console', level, AppenderTypeEnum.CONSOLE);
+    this.useHilog = useHilog;
+    this.domain = domain;
+  }
+
+  private getHilogFunction(lvl: Level): Function {
+    if (lvl == Level.FATAL || lvl == Level.ERROR) {
+      return hilog.error;
+    } else if (lvl == Level.TRACE) {
+      return hilog.warn;
+    } else if (lvl == Level.DEBUG) {
+      return hilog.debug;
+    }
+    return hilog.info;
   }
 
   private getLogFunction(lvl: Level): Function {
