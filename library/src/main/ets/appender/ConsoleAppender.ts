@@ -47,7 +47,7 @@ export class ConsoleAppender extends AbstractAppender {
   private getHilogFunction(lvl: Level): Function {
     if (lvl == Level.FATAL || lvl == Level.ERROR) {
       return hilog.error;
-    } else if (lvl == Level.TRACE) {
+    } else if (lvl == Level.TRACE || lvl == Level.WARN) {
       return hilog.warn;
     } else if (lvl == Level.DEBUG) {
       return hilog.debug;
@@ -58,7 +58,7 @@ export class ConsoleAppender extends AbstractAppender {
   private getLogFunction(lvl: Level): Function {
     if (lvl == Level.FATAL || lvl == Level.ERROR) {
       return LogManager.getOriginalConsole().error;
-    } else if (lvl == Level.TRACE) {
+    } else if (lvl == Level.TRACE || lvl == Level.WARN) {
       return LogManager.getOriginalConsole().warn;
     } else if (lvl == Level.DEBUG) {
       return LogManager.getOriginalConsole().debug;

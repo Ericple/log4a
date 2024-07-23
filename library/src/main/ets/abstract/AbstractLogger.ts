@@ -115,7 +115,8 @@ export abstract class AbstractLogger {
    * @param configCallback 配置回调，在回调中重新配置追加器
    * @returns this
    */
-  configureAppender(predicates: AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
+  configureAppender(predicates: AppenderTypeEnum,
+    configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
 
   /**
    * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
@@ -123,7 +124,8 @@ export abstract class AbstractLogger {
    * @param configCallback 配置回调，在回调中重新配置追加器
    * @returns this
    */
-  configureAppender(predicates: string | AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
+  configureAppender(predicates: string | AppenderTypeEnum,
+    configCallback: (appender?: AbstractAppender) => AbstractAppender): this;
 
   /**
    * 重新配置已绑定的追加器，所有绑定了该追加器的Logger均会受影响
@@ -131,7 +133,8 @@ export abstract class AbstractLogger {
    * @param configCallback 配置回调，在回调中重新配置追加器
    * @returns this
    */
-  configureAppender(predicates: string | AppenderTypeEnum, configCallback: (appender?: AbstractAppender) => AbstractAppender): this {
+  configureAppender(predicates: string | AppenderTypeEnum,
+    configCallback: (appender?: AbstractAppender) => AbstractAppender): this {
     let o = configCallback(this.getAppender(predicates));
     return this.bindAppender(o);
   }
@@ -307,6 +310,16 @@ export abstract class AbstractLogger {
   }
 
   /**
+   * 打印一条WARN级别的日志
+   * @param format 日志格式
+   * @param args 日志参数
+   * @since 1.5.4
+   */
+  warn(format: string, ...args: any[]) {
+    this.print(Level.WARN, format, args);
+  }
+
+  /**
    * 打印一条INFO级别的日志
    * @param format 日志格式
    * @param args 日志参数
@@ -379,7 +392,8 @@ export abstract class AbstractLogger {
 
   protected time() {
     const d = new Date();
-    return `${d.getFullYear()}-${this.padNum(d.getMonth() + 1)}-${this.padNum(d.getDate())} ${this.padNum(d.getHours())}:${this.padNum(d.getMinutes())}:${this.padNum(d.getSeconds())}.${d.getMilliseconds()}`
+    return `${d.getFullYear()}-${this.padNum(d.getMonth() +
+      1)}-${this.padNum(d.getDate())} ${this.padNum(d.getHours())}:${this.padNum(d.getMinutes())}:${this.padNum(d.getSeconds())}.${d.getMilliseconds()}`
   }
 
   protected padNum(num: number, len: number = 2) {
