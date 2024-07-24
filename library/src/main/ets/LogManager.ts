@@ -17,8 +17,7 @@ import { AbstractLogger } from './abstract/AbstractLogger';
 import { Logger } from './Logger';
 import { WorkerManager } from './WorkerManager';
 import fs from '@ohos.file.fs';
-import { Level } from './Level';
-import { ConsoleAppender } from './appender/ConsoleAppender';
+import { AbstractAppender } from './abstract/AbstractAppender';
 
 class Anonymous {
 }
@@ -45,7 +44,7 @@ class LogManagerClass {
 
   /**
    * 获取Class或Struct的Logger
-   * @param context
+   * @param context 类或类名
    * @returns Logger
    * @since 1.0.0
    */
@@ -119,7 +118,9 @@ class LogManagerClass {
    * @since 1.3.1
    */
   interceptConsole(): void {
-    if (this._console_intercept) return;
+    if (this._console_intercept) {
+      return;
+    }
     this._console_intercept = true;
     let types = ['log', 'error', 'debug', 'warn', 'trace', 'info'];
     types.forEach(type => {
@@ -130,8 +131,12 @@ class LogManagerClass {
           format += '{} ';
         }
         let Console = this.console();
-        if (type == 'log') type = 'info';
-        if (type == 'warn') type = 'trace';
+        if (type == 'log') {
+          type = 'info';
+        }
+        if (type == 'warn') {
+          type = 'trace';
+        }
         Console[type](format, ...args)
       }
     });
@@ -139,6 +144,39 @@ class LogManagerClass {
 
   getOriginalConsole() {
     return this.consoleBundle;
+  }
+
+  /**
+   * 同时向已经定义的所有Logger绑定某个追加器
+   * @param appender 要绑定的追加器
+   * @returns LogManager
+   * @since 1.5.4
+   */
+  bindAppenderGlobally<T extends AbstractAppender>(appender: T): LogManagerClass {
+    this._loggerMap.forEach(logger => {
+      logger.bindAppender(appender);
+    });
+    return this;
+  }
+
+  /**
+   * 向Logger池注册一个Logger，返回LogManager，可链式调用，用于初始化
+   * @param context
+   * @returns
+   */
+  registerLogger<T extends Object>(context: T | string): LogManagerClass {
+    this.getLogger(context);
+    return this;
+  }
+
+  /**
+   * 向Logger池注册多个Logger，返回LogManager，可链式调用，用于初始化
+   * @param contexts
+   * @returns
+   */
+  registerLoggers<T extends Object>(...contexts: (T | string)[]): LogManagerClass {
+    contexts.forEach(context => this.getLogger(context));
+    return this;
   }
 }
 
