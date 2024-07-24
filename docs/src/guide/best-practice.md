@@ -127,7 +127,9 @@ export default class EntryAbility extends UIAbility {
 ```
 
 > [!TIP]
-> 由于文件路径需要在Context中获取，如果您希望统一定义所有文件追加器，请务必在EntryAbility的onCreate生命周期中调用LogManager.setLogFilePath来预先指定日志文件存放目录，随后在定义文件追加器时，只将文件名传入`path`参数。
+>
+由于文件路径需要在Context中获取，如果您希望统一定义所有文件追加器，请务必在EntryAbility的onCreate生命周期中调用LogManager.setLogFilePath来预先指定日志文件存放目录，随后在定义文件追加器时，只将文件名传入`path`
+参数。
 
 这段代码展示了如何在一个文件中定义所有追加器并导出:
 
@@ -200,5 +202,44 @@ struct Index {
     }
     .height('100%')
   }
+}
+```
+
+## 更加便捷地同时配置多个Logger <Badge type="tip" text="1.5.4 +" />
+
+由于log4a的设计是多Logger的，当出现多个不同的Logger需要绑定同一个追加器时，为了避免重复代码，
+从1.5.4版本开始，支持通过调用LogManager下的`bindAppenderGlobally`来一次性向所有Logger绑定追加器。
+
+以下是一个实例，它先调用registerLogger向LogManager中注册了某Logger实例，
+随后链式调用bindAppenderGlobally向所有Logger同时添加了多个appender
+
+```typescript:line-numbers
+export function InitializeAllLoggers(logFilePath: string) {
+  LogManager.setLogFilePath(logFilePath);
+  const socketAppender = new TCPSocketAppender({
+    address: '114.xxx.xxx.xxx',
+    port: 1234,
+    name: 'socket',
+    level: Level.ALL
+  });
+  const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
+    useWorker: true,
+    maxFileSize: 1,
+    maxCacheCount: 2
+  });
+  const consoleAppender = new ConsoleAppender(Level.ALL)
+    .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
+  const fAppender = new FileAppender('Xlog.log', 'mainAppender', Level.ALL, {
+    useWorker: true
+  }).setLayout(new PatternLayout('layout changed %m'))
+  // 在此处注册所有Logger并绑定追加器
+  LogManager
+    .registerLogger('Index')
+    .registerLogger('SplashPage')
+    .registerLoggers('SettingPage', 'AccountPage')
+    .bindAppenderGlobally(fAppender)
+    .bindAppenderGlobally(fileAppender_a)
+    .bindAppenderGlobally(consoleAppender)
+    .bindAppenderGlobally(socketAppender)
 }
 ```

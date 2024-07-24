@@ -26,17 +26,17 @@ import {
 
 export function InitializeAllLoggers(logFilePath: string) {
   LogManager.setLogFilePath(logFilePath);
-  // const socketAppender = new TCPSocketAppender({
-  //   address: '114.xxx.xxx.xxx',
-  //   port: 1234,
-  //   name: 'socket',
-  //   level: Level.ALL
-  // });
-  // const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
-  //   useWorker: true,
-  //   maxFileSize: 1,
-  //   maxCacheCount: 2
-  // });
+  const socketAppender = new TCPSocketAppender({
+    address: '114.xxx.xxx.xxx',
+    port: 1234,
+    name: 'socket',
+    level: Level.ALL
+  });
+  const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
+    useWorker: true,
+    maxFileSize: 1,
+    maxCacheCount: 2
+  });
   // const smtpAppender = new SMTPAppender({
   //   connectOptions: {
   //     host: 'smtp.host.com',
@@ -51,11 +51,17 @@ export function InitializeAllLoggers(logFilePath: string) {
   //   debug: true,
   //   minimumCount: 10,
   // });
-  // const consoleAppender = new ConsoleAppender(Level.ALL)
-  //   .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
+  const consoleAppender = new ConsoleAppender(Level.ALL)
+    .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
   const fAppender = new FileAppender('Xlog.log', 'mainAppender', Level.ALL, {
     useWorker: true
   }).setLayout(new PatternLayout('layout changed %m'))
-  LogManager.getLogger('Index')
-    .bindAppender(fAppender);
+  LogManager
+    .registerLogger('Index')
+    .registerLogger('SplashPage')
+    .registerLoggers('SettingPage', 'AccountPage')
+    .bindAppenderGlobally(fAppender)
+    .bindAppenderGlobally(fileAppender_a)
+    .bindAppenderGlobally(consoleAppender)
+    .bindAppenderGlobally(socketAppender)
 }

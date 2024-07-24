@@ -60,10 +60,10 @@
 - `name` string - 该`FileAppender`的名称，用于作为删除索引
 - `level` Level - 最高输出日志级别，高于该级别的日志将被忽略
 - `options`
-  - `useWorker` boolean - 是否启用多线程
-  - `maxFileSize` number - 最大日志文件占用，以KB为单位
-  - `maxCacheCount` number - 最大日志缓存数量
-  - `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - 加密函数
+    - `useWorker` boolean - 是否启用多线程
+    - `maxFileSize` number - 最大日志文件占用，以KB为单位
+    - `maxCacheCount` number - 最大日志缓存数量
+    - `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - 加密函数
 
 向`Logger`添加一个新的`FileAppender`，支持链式调用
 
@@ -119,6 +119,13 @@
 - `args` any - 输出变量
 
 输出一条`Level`为`DEBUG`的日志
+
+## `warn(format, ...args)` <Badge type="tip" text="1.5.4 +" />
+
+- `format` string - 输出格式
+- `args` any - 输出变量
+
+输出一条`Level`为`WARN`的日志
 
 ## `error(format, ...args)`
 

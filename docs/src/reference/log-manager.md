@@ -11,9 +11,9 @@
 
 ## `getLogger(context)`
 
-- `context` Object 必须传入`this`
+- `context` Object | string - 如果在struct或class中调用，可以传入this，否则需要传入类名
 
-> [!INFO] 
+> [!INFO]
 > 从1.3.4版本开始，`context`可以传入 `string` 类型的类名。
 
 根据上下文获取对应Logger，参数需传入this
@@ -43,3 +43,17 @@
 ## `getOriginalConsole()`
 
 开启拦截后，可以通过此方法获取原console对象
+
+## `bindAppenderGlobally<T extends AbstractAppender>(appender: T): LogManagerClass` <Badge type="tip" text="1.5.4 +" />
+
+- `appender` - 要绑定的appender
+
+向已注册的所有Logger绑定某个追加器
+
+## `registerLogger<T extends Object>(context: T | string): LogManagerClass` <Badge type="tip" text="1.5.4 +" />
+
+- `context` Object | string - 如果在struct或class中调用，可以传入this，否则需要传入类名
+
+## `registerLoggers<T extends Object>(...contexts: (T | string)[]): LogManagerClass` <Badge type="tip" text="1.5.4 +" />
+
+- `contexts` (Object | string)[] - 如果在struct或class中调用，可以传入this，否则需要传入类名
