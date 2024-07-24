@@ -19,7 +19,7 @@ import { PatternParser } from '../pattern/PatternParser';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
 
 export class PatternLayout implements AbstractLayout {
-  private pattern: string = '[%-5p]\t%d\t[%C:%r]\t%m';
+  private pattern: string = '[%-5p]\t%d\t[%C:%r]\t%m\n';
 
   constructor(pattern?: string) {
     if (pattern) {
