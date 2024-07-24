@@ -37,20 +37,6 @@ export function InitializeAllLoggers(logFilePath: string) {
     maxFileSize: 1,
     maxCacheCount: 2
   });
-  // const smtpAppender = new SMTPAppender({
-  //   connectOptions: {
-  //     host: 'smtp.host.com',
-  //     port: 25,
-  //     isSsl: false,
-  //     authorizationCode: 'jjoa93h0f-fch3h8qf',
-  //     from: 'one_bill_suggestion@peercat.cn',
-  //   },
-  //   name: 'main_smtp',
-  //   level: Level.ALL,
-  //   recipients: ['example@huawei.com'],
-  //   debug: true,
-  //   minimumCount: 10,
-  // });
   const consoleAppender = new ConsoleAppender(Level.ALL)
     .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
   const fAppender = new FileAppender('Xlog.log', 'mainAppender', Level.ALL, {
