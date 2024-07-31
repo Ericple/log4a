@@ -79,6 +79,9 @@ export class FileAppender extends AbstractAppender {
     if (this._terminated) {
       return this;
     }
+    if (level._intLevel > this.level._intLevel) {
+      return this;
+    }
     if (!this._isWorkerAppender) {
       message = this.makeMessage(level, tag, time, count, message, tempContext);
     }
@@ -92,9 +95,6 @@ export class FileAppender extends AbstractAppender {
         path: this.path,
         tempContext
       });
-      return this;
-    }
-    if (level._intLevel > this.level._intLevel) {
       return this;
     }
     if (this.options && this.options.filter) {

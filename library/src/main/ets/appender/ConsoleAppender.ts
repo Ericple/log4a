@@ -26,14 +26,14 @@ export class ConsoleAppender extends AbstractAppender {
 
   onLog(lvl: Level, tag: string, time: number, count: number, message: string,
     tempContext: TemporaryLoggerContext): this {
-    if (lvl.intLevel() > this.level.intLevel()) {
+    if (lvl._intLevel > this.level._intLevel) {
       return this;
     }
     if (!this.useHilog) {
       this.getLogFunction(lvl)(this.makeMessage(lvl, tag, time, count, message, tempContext));
       return this;
     }
-    this.getHilogFunction(lvl)(0x0, tag,
+    this.getHilogFunction(lvl)(this.domain, tag,
       this.makeMessage(lvl, tag, time, count, message, tempContext))
     return this;
   }

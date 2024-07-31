@@ -90,8 +90,14 @@ export class SMTPAppender extends CSocketAppender {
     return this;
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
-    if (this._terminated) return this;
+  onLog(level: Level, tag: string, time: number, count: number, message: string,
+    tempContext: TemporaryLoggerContext): this {
+    if (this._terminated) {
+      return this;
+    }
+    if (level._intLevel > this.level._intLevel) {
+      return this;
+    }
     this.tmpLogArray.push(this.makeMessage(level, tag, time, count, message, tempContext));
     this.checkAndHandle(time);
     return this;
@@ -113,10 +119,13 @@ export class SMTPAppender extends CSocketAppender {
   }
 
   private sendLog(time: number) {
-    if (this.tmpLogArray.length == 0) return;
+    if (this.tmpLogArray.length == 0) {
+      return;
+    }
     let mimeMsg = new MimeMessage();
     mimeMsg.setFrom(this.config.connectOptions.from);
-    mimeMsg.setText(this.mailLayout.bodyPattern.makeMessage(Level.ALL, '', time, 0, this.tmpLogArray.join('\r\n'), '', new TemporaryLoggerContext()));
+    mimeMsg.setText(this.mailLayout.bodyPattern.makeMessage(Level.ALL, '', time, 0, this.tmpLogArray.join('\r\n'), '',
+      new TemporaryLoggerContext()));
     mimeMsg.setSubject(this.mailLayout.subject);
     mimeMsg.setRecipients(RecipientType.TO, this.recipients);
     mimeMsg.setRecipients(RecipientType.CC, this.ccRecipients);

@@ -65,6 +65,9 @@ export class TCPSocketAppender extends CSocketAppender {
 
   onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
     if (this._terminated) return this;
+    if (level._intLevel > this.level._intLevel) {
+      return this;
+    }
     if (this._config.filter) {
       if (!this._config.filter(level, message)) return this;
     }
