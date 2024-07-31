@@ -267,7 +267,10 @@ export default defineConfig({
               text: '最佳实践',
               link: '/guide/best-practice'
             },
-
+            {
+              text: '预绑定追加器',
+              link: '/guide/pre-bind-appender'
+            }
           ]
         },
         {
