@@ -18,6 +18,7 @@ import { Logger } from './Logger';
 import { WorkerManager } from './WorkerManager';
 import fs from '@ohos.file.fs';
 import { AbstractAppender } from './abstract/AbstractAppender';
+import { ArrayList } from '@kit.ArkTS';
 
 class Anonymous {
 }
@@ -60,7 +61,13 @@ class LogManagerClass {
     if (this._loggerMap.has(key)) {
       return this._loggerMap.get(key);
     }
-    this._loggerMap.set(key, new Logger(context));
+    const l = new Logger(context);
+    if(this.preBindAppenderArray.length>0) {
+      for(let appender of this.preBindAppenderArray) {
+        l.bindAppender(appender);
+      }
+    }
+    this._loggerMap.set(key, l);
     return this._loggerMap.get(key);
   }
 
@@ -176,6 +183,28 @@ class LogManagerClass {
    */
   registerLoggers<T extends Object>(...contexts: (T | string)[]): LogManagerClass {
     contexts.forEach(context => this.getLogger(context));
+    return this;
+  }
+
+  private preBindAppenderArray: ArrayList<AbstractAppender> = new ArrayList();
+
+  /**
+   * 注册一个预绑定追加器，会在新建Logger时自动绑定
+   * @param appender
+   * @returns
+   */
+  preBindAppender<T extends AbstractAppender>(appender: T): LogManagerClass {
+    this.preBindAppenderArray.add(appender);
+    return this;
+  }
+
+  /**
+   * 移除一个预绑定追加器，会在新建Logger时自动绑定
+   * @param appender
+   * @returns
+   */
+  removePreBindAppender<T extends AbstractAppender>(appender: T): LogManagerClass {
+    this.preBindAppenderArray.remove(appender);
     return this;
   }
 }
