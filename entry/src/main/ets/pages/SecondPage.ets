@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { router } from '@kit.ArkUI';
+import router from '@ohos.router';
 import { Logger, LogManager } from '@log/log4a';
 
 @Entry

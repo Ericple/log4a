@@ -1,4 +1,6 @@
-import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
+import Want from '@ohos.app.ability.Want';
+import UIAbility from '@ohos.app.ability.UIAbility';
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 /*
  * Copyright 2024 Tingjin Guo
  *
@@ -14,9 +16,8 @@ import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hilog } from '@kit.PerformanceAnalysisKit';
-import { window } from '@kit.ArkUI';
-
+import hilog from '@ohos.hilog';
+import window from '@ohos.window';
 import { LogManager } from '@log/log4a';
 import { InitializeAllLoggers } from '../pages/socketAppenderConstants';
 

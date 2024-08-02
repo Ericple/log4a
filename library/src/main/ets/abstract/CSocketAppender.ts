@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { AbstractAppender } from './AbstractAppender';
-import { wifiManager } from '@kit.ConnectivityKit';
+import wifiManager from '@ohos.wifiManager';
 
 export abstract class CSocketAppender extends AbstractAppender {
   protected parseInfo2IP(info: number) {

@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 import worker, { ErrorEvent, MessageEvents, ThreadWorkerGlobalScope } from '@ohos.worker';
-import { AbstractLayout } from '../abstract/AbstractLayout';
 import { FileAppender, FileAppenderOptions } from '../appender/FileAppender';
-import { CSVLayout } from '../layout/CSVLayout';
-import { PatternLayout } from '../layout/PatternLayout';
 import { Level } from '../Level';
 
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;

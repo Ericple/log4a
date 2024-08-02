@@ -18,7 +18,7 @@ import { Logger } from './Logger';
 import { WorkerManager } from './WorkerManager';
 import fs from '@ohos.file.fs';
 import { AbstractAppender } from './abstract/AbstractAppender';
-import { ArrayList } from '@kit.ArkTS';
+import ArrayList from '@ohos.util.ArrayList';
 
 class Anonymous {
 }
@@ -62,8 +62,8 @@ class LogManagerClass {
       return this._loggerMap.get(key);
     }
     const l = new Logger(context);
-    if(this.preBindAppenderArray.length>0) {
-      for(let appender of this.preBindAppenderArray) {
+    if (this.preBindAppenderArray.length > 0) {
+      for (let appender of this.preBindAppenderArray) {
         l.bindAppender(appender);
       }
     }
@@ -104,9 +104,29 @@ class LogManagerClass {
    * @param path 沙箱路径
    * @since 1.3.1
    */
+  /**
+   * 设置日志存储根目录
+   * @param path 沙箱路径
+   * @description 自1.5.6起支持建立多级目录
+   * @since 1.5.6
+   */
   setLogFilePath(path: string): void {
-    if (!fs.accessSync(path)) {
-      fs.mkdirSync(path);
+    const path2Mk: string[] = [];
+    let tmpPath = path.split('/');
+    do {
+      const p = tmpPath.join('/')
+      if (fs.accessSync(p)) {
+        break;
+      }
+      path2Mk.unshift(p);
+      tmpPath.pop();
+    } while (tmpPath.length > 1);
+    while (path2Mk.length > 0) {
+      const p2m = path2Mk.shift();
+      if (!p2m) {
+        break;
+      }
+      fs.mkdirSync(p2m);
     }
     this._logPath = path;
   }

@@ -18,7 +18,7 @@ import { Level } from '../Level';
 import { LogManager } from '../LogManager';
 import { AppenderTypeEnum } from '../spi/AppenderTypeEnum';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
-import { hilog } from '@kit.PerformanceAnalysisKit';
+import hilog from '@ohos.hilog';
 
 export class ConsoleAppender extends AbstractAppender {
   private useHilog: boolean = false;

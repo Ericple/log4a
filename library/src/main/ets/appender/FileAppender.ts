@@ -22,8 +22,6 @@ import { WorkerManager } from '../WorkerManager';
 import worker from '@ohos.worker';
 import { LogManager } from '../LogManager';
 import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
-import { AbstractLayout } from '../abstract/AbstractLayout';
-import { hilog } from '@kit.PerformanceAnalysisKit';
 
 export interface FileAppenderOptions {
   useWorker?: boolean;
