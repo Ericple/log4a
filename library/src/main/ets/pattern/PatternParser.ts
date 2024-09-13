@@ -43,7 +43,11 @@ class PatternParserClass {
       result += this.getStackInfo(context.stackInfo);
     }
     if (context.tempContext.marker) {
-      result += context.tempContext.marker._name;
+      if(typeof context.tempContext.marker=='string'){
+        result += context.tempContext.marker;
+      }else {
+        result += context.tempContext.marker._name;
+      }
     }
     return result;
   }

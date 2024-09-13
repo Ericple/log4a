@@ -16,9 +16,9 @@
 import { Marker } from './MarkerManager'
 
 export class TemporaryLoggerContext {
-  marker: Marker;
+  marker: Marker | string;
 
-  setMarker(marker: Marker): this {
+  setMarker(marker: Marker|string): this {
     this.marker = marker;
     return this;
   }
@@ -28,6 +28,7 @@ export class TemporaryLoggerContext {
   }
 
   getMarker(): string {
+    if(typeof this.marker=='string') return `(${this.marker})`;
     return '(' + this.marker.getName() + ')';
   }
 

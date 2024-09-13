@@ -53,10 +53,8 @@ class LogManagerClass {
     let key = 'Anonymous';
     if (typeof context == 'string') {
       key = context;
-    } else {
-      if (context && context.constructor) {
-        key = context.constructor.name ?? 'Anonymous';
-      }
+    } else if (context && context.constructor) {
+        key = context.constructor.name;
     }
     if (this._loggerMap.has(key)) {
       return this._loggerMap.get(key);
@@ -80,7 +78,8 @@ class LogManagerClass {
     if (this._loggerMap.has(anonymousContext.constructor.name)) {
       return this._loggerMap.get(anonymousContext.constructor.name);
     }
-    this._loggerMap.set(anonymousContext.constructor.name, new Logger(anonymousContext));
+    const l = this._preBind(new Logger(anonymousContext));
+    this._loggerMap.set(anonymousContext.constructor.name, l);
     return this._loggerMap.get(anonymousContext.constructor.name);
   }
 
@@ -95,8 +94,18 @@ class LogManagerClass {
     if (this._loggerMap.has(consoleContext.constructor.name)) {
       return this._loggerMap.get(consoleContext.constructor.name);
     }
-    this._loggerMap.set(consoleContext.constructor.name, new Logger(consoleContext));
+    const l = this._preBind(new Logger(consoleContext));
+    this._loggerMap.set(consoleContext.constructor.name, l);
     return this._loggerMap.get(consoleContext.constructor.name);
+  }
+
+  private _preBind(logger:Logger):Logger {
+    if (this.preBindAppenderArray.length > 0) {
+      for (let appender of this.preBindAppenderArray) {
+        logger.bindAppender(appender);
+      }
+    }
+    return logger;
   }
 
   /**

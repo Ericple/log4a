@@ -202,7 +202,7 @@ export default defineConfig({
       { text: '参考', link: '/reference/log-manager' },
       { text: '演练场', link: '/playground/index' },
       {
-        text: '1.5.6',
+        text: '1.5.9',
         items: [
           {
             text: '更新日志',
@@ -272,6 +272,10 @@ export default defineConfig({
               link: '/guide/pre-bind-appender'
             }
           ]
+        },
+        {
+          text: '对低版本API的支持',
+          link: '/guide/low-api-support'
         },
         {
           text: 'API参考',

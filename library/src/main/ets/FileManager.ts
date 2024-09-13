@@ -32,7 +32,11 @@ class FileManagerClass {
 
   getFile(path: string): fs.File {
     if (this._fileMap.has(path)) {
-      return this._fileMap.get(path)?.file;
+      if(fs.accessSync(path)) {
+        return this._fileMap.get(path)?.file;
+      }else{
+        this._fileMap.delete(path);
+      }
     }
     const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
     this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
@@ -42,10 +46,8 @@ class FileManagerClass {
   unlink(path: string): void {
     if (fs.accessSync(path)) {
       fs.unlinkSync(path);
-      if (this._fileMap.delete(path)) {
-        const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
-        this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
-      }
+      this._fileMap.delete(path);
+      this.getManaged(path);
     }
   }
 
@@ -61,9 +63,8 @@ class FileManagerClass {
     const cachePath = path.substring(0, path.lastIndexOf('/'));
     const files = fs.listFileSync(cachePath);
     const fileName = path.substring(path.lastIndexOf('/') + 1);
-    const result = files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName) && file != path)).sort((a, b) =>
-    Number(a.replace(path + '.', '')) - Number(b.replace(path + '.', ''))
-    );
+    const result = files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName))).sort((a, b) =>
+    Number(a.replace(path + '.', '')) - Number(b.replace(path + '.', '')));
     return result;
   }
 
@@ -76,7 +77,11 @@ class FileManagerClass {
 
   getManaged(path: string): ManagedFile {
     if (this._fileMap.has(path)) {
-      return this._fileMap.get(path);
+      if(fs.accessSync(path)) {
+        return this._fileMap.get(path);
+      }else{
+        this._fileMap.delete(path);
+      }
     }
     const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
     this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));

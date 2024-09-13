@@ -82,6 +82,7 @@ export class FileAppender extends AbstractAppender {
     }
     if (!this._isWorkerAppender) {
       message = this.makeMessage(level, tag, time, count, message, tempContext);
+      this._history += message + '\n';
     }
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
@@ -117,7 +118,6 @@ export class FileAppender extends AbstractAppender {
         FileManager.backup(this.path, this.options.maxCacheCount, f.cachedFiles, this.options.expireTime);
       }
     }
-    this._history += message + '\n';
     return this;
   }
 
@@ -135,25 +135,42 @@ export class FileAppender extends AbstractAppender {
         tmp += fs.readTextSync(cache);
       }
     }
-    return tmp + this._history;
+    return tmp;
+  }
+
+  getCurrentHistory(): string {
+    return this._history;
   }
 
   /**
-   * 删除日志箱
-   * @deprecated
-   * @returns
+   * 删除所有历史日志
+   * @since 1.5.7
    */
   clearAllHistory(): this {
-    const allHistoryPath = this.path + '.all';
-    if (fs.accessSync(allHistoryPath)) {
-      fs.unlink(allHistoryPath);
+    if(this.worker != undefined){
+      this.worker.postMessage({
+        action: 'clearAllHistory',
+        path:this.path
+      });
+    }else {
+      const f = fs.openSync(this.path);
+      const storagePath = f.getParent();
+      fs.closeSync(f);
+      const fName = this.path.replace(storagePath, '');
+      const logFiles = fs.listFileSync(storagePath).filter(v => v.includes(fName) && v != fName);
+      for (let logFile of logFiles) {
+        if (fs.accessSync(logFile)) {
+          fs.unlink(logFile);
+        }
+      }
+      FileManager.unlink(this.path);
     }
+    this._history="";
     return this;
   }
 
   clearCurrentHistory(): this {
-    FileManager.close(this.path);
-    fs.unlink(this.path);
+    FileManager.unlink(this.path);
     return this;
   }
 }

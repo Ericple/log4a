@@ -1,3 +1,17 @@
+# 1.5.9 (2024-09-09)
+
+- 优化：匿名Logger与控制台Logger现在会受`bindAppenderGlobally`和`preBindAppender`影响
+- 优化：Marker现在支持直接传入字符串，省略`MarkerManager.getMarker()`的调用步骤
+
+# 1.5.8 (2024-08-28)
+
+- 修复：Logger.getAllHistoryOfAppender在多线程模式下无法获取追加文件日志的问题
+
+# 1.5.7 (2024-08-28)
+
+- 修复：Logger.getAllHistoryOfAppender获取多线程文件追加器历史日志时返回空字符串的问题
+- 修复: 部分场景下清除历史日志不生效的问题
+
 # 1.5.6 (2024-08-02)
 
 - 新增：LogManager.setLogFilePath支持创建多级目录

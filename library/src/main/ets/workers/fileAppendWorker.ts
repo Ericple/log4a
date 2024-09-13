@@ -42,6 +42,11 @@ workerPort.onmessage = (e: MessageEvents) => {
     });
     appenderArray.set(path, appender);
   }
+  if(e.data.action){
+    if(e.data.action == 'clearAllHistory'){
+      appender.clearAllHistory();
+    }
+  }
   if (e.data.message) {
     appender.onLog(e.data.level, e.data.tag, e.data.time, e.data.count, e.data.message, e.data.tempContext);
   }

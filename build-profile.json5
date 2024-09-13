@@ -35,8 +35,8 @@
       {
         "name": "oh",
         "signingConfig": "openHarmony",
-        "compatibleSdkVersion": 11,
-        "compileSdkVersion": 11,
+        "compatibleSdkVersion": 9,
+        "compileSdkVersion": 10,
         "runtimeOS": "OpenHarmony"
       }
     ],

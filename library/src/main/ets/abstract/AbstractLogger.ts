@@ -179,7 +179,7 @@ export abstract class AbstractLogger {
     return this;
   }
 
-  withMarker(marker: Marker): this {
+  withMarker(marker: Marker | string): this {
     this.temporaryContext.setMarker(marker);
     return this;
   }
