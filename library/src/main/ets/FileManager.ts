@@ -45,6 +45,7 @@ class FileManagerClass {
 
   unlink(path: string): void {
     if (fs.accessSync(path)) {
+      this.close(path);
       fs.unlinkSync(path);
       this._fileMap.delete(path);
       this.getManaged(path);
@@ -96,7 +97,10 @@ class FileManagerClass {
       cached.push(backupName);
       if (expireTime != undefined) {
         while (cached.length > 0 && ((now / 1000) - fs.statSync(cached[0]).mtime > expireTime)) {
-          fs.unlink(cached.shift());
+          const c = cached.shift();
+          if(fs.accessSync(c)){
+            fs.unlinkSync(c);
+          }
         }
       }
       if (this._fileMap.delete(path)) {
