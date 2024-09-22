@@ -1,3 +1,7 @@
+# 1.5.10 (2024-09-22)
+
+- 新增：新增开箱即用的DatabaseAppender，用于向数据库记录日志
+
 # 1.5.9 (2024-09-21)
 
 - 优化：匿名Logger与控制台Logger现在会受`bindAppenderGlobally`和`preBindAppender`影响

@@ -5,10 +5,11 @@
 ### Log4a文档
 
 > 本README受篇幅限制，新特性将不再在此处介绍，有关Log4a功能详情，请查阅文档。
-> 文档网站支持在线体验并运行Log4a(仅限Github站)
+> 文档网站支持在线体验并运行Log4a
+> Github站文档版本更新，国内站版本较老，建议前往GitHub站阅读文档
 
-- [Github站](https://ericple.github.io/log4a/)
-- [国内站](https://peercat.cn/log4a/)
+- [Github文档站(推荐)](https://ericple.github.io/log4a/)
+- [国内文档站](https://peercat.cn/log4a/)
 
 ## 特点
 
@@ -328,8 +329,12 @@ this.logger.addFileAppender("/path/to/log.log", "mainFileAppender", Level.INFO);
 
 ### 约束与限制
 
-在下述版本验证通过：DevEco Studio NEXT Developer Preview 2 (4.1.3.700), SDK: API11 (4.1.0(11))
-> 本库理论上支持所有API版本
+在下述版本验证通过：
+
+- DevEco Studio NEXT Developer Preview 2 (4.1.3.700), SDK: API11 (4.1.0(11))
+- DevEco Studio NEXT Beta1 (5.0.3.800), SDK: API12 (5.0.0(12))
+
+> 本库理论上支持所有API版本，对于API10以下的项目，可自行克隆编译使用
 
 ### 贡献代码
 
