@@ -4,7 +4,9 @@ log4a实现了`TCPSocketAppender`，开发者可以通过此追加器，与服�
 
 ## TCPSocketAppender
 
-与`FileAppender`相同，同一个`TCPSocketAppender`也可以被绑定到多个不同的`Logger`实例，但是如果创建多个`TCPSocketAppender`,可能对应用性能造成影响，所以`Log4a`建议开发者在应用程序中只创建一个`TCPSocketAppender`实例并在多处复用。
+与`FileAppender`相同，同一个`TCPSocketAppender`也可以被绑定到多个不同的`Logger`实例，
+但是如果创建多个`TCPSocketAppender`,可能对应用性能造成影响，
+所以`Log4a`建议开发者在应用程序中对同一个地址只创建一个`TCPSocketAppender`实例并在多处复用。
 
 ## 用法
 
@@ -48,12 +50,12 @@ struct Index {
 const net = require('net');
 var server = net.createServer();
 server.on('connection', (socket) => {
-        socket.on('data', (data) => {
-                console.log(data.toString());
-        })
+    socket.on('data', (data) => {
+        console.log(data.toString());
+    })
 });
 server.listen(1234, '0.0.0.0', () => {
-        console.log('server running on 0.0.0.0:1234');
+    console.log('server running on 0.0.0.0:1234');
 });
 ```
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import relationalStore from '@ohos.data.relationalStore'
-import { DatabaseAppenderOption } from './appender/DatabaseAppender';
+import { IDatabaseAppenderOption } from './appender/DatabaseAppender';
 
 class CRdbStoreManager {
   private _storeMap: Map<string, relationalStore.RdbStore> = new Map();
 
-  async getStore(databaseAppenderOptions: DatabaseAppenderOption): Promise<relationalStore.RdbStore> {
+  async getStore(databaseAppenderOptions: IDatabaseAppenderOption): Promise<relationalStore.RdbStore> {
     if (this._storeMap.has(databaseAppenderOptions.name)) {
       return this._storeMap.get(databaseAppenderOptions.name);
     }
@@ -40,4 +40,4 @@ class CRdbStoreManager {
   }
 }
 
-export const RdbStoreManager = new CRdbStoreManager();
+export const RdbStoreManager = new CRdbStoreManager;

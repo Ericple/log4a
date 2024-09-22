@@ -27,10 +27,10 @@
 - 支持自定义日志Layout
 - 支持使用过程中重新配置Logger及Appender
 
->
-由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)
-检查是否存在新版本，若没有，您可以[新建issue](https://gitee.com/ericple/log4a/issues/new)
-，或[向我发送邮件](mailto:dev@peercat.cn)，我将尽快修复。
+> 由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，
+> 请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)检查是否存在新版本，
+> 若没有，您可以[新建issue](https://gitee.com/ericple/log4a/issues/new)
+> ，或[向我发送邮件](mailto:dev@peercat.cn)，我将尽快修复。
 
 ## 安装
 

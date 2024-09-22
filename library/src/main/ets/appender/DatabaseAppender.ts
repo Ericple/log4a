@@ -24,7 +24,7 @@ import { RdbStoreManager } from '../RdbStoreManager';
 import { Logger } from '../Logger';
 import { LogManager } from '../LogManager';
 
-export interface DatabaseAppenderOption {
+export interface IDatabaseAppenderOption {
   ctx: common.BaseContext;
   name: string;
   level: Level;
@@ -98,13 +98,13 @@ enum DatabaseFetchingStatus {
 }
 
 export class DatabaseAppender extends AbstractAppender {
-  private _options: DatabaseAppenderOption;
+  private _options: IDatabaseAppenderOption;
   private _db?: relationalStore.RdbStore;
   private _temp: Array<ILogInfo> = new Array;
   private _dbStatus: DatabaseFetchingStatus = DatabaseFetchingStatus.INVALID;
   private _logger: Logger = LogManager.getLogger(this);
 
-  constructor(options: DatabaseAppenderOption) {
+  constructor(options: IDatabaseAppenderOption) {
     super(options.name, options.level, AppenderTypeEnum.DATABASE);
     this._options = options;
     this._getDB();

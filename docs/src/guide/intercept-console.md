@@ -4,9 +4,6 @@
 
 开发者仅需在EntryAbility的onCreate中调用`LogManager.interceptConsole()`即可。
 
-> [!WARNING]
-> 该功能目前仅支持拦截console.log，不支持error/warn/debug等输出
-
 ```ts
 // EntryAbility.ets
 import { InitializeAllLoggers } from '../xxx/LoggerConfig';

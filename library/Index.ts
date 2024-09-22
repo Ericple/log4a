@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export { DatabaseAppender, DatabaseAppenderOption, DbLogFilter } from './src/main/ets/appender/DatabaseAppender'
+export { DatabaseAppender, IDatabaseAppenderOption, DbLogFilter } from './src/main/ets/appender/DatabaseAppender'
 
 export { ILogInfo } from './src/main/ets/spi/LogInfo'
 
