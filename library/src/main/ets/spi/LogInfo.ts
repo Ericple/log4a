@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Tingjin Guo
+ * Copyright (c) 2024. Guo TingJin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum AppenderTypeEnum {
-  FILE,
-  CONSOLE,
-  SOCKET,
-  DATABASE,
-  CUSTOM
+import { Level } from '../Level'
+import { TemporaryLoggerContext } from '../TemporaryLoggerContext';
+
+export interface ILogInfo {
+  level: Level;
+  tag: string;
+  time: number;
+  count: number;
+  message: string;
+  tempContext?: TemporaryLoggerContext;
 }

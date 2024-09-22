@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Tingjin Guo
+ * Copyright (c) 2024. Guo TingJin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,10 @@ import {
   ConsoleAppender,
   PatternLayout,
   Level,
-  FileAppender
+  FileAppender,
+  DatabaseAppender,
+  ILogInfo,
+  DbLogFilter
 } from '@log/log4a';
 
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
@@ -33,26 +36,28 @@ import { FileManager } from '@log/log4a/src/main/ets/FileManager';
 @Component
 struct Index {
   @State logger: Logger = LogManager.getLogger(this)
-  @State history:string = '';
+  @State history: Array<ILogInfo> = new Array;
 
   build() {
     Row() {
       Column() {
-        Image($r('app.media.sd'))
-          .width(48)
-        // Text(this.history)
-        // Button('log')
-        //   .onClick(()=>{
-        //     this.logger.info('this is a test log')
-        //   })
-        // Button('get history')
-        //   .onClick(()=>{
-        //     this.history = this.logger.getHistoryOfAppender('main');
-        //   })
-        // Button('clear')
-        //   .onClick(()=>{
-        //     this.history=(this.logger.getAppender('main') as FileAppender).clearAllHistory().getCurrentHistory()
-        //   })
+        Button('log')
+          .onClick(() => {
+            this.logger.info('logged info here');
+          })
+        Button('get from db')
+          .onClick(() => {
+            const appender = this.logger.getAppender<DatabaseAppender>('mainDbAppender')
+            if (appender) {
+              this.history = appender
+                .getLogs(DbLogFilter.create()
+                  .maxLevel(Level.DEBUG)
+                  .minLevel(Level.FATAL))
+            }
+          })
+        ForEach(this.history, (history: ILogInfo) => {
+          Text(JSON.stringify(history))
+        })
       }
       .width('100%')
     }

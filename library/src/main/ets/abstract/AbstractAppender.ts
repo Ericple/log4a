@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Tingjin Guo
+ * Copyright (c) 2024. Guo TingJin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,13 @@ export abstract class AbstractAppender {
     this._type = type;
     this._name = name;
     this.level = level;
+  }
+
+  protected loggable(level: Level) {
+    if (this._terminated || level._intLevel > this.level._intLevel) {
+      return false;
+    }
+    return true;
   }
 
   getName(): string {

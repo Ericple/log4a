@@ -303,6 +303,10 @@ export default defineConfig({
                 {
                   text: 'SMTPAppender',
                   link: '/reference/smtp-appender'
+                },
+                {
+                    text: 'DatabaseAppender',
+                    link: '/reference/database-appender'
                 }
               ]
             },

@@ -16,6 +16,7 @@
 import {
   ConsoleAppender,
   CSVLayout,
+  DatabaseAppender,
   FileAppender,
   Level,
   LogManager,
@@ -23,9 +24,10 @@ import {
   SMTPAppender,
   TCPSocketAppender
 } from '@log/log4a';
+import { common } from '@kit.AbilityKit';
 
-export function InitializeAllLoggers(logFilePath: string) {
-  LogManager.setLogFilePath(logFilePath);
+export function InitializeAllLoggers(ctx: common.UIAbilityContext) {
+  LogManager.setLogFilePath(ctx.filesDir);
   const socketAppender = new TCPSocketAppender({
     address: '114.xxx.xxx.xxx',
     port: 1234,
@@ -41,7 +43,12 @@ export function InitializeAllLoggers(logFilePath: string) {
     .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
   const fAppender = new FileAppender('Xlog.log', 'mainAppender', Level.ALL, {
     useWorker: true
-  }).setLayout(new PatternLayout('layout changed %m'))
+  }).setLayout(new PatternLayout('layout changed %m'));
+  const dbAppender = new DatabaseAppender({
+    ctx,
+    name: 'mainDbAppender',
+    level: Level.ALL
+  });
   LogManager
     .registerLogger('Index')
     .registerLogger('SplashPage')
@@ -50,4 +57,5 @@ export function InitializeAllLoggers(logFilePath: string) {
     .bindAppenderGlobally(fileAppender_a)
     .bindAppenderGlobally(consoleAppender)
     .bindAppenderGlobally(socketAppender)
+    .bindAppenderGlobally(dbAppender)
 }

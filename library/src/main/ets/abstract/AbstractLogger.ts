@@ -69,34 +69,34 @@ export abstract class AbstractLogger {
    * @param predicates 追加器名称
    * @returns AbstractAppender
    */
-  getAppender(predicates: string): AbstractAppender | undefined;
+  getAppender<T extends AbstractAppender>(predicates: string): T | undefined;
 
   /**
    * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
    * @param predicates 追加器类型
    * @returns AbstractAppender
    */
-  getAppender(predicates: AppenderTypeEnum): AbstractAppender | undefined;
+  getAppender<T extends AbstractAppender>(predicates: AppenderTypeEnum): T | undefined;
 
   /**
    * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
    * @param predicates 追加器名称或追加器类型
    * @returns AbstractAppender
    */
-  getAppender(predicates: string | AppenderTypeEnum): AbstractAppender | undefined;
+  getAppender<T extends AbstractAppender>(predicates: string | AppenderTypeEnum): T | undefined;
 
   /**
    * 获取已绑定的追加器，当有多个追加器满足所给条件时，按迭代器访问顺序返回其中满足条件的第一个追加器
    * @param predicates 追加器名称或追加器类型
    * @returns AbstractAppender
    */
-  getAppender(predicates: string | AppenderTypeEnum): AbstractAppender | undefined {
+  getAppender<T extends AbstractAppender>(predicates: string | AppenderTypeEnum): T | undefined {
     if (typeof predicates == 'string') {
-      return this.appenderMap.get(predicates);
+      return this.appenderMap.get(predicates) as T;
     }
     for (let appender of this.appenderMap) {
       if (appender[1].getType() == predicates) {
-        return appender[1];
+        return appender[1] as T;
       }
     }
   }

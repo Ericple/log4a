@@ -24,8 +24,7 @@ import { InitializeAllLoggers } from '../pages/socketAppenderConstants';
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
-    LogManager.setLogFilePath(this.context.filesDir);
-    InitializeAllLoggers(this.context.filesDir);
+    InitializeAllLoggers(this.context);
   }
 
   onDestroy(): void {
