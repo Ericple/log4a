@@ -256,6 +256,10 @@ export default defineConfig({
               link: '/guide/log-to-your-mailbox'
             },
             {
+                text: '输出到数据库',
+                link: '/guide/log-to-database'
+            },
+            {
               text: '自定义布局',
               link: '/guide/custom-layout'
             },
