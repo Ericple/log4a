@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 import fs from '@ohos.file.fs';
+import { Logger } from './Logger';
 import { LogManager } from './LogManager';
+import { FileUtils } from './utils/FileUtils';
+import fileUri from '@ohos.file.fileuri';
 
 class ManagedFile {
   file: fs.File;
@@ -29,15 +32,18 @@ class ManagedFile {
 
 class FileManagerClass {
   private _fileMap: Map<string, ManagedFile> = new Map();
+  private _logger: Logger = LogManager.getLogger('Log4a');
 
   getFile(path: string): fs.File {
     if (this._fileMap.has(path)) {
-      if(fs.accessSync(path)) {
+      if (fs.accessSync(path)) {
         return this._fileMap.get(path)?.file;
-      }else{
+      } else {
         this._fileMap.delete(path);
       }
     }
+    const uri = new fileUri.FileUri(path);
+    FileUtils.ensurePath(uri.getFullDirectoryUri());
     const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
     this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
     return this._fileMap.get(path)?.file;
@@ -62,6 +68,9 @@ class FileManagerClass {
 
   getCachedFiles(path: string): string[] {
     const cachePath = path.substring(0, path.lastIndexOf('/'));
+    if (!FileUtils.ensurePath(cachePath)) {
+      return [];
+    }
     const files = fs.listFileSync(cachePath);
     const fileName = path.substring(path.lastIndexOf('/') + 1);
     const result = files.map(v => cachePath + '/' + v).filter(file => (file.includes(fileName))).sort((a, b) =>
@@ -71,47 +80,52 @@ class FileManagerClass {
 
   getDailyCachedFiles(): string[] {
     const cachePath = LogManager.getLogFilePath();
+    if (!FileUtils.ensurePath(cachePath)) {
+      return [];
+    }
     const files = fs.listFileSync(cachePath);
     const reg = new RegExp("\\d{4,5}-\\d{1,2}-\\d{1,2}.daily.log", 'g');
-    return files.filter(fileName => reg.test(fileName)).sort((a, b) => (new Date(a.split('.')[0])).getTime() - (new Date(b.split('.')[0])).getTime());
+    return files.filter(fileName => reg.test(fileName))
+      .sort((a, b) => (new Date(a.split('.')[0])).getTime() - (new Date(b.split('.')[0])).getTime());
   }
 
-  getManaged(path: string): ManagedFile {
-    if (this._fileMap.has(path)) {
-      if(fs.accessSync(path)) {
-        return this._fileMap.get(path);
-      }else{
-        this._fileMap.delete(path);
-      }
+  getManaged(path: string): ManagedFile | undefined {
+    if (this._fileMap.has(path) && fs.accessSync(path)) {
+      return this._fileMap.get(path);
+    } else {
+      this._fileMap.delete(path);
     }
-    const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
-    this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
-    return this._fileMap.get(path);
+    try {
+      const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.APPEND);
+      this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
+      return this._fileMap.get(path);
+    } catch (err) {
+      this._logger.error('Failed to get managed file, error: {}', err);
+    }
   }
 
   backup(path: string, limitCount: number, cached: string[], expireTime?: number): void {
     let now = Date.now();
     const backupName = path + '.' + now;
-    if (fs.accessSync(path)) {
-      fs.moveFileSync(path, backupName);
-      cached.push(backupName);
-      if (expireTime != undefined) {
-        while (cached.length > 0 && ((now / 1000) - fs.statSync(cached[0]).mtime > expireTime)) {
-          const c = cached.shift();
-          if(fs.accessSync(c)){
-            fs.unlinkSync(c);
-          }
+    FileUtils.ensurePath(path);
+    fs.moveFileSync(path, backupName);
+    cached.push(backupName);
+    if (expireTime != undefined) {
+      while (cached.length > 0 && ((now / 1000) - fs.statSync(cached[0]).mtime > expireTime)) {
+        const c = cached.shift();
+        if (fs.accessSync(c)) {
+          fs.unlinkSync(c);
         }
       }
-      if (this._fileMap.delete(path)) {
-        const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-        this._fileMap.set(path, new ManagedFile(f, cached));
-        if (limitCount > 0) {
-          while (cached.length > limitCount) {
-            let c = cached.shift();
-            if (fs.accessSync(c)) {
-              fs.unlinkSync(c);
-            }
+    }
+    if (this._fileMap.delete(path)) {
+      const f = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      this._fileMap.set(path, new ManagedFile(f, cached));
+      if (limitCount > 0) {
+        while (cached.length > limitCount) {
+          let c = cached.shift();
+          if (fs.accessSync(c)) {
+            fs.unlinkSync(c);
           }
         }
       }

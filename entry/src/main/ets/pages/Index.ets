@@ -31,12 +31,14 @@ import {
 import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
 import { FileManager } from '@log/log4a/src/main/ets/FileManager';
+import App from '@system.app';
 
 @Entry
 @Component
 struct Index {
   @State logger: Logger = LogManager.getLogger(this)
   @State history: Array<ILogInfo> = new Array;
+  @State historyF: string = "";
 
   build() {
     Row() {
@@ -55,6 +57,15 @@ struct Index {
                   .minLevel(Level.FATAL))
             }
           })
+        Button('read from file')
+          .onClick(() => {
+            const appender = this.logger.getAppender<FileAppender>('mainAppender');
+            if (appender) {
+              this.history = [];
+              this.historyF = appender.getAllHistory();
+            }
+          })
+        Text(this.historyF)
         ForEach(this.history, (history: ILogInfo) => {
           Text(JSON.stringify(history))
         })

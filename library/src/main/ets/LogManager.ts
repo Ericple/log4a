@@ -19,6 +19,7 @@ import { WorkerManager } from './WorkerManager';
 import fs from '@ohos.file.fs';
 import { AbstractAppender } from './abstract/AbstractAppender';
 import ArrayList from '@ohos.util.ArrayList';
+import { FileUtils } from './utils/FileUtils';
 
 class Anonymous {
 }
@@ -54,7 +55,7 @@ class LogManagerClass {
     if (typeof context == 'string') {
       key = context;
     } else if (context && context.constructor) {
-        key = context.constructor.name;
+      key = context.constructor.name;
     }
     if (this._loggerMap.has(key)) {
       return this._loggerMap.get(key);
@@ -99,7 +100,7 @@ class LogManagerClass {
     return this._loggerMap.get(consoleContext.constructor.name);
   }
 
-  private _preBind(logger:Logger):Logger {
+  private _preBind(logger: Logger): Logger {
     if (this.preBindAppenderArray.length > 0) {
       for (let appender of this.preBindAppenderArray) {
         logger.bindAppender(appender);
@@ -120,23 +121,7 @@ class LogManagerClass {
    * @since 1.5.6
    */
   setLogFilePath(path: string): void {
-    const path2Mk: string[] = [];
-    let tmpPath = path.split('/');
-    do {
-      const p = tmpPath.join('/')
-      if (fs.accessSync(p)) {
-        break;
-      }
-      path2Mk.unshift(p);
-      tmpPath.pop();
-    } while (tmpPath.length > 1);
-    while (path2Mk.length > 0) {
-      const p2m = path2Mk.shift();
-      if (!p2m) {
-        break;
-      }
-      fs.mkdirSync(p2m);
-    }
+    FileUtils.ensurePath(path);
     this._logPath = path;
   }
 
