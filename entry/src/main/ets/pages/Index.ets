@@ -26,11 +26,11 @@ import {
   DatabaseAppender,
   ILogInfo,
   DbLogFilter
-} from '@log/log4a';
+} from '@pie/log4a';
 
-import { LogView, LogViewMode, LogViewColorConfig } from '@log/log4a/src/main/ets/components/LogView';
+import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/ets/components/LogView';
 import fs from '@ohos.file.fs';
-import { FileManager } from '@log/log4a/src/main/ets/FileManager';
+import { FileManager } from '@pie/log4a/src/main/ets/FileManager';
 import App from '@system.app';
 
 @Entry

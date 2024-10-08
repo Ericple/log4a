@@ -23,7 +23,7 @@ import {
   PatternLayout,
   SMTPAppender,
   TCPSocketAppender
-} from '@log/log4a';
+} from '@pie/log4a';
 import { common } from '@kit.AbilityKit';
 
 export function InitializeAllLoggers(ctx: common.UIAbilityContext) {

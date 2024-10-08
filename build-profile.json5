@@ -30,7 +30,7 @@
       {
         "name": "default",
         "compatibleSdkVersion": "4.0.0(10)",
-        "runtimeOS": "HarmonyOS",
+        "runtimeOS": "HarmonyOS"
       },
       {
         "name": "oh",

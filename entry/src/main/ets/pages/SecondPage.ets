@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import router from '@ohos.router';
-import { Logger, LogManager } from '@log/log4a';
+import { Logger, LogManager } from '@pie/log4a';
 
 @Entry
 @Component

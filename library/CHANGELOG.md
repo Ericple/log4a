@@ -1,3 +1,7 @@
+# 1.5.11 (2024-10-08)
+
+- 修复：DevEco Studio 5.0.3.814版本中引入log4a模块导致的Failed to resolve OhmUrl. Error Message: Failed to get a resolved OhmUrl编译错误
+
 # 1.5.10 (2024-09-22)
 
 - 新增：新增开箱即用的DatabaseAppender，用于向数据库记录日志
