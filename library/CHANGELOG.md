@@ -1,3 +1,7 @@
+# 1.5.12 (2024-10-09)
+
+- 修复：LogManager not initialized错误
+
 # 1.5.11 (2024-10-08)
 
 - 修复：DevEco Studio 5.0.3.814版本中引入log4a模块导致的Failed to resolve OhmUrl. Error Message: Failed to get a resolved OhmUrl编译错误

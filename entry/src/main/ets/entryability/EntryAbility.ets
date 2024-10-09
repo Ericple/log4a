@@ -18,7 +18,7 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
  */
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 import { InitializeAllLoggers } from '../pages/socketAppenderConstants';
 
 export default class EntryAbility extends UIAbility {

@@ -32,7 +32,6 @@ class ManagedFile {
 
 class FileManagerClass {
   private _fileMap: Map<string, ManagedFile> = new Map();
-  private _logger: Logger = LogManager.getLogger('Log4a');
 
   getFile(path: string): fs.File {
     if (this._fileMap.has(path)) {
@@ -100,7 +99,7 @@ class FileManagerClass {
       this._fileMap.set(path, new ManagedFile(f, this.getCachedFiles(path)));
       return this._fileMap.get(path);
     } catch (err) {
-      this._logger.error('Failed to get managed file, error: {}', err);
+      console.error('Failed to get managed file, error: {}', err);
     }
   }
 
