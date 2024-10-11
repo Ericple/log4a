@@ -42,6 +42,10 @@ class WorkerManagerClass {
   terminate() {
     this.listeners = [];
     this.getFileAppendWorker().terminate();
+    for(let worker of this.fileAppendWorkerMap){
+      worker[1].terminate();
+    }
+    this.fileAppendWorkerMap.clear();
   }
 }
 

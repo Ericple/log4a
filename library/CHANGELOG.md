@@ -1,3 +1,7 @@
+# 1.5.13 (2024-10-11)
+
+- 修复：修复了一个由于WorkerThread管理问题导致的错误
+
 # 1.5.12 (2024-10-09)
 
 - 修复：LogManager not initialized错误

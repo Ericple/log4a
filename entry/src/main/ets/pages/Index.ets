@@ -32,43 +32,48 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 import fs from '@ohos.file.fs';
 import { FileManager } from '@pie/log4a/src/main/ets/FileManager';
 import App from '@system.app';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 @Entry
 @Component
 struct Index {
-  @State logger: Logger = LogManager.getLogger(this)
+  // @State logger: Logger = LogManager.getLogger(this)
   @State history: Array<ILogInfo> = new Array;
   @State historyF: string = "";
 
   build() {
     Row() {
       Column() {
-        Button('log')
+        // Button('log')
+        //   .onClick(() => {
+        //     this.logger.info('logged info here');
+        //   })
+        // Button('get from db')
+        //   .onClick(() => {
+        //     const appender = this.logger.getAppender<DatabaseAppender>('mainDbAppender')
+        //     if (appender) {
+        //       this.history = appender
+        //         .getLogs(DbLogFilter.create()
+        //           .maxLevel(Level.DEBUG)
+        //           .minLevel(Level.FATAL))
+        //     }
+        //   })
+        // Button('read from file')
+        //   .onClick(() => {
+        //     const appender = this.logger.getAppender<FileAppender>('mainAppender');
+        //     if (appender) {
+        //       this.history = [];
+        //       this.historyF = appender.getAllHistory();
+        //     }
+        //   })
+        // Text(this.historyF)
+        // ForEach(this.history, (history: ILogInfo) => {
+        //   Text(JSON.stringify(history))
+        // })
+        Button('hilog')
           .onClick(() => {
-            this.logger.info('logged info here');
+            hilog.debug(0x00FF, 'TestIntercept', 'format %{public}s test', 'arg');
           })
-        Button('get from db')
-          .onClick(() => {
-            const appender = this.logger.getAppender<DatabaseAppender>('mainDbAppender')
-            if (appender) {
-              this.history = appender
-                .getLogs(DbLogFilter.create()
-                  .maxLevel(Level.DEBUG)
-                  .minLevel(Level.FATAL))
-            }
-          })
-        Button('read from file')
-          .onClick(() => {
-            const appender = this.logger.getAppender<FileAppender>('mainAppender');
-            if (appender) {
-              this.history = [];
-              this.historyF = appender.getAllHistory();
-            }
-          })
-        Text(this.historyF)
-        ForEach(this.history, (history: ILogInfo) => {
-          Text(JSON.stringify(history))
-        })
       }
       .width('100%')
     }

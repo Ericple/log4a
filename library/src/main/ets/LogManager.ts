@@ -29,7 +29,7 @@ class Console {
 
 const anonymousContext = new Anonymous();
 
-const consoleContext = new Console()
+const consoleContext = new Console();
 
 class LogManagerClass {
   private _loggerMap: Map<string, AbstractLogger> = new Map();
