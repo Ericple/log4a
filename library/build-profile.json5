@@ -5,6 +5,11 @@
       "workers": [
         "./src/main/ets/workers/fileAppendWorker.ts"
       ]
+    },
+    "externalNativeOptions": {
+      "path": "./src/main/cpp/CMakeLists.txt",
+      "arguments": "",
+      "cppFlags": "",
     }
   },
   "buildOptionSet": [
@@ -18,6 +23,12 @@
               "./obfuscation-rules.txt"
             ]
           }
+        }
+      },
+      "nativeLib": {
+        "debugSymbol": {
+          "strip": true,
+          "exclude": []
         }
       },
     },

@@ -26,6 +26,9 @@ export class ConsoleAppender extends AbstractAppender {
 
   onLog(lvl: Level, tag: string, time: number, count: number, message: string,
     tempContext: TemporaryLoggerContext): this {
+    if(this._terminated){
+      return this;
+    }
     if (lvl._intLevel > this.level._intLevel) {
       return this;
     }

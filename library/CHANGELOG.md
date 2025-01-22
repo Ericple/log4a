@@ -1,3 +1,9 @@
+# 1.5.14 (2025-01-05)
+
+- 新增特性：支持终止指定类型Appender的输出
+- 新增：DatabaseAppender新增clear及deleteLog方法，支持删除本地数据库日志
+- 修复：偶发cache路径无效导致崩溃的问题
+
 # 1.5.13 (2024-10-11)
 
 - 修复：修复了一个由于WorkerThread管理问题导致的错误
@@ -8,7 +14,8 @@
 
 # 1.5.11 (2024-10-08)
 
-- 修复：DevEco Studio 5.0.3.814版本中引入log4a模块导致的Failed to resolve OhmUrl. Error Message: Failed to get a resolved OhmUrl编译错误
+- 修复：DevEco Studio 5.0.3.814版本中引入log4a模块导致的Failed to resolve OhmUrl. Error Message: Failed to get a resolved
+  OhmUrl编译错误
 
 # 1.5.10 (2024-09-22)
 

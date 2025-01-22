@@ -32,9 +32,20 @@ export abstract class AbstractLogger {
   protected history: string = '';
   protected logListeners: ((level: Level, content: string) => void)[] = [];
 
-  constructor(context: any) {
+  /**
+   * 根据给定context创建一个Logger
+   * @param context
+   */
+  constructor(context: any)
+
+  /**
+   * 根据给定context创建一个Logger，并决定是否需要添加控制台追加器
+   * @param context
+   * @param addConsole
+   */
+  constructor(context: any, addConsole: boolean = true) {
     this.context = context;
-    this.bindAppender(new ConsoleAppender());
+    addConsole && this.bindAppender(new ConsoleAppender());
   }
 
   /**
@@ -410,9 +421,20 @@ export abstract class AbstractLogger {
     return `${this.context.constructor.name}`;
   }
 
-  terminate() {
+  /**
+   * 关闭指定的Appender输出
+   * @param type
+   * @since 1.5.14
+   */
+  terminate(type?: number): void {
     this.appenderMap.forEach(appender => {
-      appender.onTerminate();
+      if (type != undefined) {
+        if (type & appender.getType()) {
+          appender.onTerminate();
+        }
+      } else {
+        appender.onTerminate();
+      }
     });
     this.appenderMap.clear();
   }

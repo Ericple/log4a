@@ -16,20 +16,9 @@
 import { AbstractLogger } from './abstract/AbstractLogger';
 import { Logger } from './Logger';
 import { WorkerManager } from './WorkerManager';
-import fs from '@ohos.file.fs';
 import { AbstractAppender } from './abstract/AbstractAppender';
 import ArrayList from '@ohos.util.ArrayList';
 import { FileUtils } from './utils/FileUtils';
-
-class Anonymous {
-}
-
-class Console {
-}
-
-const anonymousContext = new Anonymous();
-
-const consoleContext = new Console();
 
 class LogManagerClass {
   private _loggerMap: Map<string, AbstractLogger> = new Map();
@@ -76,28 +65,33 @@ class LogManagerClass {
    * @since 1.0.0
    */
   anonymous(): Logger {
-    if (this._loggerMap.has(anonymousContext.constructor.name)) {
-      return this._loggerMap.get(anonymousContext.constructor.name);
+    if (this._loggerMap.has("Anonymous")) {
+      return this._loggerMap.get("Anonymous");
     }
-    const l = this._preBind(new Logger(anonymousContext));
-    this._loggerMap.set(anonymousContext.constructor.name, l);
-    return this._loggerMap.get(anonymousContext.constructor.name);
+    const l = this._preBind(new Logger("Anonymous"));
+    this._loggerMap.set("Anonymous", l);
+    return this._loggerMap.get("Anonymous");
   }
 
-  terminate() {
+  /**
+   * 关闭指定类型的Appender。
+   * @param type AppenderTypeEnum - 要关闭的Appender类型，多个请用|连接
+   * @example LogManager.terminate(AppenderTypeEnum.CONSOLE | AppenderTypeEnum.MAIL)
+   */
+  terminate(type?: number) {
     for (let l of this._loggerMap.values()) {
-      l.terminate();
+      l.terminate(type);
     }
     WorkerManager.terminate();
   }
 
   private console(): Logger {
-    if (this._loggerMap.has(consoleContext.constructor.name)) {
-      return this._loggerMap.get(consoleContext.constructor.name);
+    if (this._loggerMap.has("Console")) {
+      return this._loggerMap.get("Console");
     }
-    const l = this._preBind(new Logger(consoleContext));
-    this._loggerMap.set(consoleContext.constructor.name, l);
-    return this._loggerMap.get(consoleContext.constructor.name);
+    const l = this._preBind(new Logger("Console"));
+    this._loggerMap.set("Console", l);
+    return this._loggerMap.get("Console");
   }
 
   private _preBind(logger: Logger): Logger {

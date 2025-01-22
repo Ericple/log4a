@@ -122,6 +122,27 @@ export class DatabaseAppender extends AbstractAppender {
     }
   }
 
+  /**
+   * 清空日志数据库
+   */
+  clear() {
+    if (this._db && this._dbStatus == DatabaseFetchingStatus.DONE) {
+      this._db.deleteSync(new relationalStore.RdbPredicates(this._options.name))
+    }
+  }
+
+  /**
+   * 以指定predicates删除日志
+   * @param configureCallback 在回调中配置predicates
+   */
+  deleteLog(configureCallback: (predicates: relationalStore.RdbPredicates) => void) {
+    let pred = new relationalStore.RdbPredicates(this._options.name);
+    configureCallback(pred);
+    if (this._db && this._dbStatus == DatabaseFetchingStatus.DONE) {
+      this._db.deleteSync(pred);
+    }
+  }
+
   onLog(level: Level, tag: string, time: number, count: number, message: string,
     tempContext: TemporaryLoggerContext): this {
     if (!this.loggable(level)) {

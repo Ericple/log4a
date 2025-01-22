@@ -109,6 +109,8 @@ class FileManagerClass {
     FileUtils.ensurePath(path);
     fs.moveFileSync(path, backupName);
     cached.push(backupName);
+    // 过滤掉不存在的路径，防止在while循环中调用statSync时崩溃
+    cached = cached.filter(v => fs.accessSync(v));
     if (expireTime != undefined) {
       while (cached.length > 0 && ((now / 1000) - fs.statSync(cached[0]).mtime > expireTime)) {
         const c = cached.shift();
