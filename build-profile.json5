@@ -3,14 +3,15 @@
     "signingConfigs": [
       {
         "name": "default",
+        "type": "HarmonyOS",
         "material": {
-          "certpath": "C:/Users/accou/.ohos/config/openharmony/default_log4a_kgbfxiGlALCRg-w7IxNzwWqyHbq5Ry9KavY4C-Adrts=.cer",
-          "storePassword": "0000001B412A31B4C3E2A4F3BF83A6EF28056DA22F8B0FEF67E3F3C8D6BE942B6F63060B22BA7142132577",
+          "certpath": "/Users/guotingjin/.ohos/config/default_log4a_TaS9wdgeo8NeGMbZCSrEg4IRjalXqA2tiDgqt6DQ0WQ=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B4F8B8380952E9404F9D9DF02143610157DE9DFC9ED8925F0F2642CA886D4A28034DADB0C798571",
-          "profile": "C:/Users/accou/.ohos/config/openharmony/default_log4a_kgbfxiGlALCRg-w7IxNzwWqyHbq5Ry9KavY4C-Adrts=.p7b",
+          "keyPassword": "0000001B2C9CAA0E9CA365DD412002B5923DBE93A12D63C39469A9007A9CB7291FACAD7C6D1E79173C434C",
+          "profile": "/Users/guotingjin/.ohos/config/default_log4a_TaS9wdgeo8NeGMbZCSrEg4IRjalXqA2tiDgqt6DQ0WQ=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:/Users/accou/.ohos/config/openharmony/default_log4a_kgbfxiGlALCRg-w7IxNzwWqyHbq5Ry9KavY4C-Adrts=.p12"
+          "storeFile": "/Users/guotingjin/.ohos/config/default_log4a_TaS9wdgeo8NeGMbZCSrEg4IRjalXqA2tiDgqt6DQ0WQ=.p12",
+          "storePassword": "0000001B51A47F7873376D867B17A6E0959A89E1E7E8F57A9D025317B25D3C5A32E1A8347DCE2EAA5315D1"
         }
       },
       {
@@ -30,7 +31,8 @@
       {
         "name": "default",
         "compatibleSdkVersion": "4.0.0(10)",
-        "runtimeOS": "HarmonyOS"
+        "runtimeOS": "HarmonyOS",
+        "signingConfig": "default"
       },
       {
         "name": "oh",

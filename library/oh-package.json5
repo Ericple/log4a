@@ -6,7 +6,6 @@
   "author": "Guo TingJin",
   "license": "Apache-2.0",
   "dependencies": {
-    "libliblog4a.so": "file:./src/main/cpp/types/libliblog4a"
   },
   "repository": "https://gitcode.com/OneSoft/log4a.git",
   "homepage": "https://gitee.com/ericple",

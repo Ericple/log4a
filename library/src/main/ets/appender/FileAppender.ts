@@ -55,6 +55,9 @@ export class FileAppender extends AbstractAppender {
     }
     if (options?.useWorker) {
       this.worker = WorkerManager.getFileAppendWorker();
+      if (options.encryptor) {
+        options.encryptor = undefined;
+      }
       this.worker.postMessage({
         path: this.path,
         name,
@@ -84,6 +87,9 @@ export class FileAppender extends AbstractAppender {
       message = this.makeMessage(level, tag, time, count, message, tempContext);
       this._history += message + '\n';
     }
+    if (this.options && this.options.encryptor) {
+      message = this.options.encryptor(level, message);
+    }
     if (this.options && this.options.useWorker) {
       this.worker.postMessage({
         level,
@@ -100,9 +106,6 @@ export class FileAppender extends AbstractAppender {
       if (!this.options.filter(level, message)) {
         return;
       }
-    }
-    if (this.options && this.options.encryptor) {
-      message = this.options.encryptor(level, message);
     }
     const lp = LogManager.getLogFilePath();
     if (!this.path.includes(lp)) {
@@ -147,12 +150,12 @@ export class FileAppender extends AbstractAppender {
    * @since 1.5.7
    */
   clearAllHistory(): this {
-    if(this.worker != undefined){
+    if (this.worker != undefined) {
       this.worker.postMessage({
         action: 'clearAllHistory',
-        path:this.path
+        path: this.path
       });
-    }else {
+    } else {
       const f = fs.openSync(this.path);
       const storagePath = f.getParent();
       fs.closeSync(f);
@@ -165,7 +168,7 @@ export class FileAppender extends AbstractAppender {
       }
       FileManager.unlink(this.path);
     }
-    this._history="";
+    this._history = "";
     return this;
   }
 

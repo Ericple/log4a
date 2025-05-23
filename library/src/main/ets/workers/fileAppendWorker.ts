@@ -34,6 +34,7 @@ workerPort.onmessage = (e: MessageEvents) => {
     const name: string = e.data.name;
     const level: Level = e.data.level ?? Level.ALL;
     let options: FileAppenderOptions = e.data.options;
+    options.encryptor = undefined;
     options.useWorker = false;
     appender = new FileAppender(path, name, level, options);
     Object.defineProperty(appender, '_isWorkerAppender', {
@@ -42,8 +43,8 @@ workerPort.onmessage = (e: MessageEvents) => {
     });
     appenderArray.set(path, appender);
   }
-  if(e.data.action){
-    if(e.data.action == 'clearAllHistory'){
+  if (e.data.action) {
+    if (e.data.action == 'clearAllHistory') {
       appender.clearAllHistory();
     }
   }
