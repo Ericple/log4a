@@ -34,6 +34,15 @@
 
 ## 安装
 
+- 使用 `git submodule` 安装(推荐)
+
+```bash
+git submodule add https://gitee.com/ericple/log4a [你期望的存放相对路径]
+```
+
+随后，将log4a/library添加到你的build-profile中，并在oh-package中引入。
+该方法虽然稍微麻烦，但它可以使你更快且更方便地获取最新特性。
+
 - 使用 `ohpm` 以安装 `@pie/log4a`
 
 ```bash
