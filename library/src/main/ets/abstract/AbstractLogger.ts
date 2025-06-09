@@ -391,11 +391,19 @@ export abstract class AbstractLogger {
       }
       return v;
     });
-    while (format.lastIndexOf('{}') != -1) {
-      format = format.replace('{}', msgArr.shift());
+    let formatArr = format.split('');
+    format = '';
+    for (let i = 0; i < formatArr.length; i++) {
+      let bracket = `${formatArr[i]}${formatArr[i+1]}`;
+      if (bracket !== '{}') {
+        format += formatArr[i];
+        continue;
+      }
+      format += msgArr.shift();
+      i++;
     }
     if (msgArr.length > 0) {
-      this.fatal('Argument count is more than "{}" in message format, you may not getting what you want to log.')
+      this.warn('Argument count is more than argument placeholder in message format, some argument is not printed.')
     }
     this.count++;
     return format;
