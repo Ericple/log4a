@@ -1,7 +1,7 @@
 import { describe, beforeAll, it, expect } from '@ohos/hypium';
 import { abilityDelegatorRegistry } from '@kit.TestKit';
 import { common, Want } from '@kit.AbilityKit';
-import { FileAppender, Level, LogManager } from '../../../../Index';
+import { FileAppender, Level, Logger, LogManager } from '../../../../Index';
 import { fileIo } from '@kit.CoreFileKit';
 
 const delegator = abilityDelegatorRegistry.getAbilityDelegator()
@@ -60,6 +60,16 @@ export default function abilityTest() {
       } catch {
         expect(true).assertEqual(false);
       }
+    });
+    it('makeMessage', 0, async () => {
+      const level = Level.INFO;
+      const format = 'This is a message format, and {} is the string argument, {} is the object argument. {}';
+      const args = ['some argument', new Object, '{}'];
+      const l = new Logger('MakeMessageTest');
+      const result = l.makeMessage(level, format, args);
+      console.log(result);
+      expect(result)
+        .assertEqual('This is a message format, and some argument is the string argument, \n{}\n is the object argument. {}')
     })
   })
 }
