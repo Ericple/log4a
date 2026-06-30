@@ -40,18 +40,24 @@ export class UDPSocketAppender extends CSocketAppender {
     this._socket.bind({ address: this.getIP() });
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
-    if (this._terminated) return this;
+  onLog(level: Level, tag: string, time: number, count: number, message: string,
+    tempContext: TemporaryLoggerContext): this {
+    if (this._terminated) {
+      return this;
+    }
     if (level._intLevel > this.level._intLevel) {
       return this;
     }
     if (this._config.filter) {
-      if (!this._config.filter(level, message)) return this;
+      if (!this._config.filter(level, message)) {
+        return this;
+      }
     }
     message = this.makeMessage(level, tag, time, count, message, tempContext);
     this._socket.getState().then(state => {
       if (state.isBound) {
         this.send(message);
+        this.addHistory(message);
         this.handleMessageQueue();
       } else {
         this._messageQueue.push(message);

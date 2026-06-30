@@ -63,13 +63,18 @@ export class TCPSocketAppender extends CSocketAppender {
     }
   }
 
-  onLog(level: Level, tag: string, time: number, count: number, message: string, tempContext: TemporaryLoggerContext): this {
-    if (this._terminated) return this;
+  onLog(level: Level, tag: string, time: number, count: number, message: string,
+    tempContext: TemporaryLoggerContext): this {
+    if (this._terminated) {
+      return this;
+    }
     if (level._intLevel > this.level._intLevel) {
       return this;
     }
     if (this._config.filter) {
-      if (!this._config.filter(level, message)) return this;
+      if (!this._config.filter(level, message)) {
+        return this;
+      }
     }
     message = this.makeMessage(level, tag, time, count, message, tempContext);
     this._socket.getState().then(state => {
@@ -88,6 +93,7 @@ export class TCPSocketAppender extends CSocketAppender {
       data,
       encoding: this._config.encoding
     }).then(() => {
+      this.addHistory(data.toString());
       this.logger.info('Message sent to server.')
     }).catch((err) => {
       this.logger.trace('Failed to send message to server via tcp: {}', err);

@@ -85,7 +85,7 @@ export class FileAppender extends AbstractAppender {
     }
     if (!this._isWorkerAppender) {
       message = this.makeMessage(level, tag, time, count, message, tempContext);
-      this._history += message + '\n';
+      this.addHistory(message);
     }
     if (this.options && this.options.encryptor) {
       message = this.options.encryptor(level, message);
@@ -141,10 +141,6 @@ export class FileAppender extends AbstractAppender {
     return tmp;
   }
 
-  getCurrentHistory(): string {
-    return this._history;
-  }
-
   /**
    * 删除所有历史日志
    * @since 1.5.7
@@ -168,7 +164,7 @@ export class FileAppender extends AbstractAppender {
       }
       FileManager.unlink(this.path);
     }
-    this._history = "";
+    this.clearHistory();
     return this;
   }
 

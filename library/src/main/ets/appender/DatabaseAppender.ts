@@ -157,6 +157,10 @@ export class DatabaseAppender extends AbstractAppender {
         'MESSAGE': message,
         'LEVEL_INT': level._intLevel
       });
+      if (this._enableHistory) {
+        const msg = this.makeMessage(level, tag, time, count, message, tempContext);
+        this.addHistory(msg);
+      }
       return this;
     }
     this._temp.push({
@@ -190,7 +194,7 @@ export class DatabaseAppender extends AbstractAppender {
           time,
           count,
           message
-        })
+        });
       } while (resultSet.goToNextRow())
       resultSet.close();
     }

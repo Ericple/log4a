@@ -15,7 +15,6 @@
  */
 import { FileManager } from '../FileManager';
 import { Level } from '../Level';
-import { LogManager } from '../LogManager';
 import fs from '@ohos.file.fs';
 import { FileAppender } from './FileAppender';
 
@@ -44,6 +43,6 @@ export class DailyRollingFileAppender extends FileAppender {
         count--;
       }
     }
-    return tmp + this._history;
+    return tmp + this.getCurrentHistory();
   }
 }

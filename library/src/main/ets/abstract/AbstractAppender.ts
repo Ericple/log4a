@@ -24,7 +24,9 @@ export abstract class AbstractAppender {
   protected _type: AppenderTypeEnum;
   protected _id: number;
   protected _terminated: boolean = false;
-  protected _history: string = '';
+  private _history: string[] = [];
+  private _maximumHistoryCount: number = 1000;
+  protected _enableHistory: boolean = false;
   protected _name: string = '';
   protected level: Level;
   protected layout: AbstractLayout = new PatternLayout();
@@ -46,8 +48,23 @@ export abstract class AbstractAppender {
     return this._name;
   }
 
+  public addHistory(...message: string[]): this {
+    if (this._enableHistory) {
+      this._history.push(...message);
+      while (this._history.length > this._maximumHistoryCount) {
+        this._history.shift();
+      }
+    }
+    return this;
+  }
+
+  public clearHistory(): this {
+    this._history = [];
+    return this;
+  }
+
   getCurrentHistory(): string {
-    return this._history;
+    return this._history.join('\n');
   }
 
   /**
@@ -108,5 +125,27 @@ export abstract class AbstractAppender {
 
   onTerminate(): void {
     return;
+  }
+
+  /**
+   * 设置是否启用追加器历史记录功能
+   * @param enable true - 启用，反之不启用
+   * @returns AbstractAppender
+   * @since 1.6
+   */
+  public setEnableHistory(enable: boolean): this {
+    this._enableHistory = enable;
+    return this;
+  }
+
+  /**
+   * 设置历史记录最大条数，当超出时自动清除最早的一条历史记录
+   * @param count 最大条数
+   * @returns AbstractAppender
+   * @since 1.6
+   */
+  public setMaximumHistoryCount(count: number): this {
+    this._maximumHistoryCount = count;
+    return this;
   }
 }

@@ -143,6 +143,7 @@ export class SMTPAppender extends CSocketAppender {
       if (success) {
         this.transport.sendMessage(mimeMsg, (err) => {
           if (!err) {
+            this.addHistory(...this.tmpLogArray);
             this.tmpLogArray = [];
             this.transport.close(() => undefined);
           } else if (this.config.debug) {

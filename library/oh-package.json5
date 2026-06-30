@@ -1,6 +1,6 @@
 {
   "name": "@pie/log4a",
-  "version": "1.5.16",
+  "version": "1.6.0",
   "description": "有独立文档，支持ts引入、多线程输出到文件、console拦截、日志过滤、自定义输出Layout、日志加密、日志滚动等功能的全能日志库。",
   "main": "Index.ts",
   "author": "Guo TingJin",
@@ -8,7 +8,7 @@
   "dependencies": {
   },
   "repository": "https://gitcode.com/OneSoft/log4a.git",
-  "homepage": "https://gitee.com/ericple",
+  "homepage": "https://ericple.github.io/log4a/",
   "keywords": [
     "log",
     "HarmonyOS",
