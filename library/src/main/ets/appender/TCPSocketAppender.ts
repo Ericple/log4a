@@ -94,7 +94,6 @@ export class TCPSocketAppender extends CSocketAppender {
       encoding: this._config.encoding
     }).then(() => {
       this.addHistory(data.toString());
-      this.logger.info('Message sent to server.')
     }).catch((err) => {
       this.logger.trace('Failed to send message to server via tcp: {}', err);
     });
