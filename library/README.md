@@ -28,8 +28,8 @@
 - 支持使用过程中重新配置Logger及Appender
 
 > 由于ohpm中心仓库审核需要时间，若您遇到恶性bug但中心仓库未提供更新，
-> 请先移步[log4a代码仓库](https://gitee.com/ericple/log4a)检查是否存在新版本，
-> 若没有，您可以[新建issue](https://gitee.com/ericple/log4a/issues/new)
+> 请先移步[log4a代码仓库](https://gitcode.com/Peercat/log4a)检查是否存在新版本，
+> 若没有，您可以[新建issue](https://gitcode.com/Peercat/log4a/issues/new)
 > ，或[向我发送邮件](mailto:dev@peercat.cn)，我将尽快修复。
 
 ## 安装
@@ -37,7 +37,7 @@
 - 使用 `git submodule` 安装(推荐)
 
 ```bash
-git submodule add https://gitee.com/ericple/log4a [你期望的存放相对路径]
+git submodule add https://gitcode.com/Peercat/log4a [你期望的存放相对路径]
 ```
 
 随后，将log4a/library添加到你的build-profile中，并在oh-package中引入。
@@ -347,8 +347,8 @@ this.logger.addFileAppender("/path/to/log.log", "mainFileAppender", Level.INFO);
 
 ### 贡献代码
 
-- [提交Issue](https://gitee.com/ericple/log4a/issues/new)
-- [发起Pull Request](https://gitee.com/ericple/ohos-weather/pull/new)
+- [提交Issue](https://gitcode.com/Peercat/log4a/issues/new)
+- [发起Pull Request](https://gitcode.com/Peercat/log4a/pull/new)
 
 ### 开源协议
 

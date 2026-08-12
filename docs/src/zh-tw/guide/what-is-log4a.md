@@ -4,7 +4,7 @@ Log4a是一个ArkTS/TypeScript使用的日志库，为高性能、简单易用�
 
 只是想尝试一下？跳到[快速开始](/guide/getting-started)
 
-[![Ericple/log4a](https://gitee.com/ericple/log4a/widgets/widget_card.svg?colors=4183c4,ffffff,ffffff,e3e9ed,666666,9b9b9b)](https://gitee.com/ericple/log4a)
+[![Ericple/log4a](https://gitcode.com/Peercat/log4a/widgets/widget_card.svg?colors=4183c4,ffffff,ffffff,e3e9ed,666666,9b9b9b)](https://gitcode.com/Peercat/log4a)
 
 ## 使用场景
 

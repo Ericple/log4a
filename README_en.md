@@ -192,8 +192,8 @@ DevEco Studio NEXT Developer Preview 2 (4.1.3.700), SDK: API11 (4.1.0(11))
 
 ### Contribute code
 
-- [Submit Issue](https://gitee.com/ericple/log4a/issues/new)
-- [Create A Pull Request](https://gitee.com/ericple/ohos-weather/pull/new)
+- [Submit Issue](https://gitcode.com/Peercat/log4a/issues/new)
+- [Create A Pull Request](https://gitcode.com/Peercat/log4a/pull/new)
 
 ### Open source protocol
 

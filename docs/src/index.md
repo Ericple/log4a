@@ -18,7 +18,7 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: Gitee
-      link: https://gitee.com/ericple/log4a
+      link: https://gitcode.com/Peercat/log4a
 
 features:
   - title: 使用装饰器和标签

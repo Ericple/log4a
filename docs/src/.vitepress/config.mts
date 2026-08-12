@@ -27,7 +27,7 @@ export default defineConfig({
     //         items: [
     //           {
     //             text: 'CHANGELOG',
-    //             link: 'https://gitee.com/ericple/log4a/blob/master/library/CHANGELOG.md'
+    //             link: 'https://gitcode.com/Peercat/log4a/blob/master/library/CHANGELOG.md'
     //           }
     //         ]
     //       }
@@ -206,7 +206,7 @@ export default defineConfig({
         items: [
           {
             text: '更新日志',
-            link: 'https://gitee.com/ericple/log4a/blob/master/library/CHANGELOG.md'
+            link: 'https://gitcode.com/Peercat/log4a/blob/master/library/CHANGELOG.md'
           }
         ]
       }
