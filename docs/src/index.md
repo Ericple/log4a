@@ -17,7 +17,7 @@ hero:
       text: 快速开始
       link: /guide/getting-started
     - theme: alt
-      text: Gitee
+      text: GitCode
       link: https://gitcode.com/Peercat/log4a
 
 features:

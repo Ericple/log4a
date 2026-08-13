@@ -4,6 +4,7 @@ import {inBrowser} from 'vitepress';
 
 const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/DemoEditor.vue')):()=>null;
 </script>
+
 # 快速开始
 
 ## 安装
@@ -11,7 +12,8 @@ const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/De
 ## 前置准备
 
 - [Node.js](https://nodejs.org/) 18及以上版本
-- [Huawei DevEco Studio](https://gitee.com/openharmony/docs/blob/master/zh-cn/release-notes/OpenHarmony-v4.1-release.md#%E9%85%8D%E5%A5%97%E5%85%B3%E7%B3%BB) 4.1 Release及以上版本
+- [Huawei DevEco Studio](https://gitcode.com/openharmony/docs/blob/master/zh-cn/release-notes/OpenHarmony-v4.1-release.md#%E9%85%8D%E5%A5%97%E5%85%B3%E7%B3%BB)
+  4.1 Release及以上版本
 - OpenHarmony/ HarmonyOS SDK
 
 推荐使用ohpm，从OpenHarmony三方库中心仓直接安装log4a的最新发行版本
