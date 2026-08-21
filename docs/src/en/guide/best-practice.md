@@ -1,6 +1,6 @@
 # Best Practices
 
-Define Logger outside the UI code <Badge type="tip" text="1.3.4 +" />
+Define Logger outside the UI code
 
 Defining a Logger in your UI code is a bad practice, especially if the logs need to be sent to many different places, which can make the code very confusing, so I recommend that you configure all the loggers you will use in a single file.
 
