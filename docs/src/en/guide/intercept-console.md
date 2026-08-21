@@ -1,4 +1,4 @@
-# log intercept <Badge type="tip" text="1.3.1 +" />
+# log intercept <Badge type="tip" text="1.3.2 +" />
 
 If you already use console.log for logging output in your application, you can intercept it through the Log4a API and redirect it to the Log4a ConsoleAppender.
 

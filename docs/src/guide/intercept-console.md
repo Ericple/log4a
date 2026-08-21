@@ -1,4 +1,4 @@
-# 拦截console.log <Badge type="tip" text="1.3.1 +" />
+# 拦截console.log <Badge type="tip" text="1.3.2 +" />
 
 如果开发者已经在应用中使用了console.log进行日志输出，可以通过Log4a的API对其进行拦截，并重定向至Log4a的ConsoleAppender。
 

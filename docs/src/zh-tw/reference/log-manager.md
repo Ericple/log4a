@@ -38,7 +38,7 @@
 
 获取日志存储根目录
 
-## `interceptConsole(): void` <Badge type="tip" text="1.3.1 +" />
+## `interceptConsole(): void` <Badge type="tip" text="1.3.2 +" />
 
 拦截console日志
 

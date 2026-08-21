@@ -33,7 +33,7 @@ Set the root directory for log storage (multi-level directories are supported si
 
 Get the log storage root directory
 
-## `interceptConsole(): void` <Badge type="tip" text="1.3.1 +" />
+## `interceptConsole(): void` <Badge type="tip" text="1.3.2 +" />
 
 Intercept console logs
 
