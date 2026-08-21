@@ -117,7 +117,7 @@
 删除所有类型为`type`的`Appender`，支持链式调用
 
 > [!WARNING]
-> 此方法已被弃用，请改用Logger.removeAppenderByType替代
+> 此方法已被弃用，请改用`Logger.removeAppenderByType`替代
 
 ## `removeAppenderByType(appenderType: AppenderTypeEnum): this`
 
@@ -132,7 +132,7 @@
 删除名称为`name`的`Appender`，支持链式调用
 
 > [!WARNING]
-> 此方法已被弃用，请改用Logger.removeAppenderByName替代
+> 此方法已被弃用，请改用`Logger.removeAppenderByName`替代
 
 ## `removeAppenderByName(name): this`
 
