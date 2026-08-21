@@ -13,7 +13,7 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 
 ## `LogViewMode`
 
-- `ALL` - Display all history logs
+- `ALL` - Display history logs (usually rolled cache files; `DailyRollingFileAppender` also includes the current session)
 - `SESSION` - Display current session logs
 
 ## `LogViewColorConfig`
@@ -27,7 +27,7 @@ Log color configuration, containing `fatal`, `error`, `warn`, `info`, `debug`, `
 
 ## `LogViewConfigAll`
 
-- Adds `appender: string` to `LogViewConfig`, used to display all history logs of a named `FileAppender`.
+- Adds `appender: string` to `LogViewConfig`, used to display history logs of a named file-type Appender.
 
 ## `LogViewConfigSession`
 

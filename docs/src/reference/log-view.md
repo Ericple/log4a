@@ -13,7 +13,7 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 
 ## `LogViewMode`
 
-- `ALL` - 展示全部历史日志
+- `ALL` - 展示历史日志（通常为已滚动生成的缓存文件；`DailyRollingFileAppender` 还会包含当前会话）
 - `SESSION` - 展示当前会话日志
 
 ## `LogViewColorConfig`
@@ -27,7 +27,7 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 
 ## `LogViewConfigAll`
 
-- 在 `LogViewConfig` 基础上增加 `appender: string`，用于按名称展示 `FileAppender` 的全部历史日志。
+- 在 `LogViewConfig` 基础上增加 `appender: string`，用于按名称展示文件类Appender的历史日志。
 
 ## `LogViewConfigSession`
 
