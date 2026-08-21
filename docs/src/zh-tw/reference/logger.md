@@ -5,8 +5,6 @@
 > [!INFO]
 > 用于输出日志，继承了`AbstractLogger`
 
-## 構造函數
-
 ## `constructor(context)`
 
 - `context` any - 類實例或類名

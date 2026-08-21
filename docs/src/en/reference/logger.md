@@ -3,8 +3,6 @@
 > [!INFO]
 > is used to output logs and inherits `AbstractLogger`
 
-## Constructor
-
 ## `constructor(context)`
 
 - `context` any - A class instance or class name
