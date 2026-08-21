@@ -10,7 +10,7 @@ import { InitializeAllLoggers } from '../xxx/LoggerConfig';
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {

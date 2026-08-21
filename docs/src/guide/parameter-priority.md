@@ -8,7 +8,7 @@
 
 ## 总结
 
-如果多个`FileAppender`指向同一个日志文件，则只需要设置其中一个的`options`参数
+如果多个`FileAppender`指向同一个日志文件，则只需要设置其中一个的`options`参数。若后续传入不同的`options`，则会按新的配置重新创建该文件的`FileAppender`。
 
 ```typescript
 class Example1 {

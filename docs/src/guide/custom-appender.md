@@ -1,18 +1,19 @@
 # 实现追加器
 
-所有追加器都继承自同一抽象类`AbstractAppender`，开发者可以自行实现其中关键方法，并通过`Logger`中的`addAppender`方法将追加器绑定至`Logger`。
+所有追加器都继承自同一抽象类`AbstractAppender`，开发者可以自行实现其中关键方法，并通过`Logger`中的`bindAppender`方法（或已废弃的`addAppender`）将追加器绑定至`Logger`。
 
 ## 追加器的生命周期
 
 追加器有以下周期
 
-`onLog(level, tag, time, count, message)`
+`onLog(level, tag, time, count, message, tempContext)`
 
 - `level` Level - 日志等级
 - `tag` string - 日志所属类名
 - `time` number - 日志打印时间戳
 - `count` number - 该日志为此`Appender`处理的第`count`条日志
 - `message` string - 日志内容
+- `tempContext` TemporaryLoggerContext - 日志临时上下文
 
 当有日志被记录时，追加器的onLog方法会被Logger调用，开发者可自行实现日志功能。
 
@@ -26,8 +27,9 @@
 
 ```ts
 class SimpleAppenderClass extends AbstractAppender {
-    onLog(level: Level, tag: string, time: number, count: number, message: string): void {
+    onLog(level: Level, tag: string, time: number, count: number, message: string): this {
         console.log(message);
+        return this;
     }
     onTerminate(): void {
         return;
@@ -41,7 +43,7 @@ import { SimpleAppender } from './file.ets';
 import { Logger, LogManager } from '@pie/log4a';
 
 class SomeClass {
-    logger: Logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+    logger: Logger = LogManager.getLogger(this).bindAppender(SimpleAppender);
 }
 ```
 
@@ -57,6 +59,7 @@ const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/De
 <DemoEditor code="class SimpleAppenderClass extends AbstractAppender {
     onLog(level, tag, time, count, message) {
         console.log(message);
+        return this;
     }
     onTerminate() {
         return;
@@ -64,7 +67,7 @@ const DemoEditor = inBrowser ? defineAsyncComponent(()=>import('../components/De
 }
 const SimpleAppender = new SimpleAppenderClass;
 class SomeClass {
-    logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+    logger = LogManager.getLogger(this).bindAppender(SimpleAppender);
     hello(){
         this.logger.info('Hello, World!')
     }

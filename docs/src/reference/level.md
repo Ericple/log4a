@@ -52,24 +52,24 @@
 ## `static getLevel(name, intLevel?)`
 
 - `name` string - 日志等级名称
-- `intValue` number | undefined - 日志等级
+- `intLevel` number | undefined - 日志等级
 
-获取对应名称的日志等级，如果不存在，返回undefined。
+获取对应名称的日志等级，如果不存在，则使用给定的等级（默认为`Level.INFO`）创建并返回该等级。
 
 ## `static toLevel(name,defaultLevel?)`
 
 - `name` string - 日志等级名称
-- `defaultLevel` Level - 日志等级
+- `defaultLevel` Level? - 日志等级，默认为`Level.DEBUG`
 
-将给定的名称转换为日志等级，若日志等级未注册，则返回`Level.DEBUG` 
+将给定的名称转换为日志等级，若日志等级未注册，则返回默认等级（默认为`Level.DEBUG`）
 
 ## `static values()`
 
 获取所有已注册的日志等级
 
-## `name()`
+## `name`
 
-获取日志等级名称
+获取日志等级名称（属性）
 
 ## `toString()`
 
@@ -95,19 +95,19 @@
 
 - `other` Level
 
-判断当前日志等级是否高于给定的日志等级
+判断当前日志等级是否比给定日志等级更不具体（或相同）
 
 ## `isMoreSpecificThan(other)`
 
 - `other` Level
 
-判断当前日志等级是否低于给定日志等级
+判断当前日志等级是否比给定日志等级更具体（或相同）
 
 ## `hashCode()`
 
-获取当前日志等级名称的hash code
+计算当前日志等级名称的hash code
 
-## `getStandardLevel()
+## `getStandardLevel()`
 
 将该日志等级转换为等级最接近的标准日志等级
 
@@ -116,4 +116,4 @@
 - `minLevel` Level
 - `maxLevel` Level
 
-判断当前日志等级是否大于`minLevel`并小于`maxLevel`
+判断当前日志等级是否大于等于`minLevel`且小于等于`maxLevel`

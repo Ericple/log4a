@@ -87,7 +87,26 @@ export default defineConfig({
     //               text: 'Best practice',
     //               link: '/en/guide/best-practice'
     //             },
-
+    //             {
+    //               text: 'Output to database',
+    //               link: '/en/guide/log-to-database'
+    //             },
+    //             {
+    //               text: 'Rolling file appender',
+    //               link: '/en/guide/rolling-file-appender'
+    //             },
+    //             {
+    //               text: 'Output to mailbox',
+    //               link: '/en/guide/log-to-your-mailbox'
+    //             },
+    //             {
+    //               text: 'Pre-bind appender',
+    //               link: '/en/guide/pre-bind-appender'
+    //             },
+    //             {
+    //               text: 'Low API support',
+    //               link: '/en/guide/low-api-support'
+    //             }
     //           ]
     //         },
     //         {
@@ -101,17 +120,31 @@ export default defineConfig({
     //           items: [
     //             { text: 'LogManager', link: '/en/reference/log-manager' },
     //             { text: 'Logger', link: '/en/reference/logger' },
+    //             { text: 'AbstractLogger', link: '/en/reference/abstract-logger' },
     //             { text: 'MarkerManager', link: '/en/reference/marker-manager' },
     //             { text: 'Level', link: '/en/reference/level' },
+    //             { text: 'AppenderTypeEnum', link: '/en/reference/appender-type-enum' },
+    //             { text: 'Benchmark', link: '/en/reference/benchmark' },
+    //             { text: 'LogView', link: '/en/reference/log-view' },
     //             {
     //               text: 'Appenders',
     //               items: [
     //                 { text: 'AbstractAppender', link: '/en/reference/abstract-appender' },
+    //                 { text: 'ConsoleAppender', link: '/en/reference/console-appender' },
     //                 { text: 'FileAppender', link: '/en/reference/file-appender' },
     //                 { text: 'RollingFileAppender', link: '/en/reference/rolling-file-appender' },
     //                 { text: 'DailyRollingFileAppender', link: '/en/reference/daily-rolling-file-appender' },
     //                 { text: 'TCPSocketAppender', link: '/en/reference/tcp-socket-appender' },
-    //                 { text: 'UDPSocketAppender', link: '/en/reference/udp-socket-appender' }
+    //                 { text: 'UDPSocketAppender', link: '/en/reference/udp-socket-appender' },
+    //                 { text: 'SMTPAppender', link: '/en/reference/smtp-appender' },
+    //                 { text: 'DatabaseAppender', link: '/en/reference/database-appender' }
+    //               ]
+    //             },
+    //             {
+    //               text: 'Formats',
+    //               items: [
+    //                 { text: 'PatternLayout', link: '/en/reference/pattern-layout' },
+    //                 { text: 'CSVLayout', link: '/en/reference/csv-layout' }
     //               ]
     //             }
     //           ],
@@ -260,6 +293,10 @@ export default defineConfig({
                 link: '/guide/log-to-database'
             },
             {
+              text: '滚动文件追加器',
+              link: '/guide/rolling-file-appender'
+            },
+            {
               text: '自定义布局',
               link: '/guide/custom-layout'
             },
@@ -292,8 +329,12 @@ export default defineConfig({
           items: [
             { text: 'LogManager', link: '/reference/log-manager' },
             { text: 'Logger', link: '/reference/logger' },
+            { text: 'AbstractLogger', link: '/reference/abstract-logger' },
             { text: 'Level', link: '/reference/level' },
             { text: 'MarkerManager', link: '/reference/marker-manager' },
+            { text: 'AppenderTypeEnum', link: '/reference/appender-type-enum' },
+            { text: 'Benchmark', link: '/reference/benchmark' },
+            { text: 'LogView', link: '/reference/log-view' },
             {
               text: '追加器',
               items: [

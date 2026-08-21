@@ -21,7 +21,7 @@ this is a log, and this is a log variable, this is also a log variable 2
 ```
 
 > [!INFO]
-> If there are more variables than slots, Log4a will print an additional row of FATAL logs
+> If there are more variables than slots, Log4a will print an additional row of WARN logs
 
 ## Socket handling of variables
 
@@ -41,10 +41,10 @@ LogManager.anonymous().info('value of a = {}', a);
 ```
 
 ```bash output
-value of a = 
+value of a =
 {
-    value_a: 0,
-    value_b: 'This is json class'
+  "value_a": 0,
+  "value_b": "This is json class"
 }
 ```
 

@@ -8,7 +8,7 @@ When the developer adds `FileAppender` , there may be multiple `FileAppender` bo
 
 ## Summary
 
-If multiple Fileappenders point to the same log file, you only need to set the options parameter for one of them
+If multiple Fileappenders point to the same log file, you only need to set the options parameter for one of them. If different options are passed later, the `FileAppender` for that file is recreated with the new configuration.
 
 ```typescript
 class Example1 {
@@ -21,6 +21,7 @@ class Example2 {
     private logger_b: Logger = LogManager.getLogger(this).addFileAppender('/path/to_file.log', 'main',Level.INFO);
 }
 ```
+
 ## Priority of the log level
 
 If you've read through [Quick Start](./getting-started), you've noticed that we can set a log output level in both 'Logger' and Appender, so we need to cover this in particular.

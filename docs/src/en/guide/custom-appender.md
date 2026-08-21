@@ -1,18 +1,19 @@
 # Implement the Appender
 
-All appenders inherit from the same abstract class AbstractAppender, and developers can implement key methods themselves and bind them to Logger using the addAppender method in Logger.
+All appenders inherit from the same abstract class AbstractAppender, and developers can implement key methods themselves and bind them to Logger using the `bindAppender` method (or the deprecated `addAppender`) in Logger.
 
 ## Life cycle of Appender
 
 The adder has the following cycles
 
-`onLog(level, tag, time, count, message)`
+`onLog(level, tag, time, count, message, tempContext)`
 
 - `level` Level - Log level
 - `tag` string - Name of the class to which the log belongs
 - `time` number - Indicates the log printing time stamp
 - `count` number - The count log processed by this Appender
 - `message` string - Log content
+- `tempContext` TemporaryLoggerContext - Log temporary context
 
 When logs are recorded, the onLog method of the adder is called by the Logger, and the developer can implement the logging function by himself.
 
@@ -26,8 +27,9 @@ This example implements a minimal append to output logs to the console
 
 ```ts
 class SimpleAppenderClass extends AbstractAppender {
-    onLog(level: Level, tag: string, time: number, count: number, message: string): void {
+    onLog(level: Level, tag: string, time: number, count: number, message: string): this {
         console.log(message);
+        return this;
     }
     onTerminate(): void {
         return;
@@ -41,7 +43,7 @@ import { SimpleAppender } from './file.ets';
 import { Logger, LogManager } from '@pie/log4a';
 
 class SomeClass {
-    logger: Logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+    logger: Logger = LogManager.getLogger(this).bindAppender(SimpleAppender);
 }
 ```
 
@@ -64,7 +66,7 @@ return;
 }
 const SimpleAppender = new SimpleAppenderClass;
 class SomeClass {
-logger = LogManager.getLogger(this).addAppender(SimpleAppender);
+logger = LogManager.getLogger(this).bindAppender(SimpleAppender);
 hello(){
 this.logger.info('Hello, World! ')
 }

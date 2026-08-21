@@ -21,7 +21,7 @@ this is a log, and this is a log variable, this is also a log variable 2
 ```
 
 > [!INFO]
-> 如果变量数量比插槽多，`Log4a`会额外打印一行FATAL级日志进行提示
+> 如果变量数量比插槽多，`Log4a`会额外打印一行WARN级日志进行提示
 
 ## 插槽对变量的处理
 
@@ -41,10 +41,10 @@ LogManager.anonymous().info('value of a = {}', a);
 ```
 
 ```bash output
-value of a = 
+value of a =
 {
-    value_a: 0,
-    value_b: 'This is json class'
+  "value_a": 0,
+  "value_b": "This is json class"
 }
 ```
 

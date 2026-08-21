@@ -19,13 +19,13 @@ Log4a自1.4.0版本开始，支持开发者自行设置追加器日志布局，1
 const myFileAppender = new FileAppender('log.txt','mainFileAppender', Level.ALL).setLayout(new PatternLayout());
 ```
 
-所有追加器在默认情况下都分配了一个`PatternLayout`，其pattern默认为：`[%-5p]\t%d\t[%C:%r]\t%m`
+所有追加器在默认情况下都分配了一个`PatternLayout`，其pattern默认为：`[%-5p]\t%d\t[%C:%r]\t%m\n`
 
 要自定义一个`PatternLayout`，可以通过在初始化PatternLayout时传入自定义Pattern达成，开发者可以使用以下占位符：
 
 | 占位符 | 描述                                                                                                                                                                  | 用例                          |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| %C     | 打印Logger所属类名                                                                                                                                                    | %.30c                         |
+| %C     | 打印Logger所属类名                                                                                                                                                    | %.30C                         |
 | %d     | 打印当前日志时间，可通过跟随如`{yyyy-MM-dd}`等参数自定义日期打印格式，默认为`ISO8601`，Log4a还预置了`ABSOLUTE`、`DATE`等格式，可通过例如`%d{ISO8601}`来使用预置格式。 | `%d{yyyy-MM-dd HH:mm:ss,SSS}` |
 | %l     | 打印日志打印堆栈                                                                                                                                                      | %-10l                         |
 | %L     | 打印日志输出行号                                                                                                                                                      |                               |
@@ -38,7 +38,7 @@ const myFileAppender = new FileAppender('log.txt','mainFileAppender', Level.ALL)
 
 - `yyyy` - 年份
 - `MM` - 月份
-  - 当超过3位时，会以文字方式呈现，如十一月时：`MMM` - `Nov`
+  - 当超过2位时，会以文字方式呈现，如一月时：`MMM` - `Jan`
 - `dd` - 日期
 - `HH` - 小时
 - `mm` - 分钟
@@ -72,5 +72,5 @@ const appender = new ConsoleAppender().setLayout(layout);
 const logger = LogManager
                   .getLogger("Log4a")
                   .removeAppenderByType(AppenderTypeEnum.CONSOLE);
-logger.addAppender(appender);
+logger.bindAppender(appender);
 logger.info("Hello World!");' />

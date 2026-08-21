@@ -23,7 +23,7 @@ export function InitializeAllLoggers(logFilePath: string) {
     .addFileAppender('logFile.log', 'mainLoggerOfIndex', Level.ALL, {
       useWorker: true
     })
-    .addAppender(socketAppender);
+    .bindAppender(socketAppender);
   LogManager.getLogger('LoginPage')
     .addFileAppender('logFile.log', 'mainLoggerOfLoginPage', Level.ALL, {
       useWorker: true
@@ -37,7 +37,7 @@ import { InitializeAllLoggers } from '../xxx/LoggerConfig';
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -55,6 +55,9 @@ export default class EntryAbility extends UIAbility {
 
 ```typescript:line-numbers
 // Index.ets
+import { LogManager, Logger, Level } from '@pie/log4a';
+import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/ets/components/LogView';
+
 @Entry
 @Component
 struct Index {
@@ -74,7 +77,7 @@ struct Index {
           src: $logger,
           config: {
             mode: LogViewMode.ALL,
-            appender: 'main',
+            appender: 'mainLoggerOfIndex',
             colorConfig: new LogViewColorConfig()
           }
         })
@@ -111,7 +114,7 @@ import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -134,7 +137,7 @@ export default class EntryAbility extends UIAbility {
 这段代码展示了如何在一个文件中定义所有追加器并导出:
 
 ```typescript:line-numbers
-import { FileAppender, Level, TCPSocketAppender } from '@log/log4a';
+import { FileAppender, Level, TCPSocketAppender } from '@pie/log4a';
 
 export const socketAppender = new TCPSocketAppender({
   address: '114.xxx.xxx.xxx',
@@ -161,11 +164,9 @@ import {
   MarkerManager,
   TracedStr,
   MarkedTracedStr,
-  LogView,
-  LogViewMode,
-  LogViewColorConfig
-} from '@log/log4a';
-import { Level } from '@log/log4a/src/main/ets/Level';
+  Level
+} from '@pie/log4a';
+import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/ets/components/LogView';
 import { fileAppender_a, socketAppender } from './socketAppenderConstants';
 
 @Entry
@@ -173,8 +174,8 @@ import { fileAppender_a, socketAppender } from './socketAppenderConstants';
 struct Index {
   @State message: string = 'Hello World';
   @State logger: Logger = LogManager.getLogger(this)
-    .addAppender(fileAppender_a)
-    .addAppender(socketAppender);
+    .bindAppender(fileAppender_a)
+    .bindAppender(socketAppender);
   test: TestClass = new TestClass();
 
   aboutToAppear(): void {
@@ -214,6 +215,8 @@ struct Index {
 随后链式调用bindAppenderGlobally向所有Logger同时添加了多个appender
 
 ```typescript:line-numbers
+import { LogManager, TCPSocketAppender, FileAppender, ConsoleAppender, PatternLayout, Level } from '@pie/log4a';
+
 export function InitializeAllLoggers(logFilePath: string) {
   LogManager.setLogFilePath(logFilePath);
   const socketAppender = new TCPSocketAppender({

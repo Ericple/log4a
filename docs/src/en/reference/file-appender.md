@@ -2,7 +2,7 @@
 
 > Provide the ability to output logs to files
 
-## `constructor(path, name, level, options)`
+## `constructor(path, name, level, options?)`
 
 - `path` string - Path or name of the log file
 - `name` string - Name of the file append
@@ -13,19 +13,27 @@
 - `maxCacheCount` number?  - Maximum number of log files
 - `encryptor` (level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer - Encryption function
 - `filter` (level: Level, content: string | ArrayBuffer) => boolean - Additional log filtering function
+- `expireTime` number? - Log cache expiration time in seconds
 
 Create a new FileAppender
 
-## `matchOptions(options)`
+> [!NOTE]
+> When `useWorker` is `true`, `encryptor` does not take effect.
 
-- `options` FileAppenderOptions - Appenderoptions to compare
+## `matchOptions(options?)`
 
-Check whether the current append configuration matches the given configuration
+- `options` FileAppenderOptions? - Appender options to compare
 
-## `onLog(level, message)`
+Check whether the current appender matches the given core configuration (`useWorker`, `maxFileSize`, `maxCacheCount`, `encryptor`)
+
+## `onLog(level, tag, time, count, message, tempContext)`
 
 - `level` Level - Log level
-- `message` string - Log content
+- `tag` string - Log tag
+- `time` number - Log timestamp
+- `count` number - Log sequence number
+- `message` string | ArrayBuffer - Log content
+- `tempContext` TemporaryLoggerContext - Log temporary context
 
 This method is called when the bound host Logger logs
 
@@ -35,8 +43,12 @@ Terminates all logging activities for this Appender
 
 ## `getAllHistory()`
 
-Gets all the history logs that contain the cache
+Gets history logs from rolled cache files
+
+## `clearAllHistory()`
+
+Deletes all history logs (including rolled cache files) and clears the current history
 
 ## `clearCurrentHistory()`
 
-Delete all log caches
+Delete the current log file (does not delete rolled cache files)

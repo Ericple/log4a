@@ -15,7 +15,7 @@ To disable console output, do this:
 
 ```typescript
 // Remove the ConsoleAppender attached to the logger
-this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
+this.logger.removeAppenderByType(AppenderTypeEnum.CONSOLE);
 ```
 
 ## Enable console output again
@@ -23,12 +23,12 @@ this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
 If in some cases you remove ConsoleAppender but then need to print logs in the console, you can do this:
 
 ```typescript
-// 向logger添加一个ConsoleAppender
-this.logger.addConsoleAppender();
+// Bind a ConsoleAppender to the logger
+this.logger.bindAppender(new ConsoleAppender());
 ```
 
 > [!WARNING]
-> Each logger has at most one ConsoleAppender attached to it. If the logger has ConsoleAppender attached to it, calling addConsoleAppender overwrites the existing ConsoleAppender. (Before 1.4.3 Nothing happens when you call this method).
+> Each logger has at most one ConsoleAppender attached to it. If the logger has ConsoleAppender attached to it, calling addConsoleAppender (or bindAppender with a ConsoleAppender) overwrites the existing ConsoleAppender. (Before 1.4.3 Nothing happens when you call this method).
 
 ## `FileAppender`
 
@@ -37,15 +37,15 @@ The FileAppender module provides the ability to output logs to files. You need t
 > [!TIP]
 > For a file, a FileAppender is globally unique. Multiple loggers can be configured with the same FileAppender, which means that a FileAppender can be bound to multiple Logger instances. This is an internal implementation of log4a, and developers do not need to worry about this when they are actually developing.
 
-Adding a FileAppender requires two mandatory parameters:
+When adding a FileAppender, you usually need to provide the file path and the FileAppender name:
 
 - File path
 - FileAppender Name
 
 > [!TIP]
 > Name is used as an index to delete a FileAppender that is bound to the Logger
-> 
-> Since 1.3.1 version, can that the LogManager. SetLogFilePath to specify all of the log file storage paths, rather than in every when additional device to create a new file from the context for a file path. However, you must ensure that only the file name is provided when you create the append.
+>
+> Since version 1.3.1, you can use `LogManager.setLogFilePath` to specify the storage path for all log files, instead of obtaining the file path from the context every time you create a new file appender. However, you must ensure that only the file name is provided when creating the appender.
 
 ## Add a FileAppender
 
@@ -63,9 +63,9 @@ To add a FileAppender with multithreading capabilities, you can do the following
 
 ```typescript:line-numbers{6}
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         useWorker: true
     }
@@ -81,9 +81,9 @@ To configure the maximum number and usage of log files, enter related parameters
 
 ```typescript:line-numbers{6,7}
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         maxFileSize: 10,
         maxCacheCount: 10
@@ -103,6 +103,9 @@ FileAppender allows developers to encrypt logs by passing in an encryption funct
 
 Such a design allows developers to encrypt only some or a certain log level of logs, to achieve partial encryption or overall encryption, but also allows developers to write encryption algorithms more freely.
 
+> [!NOTE]
+> If multithreading is enabled (`useWorker: true`), `encryptor` does not take effect in the current version.
+
 Configure encryption:
 
 ```typescript:line-numbers{10-15}
@@ -111,12 +114,12 @@ const encryptFunction = (origin: string | ArrayBuffer): string | ArrayBuffer => 
     return origin;
 }
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         encryptor: (level: Level, log: string | ArrayBuffer) => {
-            if(level.name() == 'privateLevel') {
+            if(level.name == 'privateLevel') {
                 return encryptFunction(log);
             }
             return log; // If encryption is not required, the original log must be returned

@@ -24,13 +24,15 @@ You can create an append on the page and bind it to the Logger using the addAppe
 
 ```ts
 // Index.ets
+import { DailyRollingFileAppender, Level, Logger, LogManager } from '@pie/log4a';
+
 const myDailyRollingFileAppender: DailyRollingFileAppender = new DailyRollingFileAppender('main', Level.ALL, true);
 
 @Entry
 @Component
 struct Index {
-    logger: Logger = LogManager.getLogger(this).addAppender(myDailyRollingFileAppender);
-    
+    logger: Logger = LogManager.getLogger(this).bindAppender(myDailyRollingFileAppender);
+
     build(){
         // ...Other code
     }

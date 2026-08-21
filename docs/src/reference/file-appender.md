@@ -2,7 +2,7 @@
 
 > 提供日志输出到文件的能力
 
-## `constructor(path, name, level, options)`
+## `constructor(path, name, level, options?)`
 
 - `path` string - 日志文件路径或名称
 - `name` string - 此文件追加器名称
@@ -17,16 +17,38 @@
 
 新建一个`FileAppender`
 
-## `matchOptions(options)`
+> [!NOTE]
+> 当 `useWorker` 为 `true` 时，`encryptor` 不会生效。
 
-- `options` FileAppenderOptions - 要对比的追加器配置
+## `matchOptions(options?)`
 
-判断当前追加器配置和给出配置是否完全吻合
+- `options` FileAppenderOptions? - 要对比的追加器配置
+
+判断当前追加器是否与给出的核心配置（`useWorker`、`maxFileSize`、`maxCacheCount`、`encryptor`）吻合
+
+## `onLog(level, tag, time, count, message, tempContext)`
+
+- `level` Level - 日志等级
+- `tag` string - 日志标签
+- `time` number - 日志时间戳
+- `count` number - 日志序号
+- `message` string | ArrayBuffer - 日志内容
+- `tempContext` TemporaryLoggerContext - 日志临时上下文
+
+当被绑定的宿主Logger记录日志时会调用此方法
+
+## `onTerminate()`
+
+终止此Appender的所有日志记录活动
 
 ## `getAllHistory()`
 
-获取包含缓存的所有历史日志
+获取已滚动生成的缓存文件中的历史日志
+
+## `clearAllHistory()`
+
+删除所有历史日志（包括滚动生成的缓存文件），并清空当前历史记录
 
 ## `clearCurrentHistory()`
 
-删除所有日志缓存
+删除当前日志文件（不删除已滚动生成的缓存文件）

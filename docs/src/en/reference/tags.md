@@ -1,6 +1,6 @@
 # tag
 
-To help developers get useful information quickly, Log4a provides two tags to track the performance of property functions.
+To help developers get useful information quickly, Log4a provides two tags to track the construction of template strings.
 
 ## `TracedStr`
 

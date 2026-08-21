@@ -52,24 +52,24 @@ Gets the log level of the corresponding name. If the log level does not exist, a
 ## `static getLevel(name, intLevel?) `
 
 - `name` string - Log level name
-- `intValue` number | undefined - Log level
+- `intLevel` number | undefined - Log level
 
-Gets the log level of the corresponding name, and returns undefined if it does not exist.
+Gets the log level of the corresponding name. If it does not exist, creates and returns a level with the given value (default `Level.INFO`).
 
 ## `static toLevel(name,defaultLevel?) `
 
 - `name` string - Log level name
-- `defaultLevel` Level - Log level
+- `defaultLevel` Level? - Log level, default is `Level.DEBUG`
 
-Converts the given name to the log Level, and returns` level.debug `if the log level is not registered
+Converts the given name to a log level. If the log level is not registered, returns the default level (default is `Level.DEBUG`)
 
 ## `static values()`
 
 Gets all registered log levels
 
-## `name()`
+## `name`
 
-Gets the log level name
+Gets the log level name (property)
 
 ## `toString()`
 
@@ -95,17 +95,17 @@ Compare two log level objects for the same origin
 
 - `other` Level
 
-Check whether the current log level is higher than the specified log level
+Check whether the current log level is less specific than (or equal to) the specified log level
 
 ## `isMoreSpecificThan(other)`
 
 - `other` Level
 
-Check whether the current log level is lower than the specified log level
+Check whether the current log level is more specific than (or equal to) the specified log level
 
 ## `hashCode()`
 
-Obtain the hash code of the current log level name
+Calculate the hash code of the current log level name
 
 ## `getStandardLevel()`
 
@@ -116,4 +116,4 @@ Convert this log level to the nearest standard log level
 - `minLevel` Level
 - `maxLevel` Level
 
-Check whether the current log level is greater than minLevel and less than maxLevel
+Check whether the current log level is greater than or equal to minLevel and less than or equal to maxLevel

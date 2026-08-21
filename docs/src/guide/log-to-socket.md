@@ -12,11 +12,11 @@ log4a实现了`TCPSocketAppender`，开发者可以通过此追加器，与服�
 
 ## 客户端
 
-在客户端使用`TCPSocketAppender`，除追加器默认参数外，还需要提供远端服务器地址及端口：
+在客户端使用`TCPSocketAppender`，需要提供追加器名称、日志等级以及远端服务器地址及端口：
 
 ```ts
 // ServerAppenderConstants.ets
-import { TCPSocketAppender } from '@pie/log4a';
+import { TCPSocketAppender, Level } from '@pie/log4a';
 
 export const serverAppender = new TCPSocketAppender({
     address: '114.xxx.xxx.xxx', //换成你的服务器ip
@@ -29,13 +29,13 @@ export const serverAppender = new TCPSocketAppender({
 在需要绑定`TCPSocketAppender`的页面引入：
 
 ```ts
-import { LogManager } from '@pie/log4a';
+import { LogManager, Logger } from '@pie/log4a';
 import { serverAppender } from './ServerAppenderConstants.ets';
 
 @Entry
 @Component
 struct Index {
-    logger: Logger = LogManager.getLogger(this).addAppender(serverAppender);
+    logger: Logger = LogManager.getLogger(this).bindAppender(serverAppender);
     build() {
         // ...Your code
     }
@@ -62,11 +62,11 @@ server.listen(1234, '0.0.0.0', () => {
 ## 服务端输出示意
 
 ```
-server running on 0.0.0.0:4721
+server running on 0.0.0.0:1234
 [INFO ]	2024-05-07 19:52:04.298	[Index:1]	Hello world!
-[DEBUG]	2024-05-07 19:52:08.218	[Index:2]	log into file and console, 
+[DEBUG]	2024-05-07 19:52:08.218	[Index:2]	log into file and console,
 {
-  "_name": "ALL",
+  "name": "ALL",
   "_intLevel": 1.7976931348623157e+308,
   "_standardLevel": {
     "_intLevel": 1.7976931348623157e+308

@@ -10,11 +10,11 @@ Like FileAppender, the same TCPSocketAppender can be bound to multiple Logger in
 
 ## Client
 
-To use TCPSocketAppender on the client side, in addition to the default parameters of the append, you also need to provide the remote server address and port:
+To use TCPSocketAppender on the client side, you need to provide the appender name, log level, remote server address, and port:
 
 ```ts
 // ServerAppenderConstants.ets
-import { TCPSocketAppender } from '@pie/log4a';
+import { TCPSocketAppender, Level } from '@pie/log4a';
 
 export const serverAppender = new TCPSocketAppender({
     address: '114.xxx.xxx.xxx',
@@ -27,13 +27,13 @@ export const serverAppender = new TCPSocketAppender({
 Introduce in the page where you need to bind `TCPSocketAppender` :
 
 ```ts
-import { LogManager } from '@pie/log4a';
+import { LogManager, Logger } from '@pie/log4a';
 import { serverAppender } from './ServerAppenderConstants.ets';
 
 @Entry
 @Component
 struct Index {
-    logger: Logger = LogManager.getLogger(this).addAppender(serverAppender);
+    logger: Logger = LogManager.getLogger(this).bindAppender(serverAppender);
     build() {
         // ...Your code
     }
@@ -60,11 +60,11 @@ server.listen(1234, '0.0.0.0', () => {
 ## Server output schematic
 
 ```
-server running on 0.0.0.0:4721
+server running on 0.0.0.0:1234
 [INFO ]	2024-05-07 19:52:04.298	[Index:1]	Hello world!
-[DEBUG]	2024-05-07 19:52:08.218	[Index:2]	log into file and console, 
+[DEBUG]	2024-05-07 19:52:08.218	[Index:2]	log into file and console,
 {
-  "_name": "ALL",
+  "name": "ALL",
   "_intLevel": 1.7976931348623157e+308,
   "_standardLevel": {
     "_intLevel": 1.7976931348623157e+308

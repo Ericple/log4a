@@ -24,13 +24,15 @@ export default class EntryAbility extends UIAbility {
 
 ```ts
 // Index.ets
+import { DailyRollingFileAppender, Level, Logger, LogManager } from '@pie/log4a';
+
 const myDailyRollingFileAppender: DailyRollingFileAppender = new DailyRollingFileAppender('main', Level.ALL, true);
 
 @Entry
 @Component
 struct Index {
-    logger: Logger = LogManager.getLogger(this).addAppender(myDailyRollingFileAppender);
-    
+    logger: Logger = LogManager.getLogger(this).bindAppender(myDailyRollingFileAppender);
+
     build(){
         // ...其他代码
     }

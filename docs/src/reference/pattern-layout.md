@@ -4,7 +4,7 @@
 
 ## `constructor(pattern)`
 
-- `pattern` string | undefined - 初始格式，默认值: `[%-5p]\t%d\t[%C:%r]\t%m`
+- `pattern` string | undefined - 初始格式，默认值: `[%-5p]\t%d\t[%C:%r]\t%m\n`
 
 创建一个新的PatternLayout
 
@@ -14,12 +14,14 @@
 
 重新设置PatternLayout中的格式
 
-## `makeMessage(level, tag, time, count, message): string`
+## `makeMessage(level, tag, time, count, message, stackInfo, tempContext): string`
 
 - `level` Level - 日志等级
 - `tag` string - 日志标签
 - `time` number - 日志时间戳
 - `count` number - 日志排序
 - `message` string | ArrayBuffer - 日志消息
+- `stackInfo` string - 日志调用堆栈信息
+- `tempContext` TemporaryLoggerContext - 日志临时上下文
 
 按照参数输出格式化后的消息

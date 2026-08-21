@@ -5,16 +5,24 @@
 ## `constructor(config)`
 
 - `config` TCPSocketAppenderOptions
-- `address` string - Server address
-- `port` number - Indicates the server port number
-- `encoding` string?  - Coding mode
+  - `name` string - Appender name
+  - `level` Level - Appender log level
+  - `address` string - Server address
+  - `port` number - Server port number
+  - `encoding` string? - Encoding mode
+  - `encryptor` ((level: Level, originalLog: string | ArrayBuffer) => string | ArrayBuffer)? - Encryption function
+  - `filter` ((level: Level, content: string | ArrayBuffer) => boolean)? - Additional log filtering function
 
 Create a new TCPSocketAppender
 
-## `onLog(level, message)`
+## `onLog(level, tag, time, count, message, tempContext)`
 
 - `level` Level - Log level
+- `tag` string - Log tag
+- `time` number - Log timestamp
+- `count` number - Log sequence number
 - `message` string - Log content
+- `tempContext` TemporaryLoggerContext - Log temporary context
 
 This method is called when the bound host Logger logs
 

@@ -22,7 +22,9 @@
 
 获取匿名Logger
 
-## `terminate()`
+## `terminate(type?)`
+
+- `type` number? - 要终止的Appender类型，多个可用`|`连接；缺省时终止所有Appender
 
 回收所有Logger。调用该方法的同时，Log4a会清除所有Appender，如果Appender存在多线程，则线程会被终止。开发者应在应用退出时调用此方法。
 
@@ -30,7 +32,7 @@
 
 - `path` string - 要存储日志的沙箱路径
 
-设置日志存储的根目录，如果希望在创建fileAppender时使用简洁路径，必须提前调用此方法
+设置日志存储的根目录（自1.5.6起支持多级目录），如果希望在创建fileAppender时使用简洁路径，必须提前调用此方法
 
 ## `getLogFilePath(): string` <Badge type="tip" text="1.3.1 +" />
 
@@ -57,3 +59,16 @@
 ## `registerLoggers<T extends Object>(...contexts: (T | string)[]): LogManagerClass` <Badge type="tip" text="1.5.4 +" />
 
 - `contexts` (Object | string)[] - 如果在struct或class中调用，可以传入this，否则需要传入类名
+
+
+## `preBindAppender<T extends AbstractAppender>(appender: T): LogManagerClass` <Badge type="tip" text="1.5.6 +" />
+
+- `appender` T extends AbstractAppender - 要预绑定的追加器
+
+注册一个预绑定追加器，之后新建的Logger会自动绑定该追加器，支持链式调用
+
+## `removePreBindAppender<T extends AbstractAppender>(appender: T): LogManagerClass` <Badge type="tip" text="1.5.6 +" />
+
+- `appender` T extends AbstractAppender - 要移除的预绑定追加器
+
+移除一个预绑定追加器，支持链式调用

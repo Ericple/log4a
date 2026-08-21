@@ -5,6 +5,8 @@ log4a实现了`DatabaseAppender`，开发者可以通过此追加器，将日志
 ## 基础用法
 
 ```typescript
+import { DatabaseAppender, Level, LogManager } from '@pie/log4a';
+
 const dbAppender = new DatabaseAppender({
   ctx,
   name: 'mainDbAppender',
@@ -59,6 +61,9 @@ const config = {
 #### `tag(tag)`
 
 - `tag` string - 搜索标签
+
+> [!NOTE]
+> 当前实现中，`maxLevel`、`minLevel`、`tag` 三者都设置时过滤才会生效；若缺少任意一个，`getLogs` 将返回全部日志。
 
 ### ILogInfo
 

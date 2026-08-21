@@ -7,7 +7,7 @@
 ```ts
 // appenderConstants.ts
 
-import {SMTPAppender} from '@pie/log4a';
+import { SMTPAppender, Level } from '@pie/log4a';
 
 const smtpAppender = new SMTPAppender({
     connectOptions: {
@@ -32,6 +32,7 @@ export default smtpAppender;
 ```ts
 // Index.ets
 
+import { LogManager, Logger } from '@pie/log4a';
 import smtpAppender from './appenderConstants';
 
 @Entry

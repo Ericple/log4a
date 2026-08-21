@@ -2,10 +2,10 @@
 
 If you already use console.log for logging output in your application, you can intercept it through the Log4a API and redirect it to the Log4a ConsoleAppender.
 
-Developers only in onCreate EntryAbility call ` that the LogManager. InterceptConsole ` ().
+Developers only need to call `LogManager.interceptConsole()` in the `onCreate` of EntryAbility.
 
-> [!WARNING]
-> At present, this function only supports intercepting console.log and does not support error/warn/debug output
+> [!INFO]
+> This function intercepts `console.log`, `console.error`, `console.debug`, `console.warn`, `console.trace` and `console.info`, and redirects them to Log4a's ConsoleAppender.
 
 ```ts
 // EntryAbility.ets
@@ -13,7 +13,7 @@ import { InitializeAllLoggers } from '../xxx/LoggerConfig';
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {

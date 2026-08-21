@@ -15,7 +15,7 @@
 
 ```typescript
 // 移除logger绑定的ConsoleAppender
-this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
+this.logger.removeAppenderByType(AppenderTypeEnum.CONSOLE);
 ```
 
 ## 再次启用控制台输出
@@ -23,12 +23,12 @@ this.logger.removeTypedAppender(AppenderTypeEnum.CONSOLE);
 如果在某些情况下，你移除了ConsoleAppender，但后续又需要在控制台中打印日志，可以这么做：
 
 ```typescript
-// 向logger添加一个ConsoleAppender
-this.logger.addConsoleAppender();
+// 向logger绑定一个ConsoleAppender
+this.logger.bindAppender(new ConsoleAppender());
 ```
 
 > [!WARNING]
-> 每个logger至多绑定一个ConsoleAppender，如果logger已绑定ConsoleAppender，则调用addConsoleAppender不会发生任何事。
+> 每个logger至多绑定一个ConsoleAppender；如果logger已绑定ConsoleAppender，再次添加ConsoleAppender（通过addConsoleAppender或bindAppender）会替换原有ConsoleAppender，而不会新增第二个。
 
 ## `FileAppender`
 
@@ -37,7 +37,7 @@ FileAppender提供输出日志到文件的能力，需要开发者手动绑定�
 > [!INFO]
 > 对于同一个文件，FileAppender在全局下是唯一的，多个Logger可以配置相同的FileAppender，这意味着一个FileAppender可以被绑定至多个Logger实例。这是log4a内部的实现，实际开发时，开发者无需操心这一点。
 
-添加一个FileAppender需要提供两个必选参数：
+添加一个FileAppender时，通常需要提供文件路径和FileAppender名称：
 
 - 文件路径
 - FileAppender名称
@@ -61,9 +61,9 @@ this.logger.addFileAppender(getContext(this).filesDir + '/fileName.log', 'mainLo
 
 ```typescript:line-numbers{6}
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         useWorker: true
     }
@@ -79,9 +79,9 @@ this.logger.addFileAppender(
 
 ```typescript:line-numbers{6,7}
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         maxFileSize: 10,
         maxCacheCount: 10
@@ -101,6 +101,9 @@ FileAppender允许开发者传入一个加密函数来进行日志加密，该�
 
 这样的设计允许开发者只对某些或某个日志等级的日志进行加密，实现局部加密或整体加密，也使得开发者可以更加自由地编写加密算法。
 
+> [!NOTE]
+> 如果开启了多线程（`useWorker: true`），当前版本的 `encryptor` 不会生效。
+
 配置加密：
 
 ```typescript:line-numbers{10-15}
@@ -109,12 +112,12 @@ const encryptFunction = (origin: string | ArrayBuffer): string | ArrayBuffer => 
     return origin;
 }
 this.logger.addFileAppender(
-    getContext(this).filesDir + '/fileName.log', 
-    'mainLog', 
-    Level.ALL, 
+    getContext(this).filesDir + '/fileName.log',
+    'mainLog',
+    Level.ALL,
     {
         encryptor: (level: Level, log: string | ArrayBuffer) => {
-            if(level.name() == 'privateLevel') {
+            if(level.name == 'privateLevel') {
                 return encryptFunction(log);
             }
             return log; // 如果不需要加密，必须返回原始log

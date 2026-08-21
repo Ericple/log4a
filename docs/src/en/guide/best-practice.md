@@ -11,7 +11,7 @@ Since version 1.3.4, you can get the same Logger as the LogManager.getLogger by 
 import { LogManager, Level, TCPSocketAppender } from '@pie/log4a';
 
 export function InitializeAllLoggers(logFilePath: string) {
-  // Must call first before creating Appender instance that the LogManager. SetLogFilePath, otherwise add appenders can not directly when the specified file name.
+  // Must call LogManager.setLogFilePath before creating Appender instances; otherwise appenders cannot directly use a file name as the path.
   LogManager.setLogFilePath(logFilePath);
   const socketAppender = new TCPSocketAppender({
     address: '114.xxx.xxx.xxx',
@@ -23,7 +23,7 @@ export function InitializeAllLoggers(logFilePath: string) {
     .addFileAppender('logFile.log', 'mainLoggerOfIndex', Level.ALL, {
       useWorker: true
     })
-    .addAppender(socketAppender);
+    .bindAppender(socketAppender);
   LogManager.getLogger('LoginPage')
     .addFileAppender('logFile.log', 'mainLoggerOfLoginPage', Level.ALL, {
       useWorker: true
@@ -37,7 +37,7 @@ import { InitializeAllLoggers } from '../xxx/LoggerConfig';
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -55,6 +55,9 @@ export default class EntryAbility extends UIAbility {
 
 ```typescript:line-numbers
 // Index.ets
+import { LogManager, Logger, Level } from '@pie/log4a';
+import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/ets/components/LogView';
+
 @Entry
 @Component
 struct Index {
@@ -74,7 +77,7 @@ struct Index {
           src: $logger,
           config: {
             mode: LogViewMode.ALL,
-            appender: 'main',
+            appender: 'mainLoggerOfIndex',
             colorConfig: new LogViewColorConfig()
           }
         })
@@ -111,7 +114,7 @@ import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 
-import { LogManager } from '@log/log4a';
+import { LogManager } from '@pie/log4a';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -127,12 +130,12 @@ export default class EntryAbility extends UIAbility {
 ```
 
 > [!TIP]
-> due to the file path need to get in the Context, if you want a unified definition all documents appended, please be sure to call that the LogManager in EntryAbility onCreate life-cycle. SetLogFilePath to advance deposit specified log file directory, Then, when defining the file append, only the file name is passed into the 'path' argument.
+> Because the file path needs to be obtained from Context, if you want to define all file appenders in one place, call `LogManager.setLogFilePath` in `EntryAbility.onCreate` to preset the log file directory. Then, when defining file appenders, pass only the file name as the `path` argument.
 
 This code shows how to define all the apenders in one file and export them:
 
 ```typescript:line-numbers
-import { FileAppender, Level, TCPSocketAppender } from '@log/log4a';
+import { FileAppender, Level, TCPSocketAppender } from '@pie/log4a';
 
 export const socketAppender = new TCPSocketAppender({
 address: '114.xxx.xxx.xxx',
@@ -159,11 +162,9 @@ import {
   MarkerManager,
   TracedStr,
   MarkedTracedStr,
-  LogView,
-  LogViewMode,
-  LogViewColorConfig
-} from '@log/log4a';
-import { Level } from '@log/log4a/src/main/ets/Level';
+  Level
+} from '@pie/log4a';
+import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/ets/components/LogView';
 import { fileAppender_a, socketAppender } from './socketAppenderConstants';
 
 @Entry
@@ -171,8 +172,8 @@ import { fileAppender_a, socketAppender } from './socketAppenderConstants';
 struct Index {
   @State message: string = 'Hello World';
   @State logger: Logger = LogManager.getLogger(this)
-    .addAppender(fileAppender_a)
-    .addAppender(socketAppender);
+    .bindAppender(fileAppender_a)
+    .bindAppender(socketAppender);
   test: TestClass = new TestClass();
 
   aboutToAppear(): void {
@@ -200,5 +201,44 @@ struct Index {
     }
     .height('100%')
   }
+}
+```
+
+## Configure multiple Loggers more conveniently <Badge type="tip" text="1.5.4 +" />
+
+Since log4a is a multi-Logger design, when multiple different Loggers need to bind the same appender, to avoid duplicate code, starting from version 1.5.4 you can use `LogManager.bindAppenderGlobally` to bind an appender to all Loggers at once.
+
+The following example first calls `registerLogger` to register Logger instances, then chains `bindAppenderGlobally` to add multiple appenders to all Loggers.
+
+```typescript:line-numbers
+import { LogManager, TCPSocketAppender, FileAppender, ConsoleAppender, PatternLayout, Level } from '@pie/log4a';
+
+export function InitializeAllLoggers(logFilePath: string) {
+  LogManager.setLogFilePath(logFilePath);
+  const socketAppender = new TCPSocketAppender({
+    address: '114.xxx.xxx.xxx',
+    port: 1234,
+    name: 'socket',
+    level: Level.ALL
+  });
+  const fileAppender_a = new FileAppender('log.txt', 'main', Level.ALL, {
+    useWorker: true,
+    maxFileSize: 1,
+    maxCacheCount: 2
+  });
+  const consoleAppender = new ConsoleAppender(Level.ALL)
+    .setLayout(new PatternLayout('%d%5L%5l%5p%r %C %% %m'))
+  const fAppender = new FileAppender('Xlog.log', 'mainAppender', Level.ALL, {
+    useWorker: true
+  }).setLayout(new PatternLayout('layout changed %m'))
+  // Register all Loggers and bind appenders here
+  LogManager
+    .registerLogger('Index')
+    .registerLogger('SplashPage')
+    .registerLoggers('SettingPage', 'AccountPage')
+    .bindAppenderGlobally(fAppender)
+    .bindAppenderGlobally(fileAppender_a)
+    .bindAppenderGlobally(consoleAppender)
+    .bindAppenderGlobally(socketAppender)
 }
 ```
