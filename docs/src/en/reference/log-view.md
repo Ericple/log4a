@@ -27,7 +27,7 @@ Log color configuration, containing `fatal`, `error`, `warn`, `info`, `debug`, `
 
 ## `LogViewConfigAll`
 
-- Adds `appender: string` to `LogViewConfig`, used to display history logs of a named file-type Appender.
+- Adds `appender: string` to `LogViewConfig`, used to display history logs of a named file-type Appender (the current session part of `DailyRollingFileAppender` requires history to be enabled).
 
 ## `LogViewConfigSession`
 

@@ -27,7 +27,7 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 
 ## `LogViewConfigAll`
 
-- 在 `LogViewConfig` 基础上增加 `appender: string`，用于按名称展示文件类Appender的历史日志。
+- 在 `LogViewConfig` 基础上增加 `appender: string`，用于按名称展示文件类Appender的历史日志（`DailyRollingFileAppender` 的当前会话部分需启用历史记录）。
 
 ## `LogViewConfigSession`
 
