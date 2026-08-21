@@ -31,4 +31,4 @@ Log color configuration, containing `fatal`, `error`, `warn`, `info`, `debug`, `
 
 ## `LogViewConfigSession`
 
-- Adds `appender: string | AppenderTypeEnum` to `LogViewConfig`, used to display current session logs by name or type.
+- Adds `appender: string | AppenderTypeEnum` to `LogViewConfig`, used to display current session logs by name or type (history must be enabled on the appender).

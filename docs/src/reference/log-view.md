@@ -31,4 +31,4 @@ import { LogView, LogViewMode, LogViewColorConfig } from '@pie/log4a/src/main/et
 
 ## `LogViewConfigSession`
 
-- 在 `LogViewConfig` 基础上增加 `appender: string | AppenderTypeEnum`，用于按名称或类型展示当前会话日志。
+- 在 `LogViewConfig` 基础上增加 `appender: string | AppenderTypeEnum`，用于按名称或类型展示当前会话日志（需要Appender启用历史记录）。
