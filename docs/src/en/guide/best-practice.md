@@ -4,7 +4,7 @@ Define Logger outside the UI code <Badge type="tip" text="1.3.4 +" />
 
 Defining a Logger in your UI code is a bad practice, especially if the logs need to be sent to many different places, which can make the code very confusing, so I recommend that you configure all the loggers you will use in a single file.
 
-Since version 1.3.4, you can get the same Logger as the LogManager.getLogger by passing the same class name to LogManager.getLogger. The following example shows how you can take advantage of this feature to make your code look more elegant.
+You can get the same Logger as `LogManager.getLogger` by passing the same class name to `LogManager.getLogger`. The following example shows how you can take advantage of this feature to make your code look more elegant.
 
 ```ts:line-numbers
 // LoggerConfig.ets
