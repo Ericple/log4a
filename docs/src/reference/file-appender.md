@@ -45,7 +45,7 @@
 
 获取已滚动生成的缓存文件中的历史日志
 
-## `clearAllHistory()`
+## `clearAllHistory()` <Badge type="tip" text="1.5.7 +" />
 
 删除所有历史日志（包括滚动生成的缓存文件），并清空当前历史记录
 

@@ -32,7 +32,7 @@ This method is called when the bound host Logger logs
 Terminates all logging activities for this Appender
 
 
-## `clearAllHistory()`
+## `clearAllHistory()` <Badge type="tip" text="1.5.7 +" />
 
 Deletes all history logs (including rolled cache files) and clears the current history
 

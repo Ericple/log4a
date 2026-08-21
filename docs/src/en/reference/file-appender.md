@@ -45,7 +45,7 @@ Terminates all logging activities for this Appender
 
 Gets history logs from rolled cache files
 
-## `clearAllHistory()`
+## `clearAllHistory()` <Badge type="tip" text="1.5.7 +" />
 
 Deletes all history logs (including rolled cache files) and clears the current history
 

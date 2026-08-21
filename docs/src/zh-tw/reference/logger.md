@@ -191,7 +191,7 @@
 
 输出一条`Level`为`INFO`的日志
 
-## `terminate(type?)`
+## `terminate(type?)` <Badge type="tip" text="1.5.14 +" />
 
 - `type` number? - 要终止的Appender类型，多个可用`|`连接；缺省时终止所有Appender
 

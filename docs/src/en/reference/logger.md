@@ -189,7 +189,7 @@ Output a log whose Level is TRACE
 
 Output a log whose Level is INFO
 
-## `terminate(type?)`
+## `terminate(type?)` <Badge type="tip" text="1.5.14 +" />
 
 - `type` number? - Appender type to terminate. Multiple types can be joined with `|`; if omitted, all appenders are terminated.
 
