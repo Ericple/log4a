@@ -4,7 +4,7 @@ Log4a是一个ArkTS/TypeScript使用的日志库，为高性能、简单易用�
 
 只是想尝试一下？跳到[快速开始](/guide/getting-started)
 
-<script setup> 
+<script setup>
 import GitCard from '../components/GitCard.vue'
 </script>
 
