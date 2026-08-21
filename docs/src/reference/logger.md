@@ -52,7 +52,7 @@
 
 - `predicates` string - 用于搜索具名`FileAppender`
 
-获取指定具名文件类Appender的历史日志内容，通常包含已滚动生成的缓存文件（`DailyRollingFileAppender`还会包含当前会话）
+获取指定具名文件类Appender的历史日志内容，通常包含已滚动生成的缓存文件（`DailyRollingFileAppender`还会包含当前会话，当前会话部分需启用历史记录）
 
 ## `setLevel(level): this`
 

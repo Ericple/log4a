@@ -50,7 +50,7 @@ Gets the logs generated between the time the application is started and when it 
 
 - `predicates` string - Searches for a named FileAppender
 
-Gets the history log contents of the named file-type Appender. This usually includes rolled cache files (`DailyRollingFileAppender` also includes the current session)
+Gets the history log contents of the named file-type Appender. This usually includes rolled cache files (`DailyRollingFileAppender` also includes the current session; the current session part requires history to be enabled)
 
 ## `setLevel(level): this`
 
