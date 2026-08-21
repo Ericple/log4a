@@ -11,7 +11,7 @@
 
 - `context` Object | string - If called in a struct or class, pass `this`; otherwise pass the class name
 
-Obtain the corresponding Logger according to the context. From version 1.3.4, `context` can be a `string` class name.
+Obtain the corresponding Logger according to the context. `context` can be a `string` class name.
 
 ## `anonymous()`
 

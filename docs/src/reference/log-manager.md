@@ -14,7 +14,7 @@
 - `context` Object | string - 如果在struct或class中调用，可以传入this，否则需要传入类名
 
 > [!INFO]
-> 从1.3.4版本开始，`context`可以传入 `string` 类型的类名。
+> `context` 支持传入 `string` 类型的类名。
 
 根据上下文获取对应Logger，参数需传入this
 
